@@ -4,7 +4,7 @@
 
 ## Список проектов
 
-### 1. [Raglo_pasrser.ru (Telegram-бот + парсер)](Parser_raglo.ru/)
+### 1. [Raglo_parser.ru (Telegram-бот + парсер)](Parser_raglo.ru/)
 Многопоточный парсер интернет-магазина, интегрированный с Telegram-ботом управления.
 * **Стек технологий:** 
 - C#/.NET 10
