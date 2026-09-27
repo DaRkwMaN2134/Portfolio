@@ -38,7 +38,7 @@
 2. Клонируйте репозиторий.
 3. Откройте решение в Visual Studio или Rider.
 4. Создайте appsettings.json и укажите:
-    ```json
+  ```json
     {
     "Logging": {
     "LogLevel": {
@@ -54,7 +54,7 @@
     "Token": "YOUR_TOKEN"
     }
   }
-    ```
+  ```
 4. Создайте бота в Telegram через @BotFather, скопируйте API токен и вставьте в appsettings.json в строчку Token:
 5. Установите PostgreSQL. Обычно есть пользователь postgres. Создайте базу данных (например, referral_bot_db)
 6. Введите данные в appsettings.json в строчку Postgres:
