@@ -33,6 +33,7 @@ namespace ConfigurationLibrary
         public async Task LogErrorAsync(string message, Exception ex = null, string level = "ERROR:")
         {
             DateTime time = DateTime.Now;
+            Directory.CreateDirectory(logfolder);
             string logpath = Path.Combine(logfolder + logfile + time.ToString("dd-MM-yyyy") + ".txt");
             await _fileSemaphore.WaitAsync();
             string errorDetails = ex != null ? $" - {ex.Message}" : "";

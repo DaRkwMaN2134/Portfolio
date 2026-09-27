@@ -37,9 +37,27 @@
 1. Установите .NET SDK.
 2. Клонируйте репозиторий.
 3. Откройте решение в Visual Studio или Rider.
+4. Создайте appsettings.json и укажите:
+    ```json
+    {
+    "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+      }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "Postgres": "Host=localhost;Port=????;Username=postgres;Password=????;Database=????"
+  },
+  "Bot_Token": {
+    "Token": "YOUR_TOKEN"
+    }
+  }
+    ```
 4. Создайте бота в Telegram через @BotFather, скопируйте API токен и вставьте в appsettings.json в строчку Token:
 5. Установите PostgreSQL. Обычно есть пользователь postgres. Создайте базу данных (например, referral_bot_db)
-6. Вставьте строчку типа "Host=localhost;Port=????;Username=postgres;Password=????;Database=????" в appsettings.json в строчку Postgres:
+6. Введите данные в appsettings.json в строчку Postgres:
 7. Примените миграции к базе данных:
    ```bash
    dotnet ef database update --project ConfigurationLibrary --startup-project BotStart
