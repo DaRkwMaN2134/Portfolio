@@ -1,0 +1,12 @@
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\bin\Release\net10.0\DataLibrary.deps.json
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\bin\Release\net10.0\DataLibrary.dll
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\bin\Release\net10.0\DataLibrary.pdb
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.AssemblyInfoInputs.cache
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.AssemblyInfo.cs
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.csproj.CoreCompileInputs.cache
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.sourcelink.json
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.dll
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\refint\DataLibrary.dll
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\DataLibrary.pdb
+C:\Нужное\учеба\программирование\Tasks\FreelanceTask\Parser_raglo.ru\DataLibrary\obj\Release\net10.0\ref\DataLibrary.dll

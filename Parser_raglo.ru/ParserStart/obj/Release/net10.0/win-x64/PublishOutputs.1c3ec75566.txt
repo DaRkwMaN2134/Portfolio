@@ -1,0 +1,5 @@
+C:\Users\Илья\Desktop\Новая папка\ParserStart.pdb
+C:\Users\Илья\Desktop\Новая папка\FileIOLibrary.pdb
+C:\Users\Илья\Desktop\Новая папка\ParserLibrary.pdb
+C:\Users\Илья\Desktop\Новая папка\DataLibrary.pdb
+C:\Users\Илья\Desktop\Новая папка\ParserStart.exe

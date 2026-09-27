@@ -1,0 +1,171 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\bot.updates.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\bot.updates.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\bot.callbacks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\bot.callbacks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\botdataoutput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\botdataoutput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\bot.commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\bot.commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3373AEB-7E81-6B45-1670-7B3D31710D1C}|ConfigurationLibrary\\ConfigurationLibrary.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\configurationlibrary\\interfaces.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3373AEB-7E81-6B45-1670-7B3D31710D1C}|ConfigurationLibrary\\ConfigurationLibrary.csproj|solutionrelative:configurationlibrary\\interfaces.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|c:\\\u043D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\tasks\\portfolio\\referralbot\\botstart\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5D6ED6C4-BB1D-B04D-2EB6-89347093E86B}|BotStart\\BotStart.csproj|solutionrelative:botstart\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 369,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Bot.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.cs",
+              "RelativeDocumentMoniker": "BotStart\\Bot.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.cs",
+              "RelativeToolTip": "BotStart\\Bot.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAUwCMAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-17T05:09:26.884Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Bot.Updates.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Updates.cs",
+              "RelativeDocumentMoniker": "BotStart\\Bot.Updates.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Updates.cs",
+              "RelativeToolTip": "BotStart\\Bot.Updates.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAADwv0oAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T05:28:39.233Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Bot.Callbacks.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Callbacks.cs",
+              "RelativeDocumentMoniker": "BotStart\\Bot.Callbacks.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Callbacks.cs",
+              "RelativeToolTip": "BotStart\\Bot.Callbacks.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAgwAgAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-20T07:50:46.191Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Bot.Commands.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Commands.cs",
+              "RelativeDocumentMoniker": "BotStart\\Bot.Commands.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Bot.Commands.cs",
+              "RelativeToolTip": "BotStart\\Bot.Commands.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAuwDoAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T07:00:45.645Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BotDataOutput.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\BotDataOutput.cs",
+              "RelativeDocumentMoniker": "BotStart\\BotDataOutput.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\BotDataOutput.cs",
+              "RelativeToolTip": "BotStart\\BotDataOutput.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAABsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T07:24:25.857Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Interfaces.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\ConfigurationLibrary\\Interfaces.cs",
+              "RelativeDocumentMoniker": "ConfigurationLibrary\\Interfaces.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\ConfigurationLibrary\\Interfaces.cs",
+              "RelativeToolTip": "ConfigurationLibrary\\Interfaces.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAwAwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-20T08:25:25.627Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Program.cs",
+              "RelativeDocumentMoniker": "BotStart\\Program.cs",
+              "ToolTip": "C:\\\u041D\u0443\u0436\u043D\u043E\u0435\\\u0443\u0447\u0435\u0431\u0430\\\u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\\Tasks\\Portfolio\\ReferralBot\\BotStart\\Program.cs",
+              "RelativeToolTip": "BotStart\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADgvxAAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-16T14:52:41.696Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 277,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:12:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:15:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:14:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:13:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:21:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

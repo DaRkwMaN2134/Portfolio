@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ConfigurationLibrary/ConfigurationLibrary.csproj" Id="2269c234-40c6-483a-9215-c23030eee6cf" />
+  <Project Path="DataLibrary/DataLibrary.csproj" />
+  <Project Path="FileIOLibrary/FileIOLibrary.csproj" Id="f6e2416e-da2c-40d1-9458-8431caee355c" />
+  <Project Path="ParserBot/ParserBot.csproj" Id="09929929-78ce-4225-91db-c7ee9c5d5f03" />
+  <Project Path="ParserLibrary/ParserLibrary.csproj" />
+  <Project Path="ParserStart/ParserStart.csproj" />
+</Solution>

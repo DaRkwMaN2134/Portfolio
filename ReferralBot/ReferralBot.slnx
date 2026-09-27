@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BotStart/BotStart.csproj" />
+  <Project Path="ConfigurationLibrary/ConfigurationLibrary.csproj" />
+  <Project Path="DataLibrary/DataLibrary.csproj" />
+  <Project Path="DTOLibrary/DTOLibrary.csproj" Id="848d72d8-20e9-4236-a247-bfabbeb5f0ba" />
+</Solution>

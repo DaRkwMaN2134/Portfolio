@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigurationLibrary\ConfigurationLibrary.csproj" />
+    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
+    <ProjectReference Include="..\FileIOLibrary\FileIOLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigurationLibrary\ConfigurationLibrary.csproj" />
+    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
+    <ProjectReference Include="..\FileIOLibrary\FileIOLibrary.csproj" />
+    <ProjectReference Include="..\ParserLibrary\ParserLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <PackageReference Include="Telegram.Bot" Version="22.10.3" />
+  </ItemGroup>
+
+</Project>
