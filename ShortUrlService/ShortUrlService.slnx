@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ShortUrl.Application/ShortUrl.Application.csproj" />
+  <Project Path="ShortUrl.Domain/ShortUrl.Domain.csproj" />
+  <Project Path="ShortUrl.Infrastructure/ShortUrl.Infrastructure.csproj" />
+  <Project Path="ShortUrl.Presentation/ShortUrl.Presentation.csproj" />
+</Solution>
