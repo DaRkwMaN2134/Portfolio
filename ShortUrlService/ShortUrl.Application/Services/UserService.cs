@@ -1,6 +1,5 @@
 ﻿using ShortUrl.Application.DTO;
 using ShortUrl.Domain.Interfaces;
-using ShortUrl.Domain.Models;
 
 namespace ShortUrl.Application.Services
 {
@@ -11,9 +10,9 @@ namespace ShortUrl.Application.Services
         {
             _userRepository = userRepository;
         }
-        public async Task UserUpdateAsync(UserDTO userdto, string? deviceid, string? userid, string? username)
+        public async Task UpdateUserInfoAsync(UserDTO userdto, string? deviceid, string? userid)
         {
-            var user = await _userRepository.GetUserAsync(deviceid, userid, username);
+            var user = await _userRepository.GetUserAsync(deviceid, userid);
             if (user == null)
             {
                 Console.WriteLine("Такого пользователя не существует");
@@ -30,6 +29,20 @@ namespace ShortUrl.Application.Services
                 if (userdto.IsRegistered != false) user.IsRegistered = userdto.IsRegistered;
 
                 await _userRepository.UpdateUserAsync(user);
+            }
+        }
+
+        public async Task LoginUserAsync(UserDTO userdto, string deviceId, string? userId)
+        {
+            var user = await _userRepository.GetUserAsync(deviceId, userId);
+            if(user == null)
+            {
+                await _userRepository.CreateUserAsync(deviceId);
+                Console.WriteLine($"Юзер {deviceId} создан");
+            }
+            else
+            {
+                await UpdateUserInfoAsync(userdto, deviceId, userId);
             }
         }
     }
