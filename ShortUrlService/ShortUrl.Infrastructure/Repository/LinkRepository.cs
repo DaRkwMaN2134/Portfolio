@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShortUrl.Domain;
 using ShortUrl.Domain.Interfaces;
+using ShortUrl.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,9 +17,9 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task CreateLinkAsync(string longurl, string shortcode, User creator)
         {
-            var link = await _dbContext.links.FirstOrDefaultAsync(l =>
-            (!string.IsNullOrEmpty(longurl) && l.LongUrl == longurl) ||
-            (!string.IsNullOrEmpty(shortcode) && l.ShortCode == shortcode));
+            if (string.IsNullOrEmpty(shortcode)) return;
+
+            var link = await _dbContext.links.FirstOrDefaultAsync(l => l.ShortCode == shortcode);
 
             if(link == null)
             {
@@ -37,6 +37,23 @@ namespace ShortUrl.Infrastructure.Repository
                 Console.WriteLine("ссылка уже создана");
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Link?> GetLinkAsync(string shortcode)
+        {
+            if (string.IsNullOrEmpty(shortcode)) return null;
+
+            var link = await _dbContext.links
+                .Include(l => l.Creator)
+                .FirstOrDefaultAsync(l => l.ShortCode == shortcode);
+
+            if (link != null) return link;
+
+            else
+            {
+                Console.WriteLine("линка не найдена");
+                return null;
+            }
         }
     }
 }

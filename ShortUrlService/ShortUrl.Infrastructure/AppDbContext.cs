@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Design;
-using ShortUrl.Domain;
+using ShortUrl.Domain.Models;
 
 
 namespace ShortUrl.Infrastructure

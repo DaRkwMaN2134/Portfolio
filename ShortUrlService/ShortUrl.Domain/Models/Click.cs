@@ -1,5 +1,4 @@
-﻿
-namespace ShortUrl.Domain
+﻿namespace ShortUrl.Domain.Models
 {
     public class Click
     {

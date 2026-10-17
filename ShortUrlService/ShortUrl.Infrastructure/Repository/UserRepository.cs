@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShortUrl.Domain.Interfaces;
-using ShortUrl.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ShortUrl.Domain.Models;
 
 namespace ShortUrl.Infrastructure.Repository
 {
@@ -17,6 +17,8 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task CreateUserAsync(string deviceid)
         {
+            if (!string.IsNullOrEmpty(deviceid)) return;
+
             var user = await _dbContext.users.FirstOrDefaultAsync(d => d.DeviceId == deviceid);
             if (user == null)
             {
@@ -60,6 +62,8 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task UpdateUserAsync(User currentUser)
         {
+            if (!string.IsNullOrEmpty(currentUser.DeviceId)) return;
+
             var user = await _dbContext.users.FirstOrDefaultAsync(d => d.DeviceId == currentUser.DeviceId);
             if (user == null)
             {
@@ -67,20 +71,8 @@ namespace ShortUrl.Infrastructure.Repository
             }
             else
             {
-                if (user != userdto)
-                {
-                    user.UserId = userdto.UserId;
-                    user.Username = userdto.Username;
-                    user.IpAddress = userdto.IpAddress; // нужно доделать и добавить проверку атрибутов по типу user.UserUd != currentuser.UserId
-                    user.DeviceId = userdto.DeviceId;
-                    user.OS = userdto.OS;
-                    user.Resolution = userdto.Resolution;
-                    user.IsRegistered = userdto.IsRegistered;
-                }
-                else
-                {
-                    Console.WriteLine("Данные идентичные");
-                }
+                _dbContext.users.Update(user);
+                await _dbContext.SaveChangesAsync();
             }
         }
     }
