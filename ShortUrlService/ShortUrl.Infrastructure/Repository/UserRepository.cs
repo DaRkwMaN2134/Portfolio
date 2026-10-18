@@ -61,5 +61,13 @@ namespace ShortUrl.Infrastructure.Repository
             _dbContext.users.Update(currentUser);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Link>> GetUserBufferAsync(User creator)
+        {
+            var linkBuffer = await _dbContext.users.
+                Where(c => c.DeviceId == creator.DeviceId).
+                SelectMany(l => l.Links).OrderByDescending(l => l.Id).Take(3).ToListAsync();
+            return linkBuffer;
+        }
     }
 }

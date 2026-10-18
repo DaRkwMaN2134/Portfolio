@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
+using ShortUrl.Domain.Models;
 using ShortUrl.Infrastructure;
 using ShortUrl.Infrastructure.Repository;
 
@@ -25,6 +26,12 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+
+var dbContext = app.Services.GetRequiredService<AppDbContext>();
+var userep = new UserRepository(dbContext);
+
+
 
 app.MapGet("/s/{shortcode}", async (string shortcode, LinkService linkservice) =>
 {
@@ -52,6 +59,22 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
     }
 
     return Results.BadRequest();
+});
+
+
+app.MapGet("/b/buffer", async (LinkService linkservice, IUserRepository userrep) =>
+{
+    var user = await userrep.GetUserAsync("123d", null); //сделать проверку на null
+    var links = await userrep.GetUserBufferAsync(user);
+    var result = links.Select(l => new
+    {
+        l.Id,
+        l.CreatedAt,
+        l.LongUrl,
+        l.ShortCode,
+        l.CreatorId
+    });
+    return Results.Ok(result);
 });
 
 

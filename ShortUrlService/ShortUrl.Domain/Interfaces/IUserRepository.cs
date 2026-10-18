@@ -7,5 +7,6 @@ namespace ShortUrl.Domain.Interfaces
         public Task CreateUserAsync(string deviceid);
         public Task<User?> GetUserAsync(string deviceid, string? userid);
         public Task UpdateUserAsync(User user);
+        public Task<List<Link>> GetUserBufferAsync(User creator);
     }
 }

@@ -29,7 +29,7 @@ namespace ShortUrl.Application.Services
                 var shortlink = await CreateShortenLinkAsync(longurl, null);
                 var link = await _linkRepository.CreateLinkAsync(longurl, shortlink, creator);
 
-                if(link)
+                if (link)
                 {
                     shortcode = shortlink;
                 }
@@ -66,7 +66,7 @@ namespace ShortUrl.Application.Services
         public async Task<string> RedirectLinkAsync(string shortcode)
         {
             var url = await _linkRepository.GetLongUrlAsync(shortcode);
-            if(url == null)
+            if (url == null)
             {
                 Console.WriteLine("Ссылка не найдена");
                 return null;
@@ -74,13 +74,13 @@ namespace ShortUrl.Application.Services
             else
             {
                 return url;
-            }    
+            }
         }
 
 
         public async Task<string> CreateShortenLinkAsync(string longurl, string? salt)
         {
-            if(salt != null)
+            if (salt != null)
             {
                 longurl = longurl + "|" + salt;
             }
@@ -88,7 +88,7 @@ namespace ShortUrl.Application.Services
             byte[] utf8Url = Encoding.UTF8.GetBytes(longurl);
             utf8Url = SHA256.Create().ComputeHash(utf8Url);
             ReadOnlySpan<byte> bytes = utf8Url.AsSpan(0, 7);
-            
+
             BigInteger number = new BigInteger(bytes, isUnsigned: true);
             BigInteger q = 0;
             BigInteger r = 0;
