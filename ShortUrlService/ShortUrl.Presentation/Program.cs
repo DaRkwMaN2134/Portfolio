@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using ShortUrl.Application.DTO;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
@@ -20,9 +22,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
+builder.Services.AddScoped<IClickRepository, ClickRepository>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LinkService>();
+builder.Services.AddScoped<ClickService>();
 
 var app = builder.Build();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -30,17 +36,34 @@ app.UseSwaggerUI();
 
 var dbContext = app.Services.GetRequiredService<AppDbContext>();
 var userep = new UserRepository(dbContext);
+var linkrep = new LinkRepository(dbContext);
+var clickrep = new ClickRepository(dbContext);
 
 
-
-app.MapGet("/s/{shortcode}", async (string shortcode, LinkService linkservice) =>
+app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice, HttpContext context) =>
 {
-    var longurl = await linkservice.RedirectLinkAsync(shortcode);
-    if (longurl == null)
+    var currentLink = await linkrep.GetLongUrlAsync(shortcode);  // потом создать систему создания deviceid каждому юзеру
+    if (currentLink == null)
     {
         return Results.NotFound();
     }
-    return Results.Redirect(longurl);
+
+    Click click = new Click //потом следует доработка методов поиска аналитики
+    {
+        CreatedAt = DateTime.UtcNow,
+        IpAddress = context.Connection.RemoteIpAddress?.ToString(),
+        Device = "Desktop",
+        OS = context.Request.Headers.UserAgent.ToString(),
+        Resolution = "2560x1440",
+        Referer = "https://github.com",
+        Language = context.Request.Headers.AcceptLanguage.ToString(),
+        Browser = context.Request.Headers.UserAgent.ToString(),
+        TimeZone = "Europe/Moscow",
+        DeviceLocalTime = DateTime.UtcNow
+    };
+
+    await clickservice.CollectionInfoForClickAsync(currentLink.Id, click);
+    return Results.Redirect(currentLink.LongUrl);
 });
 
 app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUserRepository userrep) =>
@@ -62,9 +85,9 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
 });
 
 
-app.MapGet("/b/buffer", async (LinkService linkservice, IUserRepository userrep) =>
+app.MapGet("/b/buffer", async (string deviceid, LinkService linkservice, IUserRepository userrep) =>
 {
-    var user = await userrep.GetUserAsync("123d", null); //сделать проверку на null
+    var user = await userrep.GetUserAsync(deviceid, null); //сделать проверку на null
     var links = await userrep.GetUserBufferAsync(user);
     var result = links.Select(l => new
     {

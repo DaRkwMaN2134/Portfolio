@@ -41,7 +41,7 @@ namespace ShortUrl.Infrastructure.Repository
             }
         }
 
-        public async Task<string?> GetLongUrlAsync(string shortcode)
+        public async Task<Link?> GetLongUrlAsync(string shortcode)
         {
             if (string.IsNullOrEmpty(shortcode)) return null;
 
@@ -49,7 +49,7 @@ namespace ShortUrl.Infrastructure.Repository
                 .Include(l => l.Creator)
                 .FirstOrDefaultAsync(l => l.ShortCode == shortcode);
 
-            if (link != null) return link.LongUrl;
+            if (link != null) return link;
 
             else
             {
@@ -58,7 +58,7 @@ namespace ShortUrl.Infrastructure.Repository
             }
         }
 
-        public async Task<string?> GetShortCodeAsync(string url)
+        public async Task<Link?> GetShortCodeAsync(string url)
         {
             if (string.IsNullOrEmpty(url)) return null;
 
@@ -66,7 +66,7 @@ namespace ShortUrl.Infrastructure.Repository
                 .Include(l => l.Creator)
                 .FirstOrDefaultAsync(l => l.LongUrl == url);
 
-            if (link != null) return link.ShortCode;
+            if (link != null) return link;
 
             else
             {

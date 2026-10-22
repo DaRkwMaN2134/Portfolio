@@ -73,7 +73,7 @@ namespace ShortUrl.Application.Services
             }
             else
             {
-                return url;
+                return url.LongUrl;
             }
         }
 
