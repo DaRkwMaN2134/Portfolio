@@ -18,5 +18,18 @@ namespace ShortUrl.Application.Services
         {
             await _clickRepository.CreateClickAsync(linkid, clickinfo);
         }
+
+        public async Task UpdateExternalInfoForClick(long linkid, string resolution, string timezone, DateTime? devicelocaltime)
+        {
+            var click = await _clickRepository.GetLastClickAsync(linkid);
+            if(click != null)
+            {
+                Console.WriteLine($"[ID ЭТОЙ ССЫЛКИ] = {click.LinkId}");
+                click.Resolution = resolution;
+                click.TimeZone = timezone;
+                click.DeviceLocalTime = devicelocaltime;
+                await _clickRepository.UpdateLastClickAsync(click);
+            }
+        }
     }
 }

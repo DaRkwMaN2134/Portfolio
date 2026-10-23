@@ -8,6 +8,7 @@ namespace ShortUrl.Domain.Interfaces
     public interface IClickRepository
     {
         public Task CreateClickAsync(long linkid, Click currentclick);
-        //public Task<Click?> GetClickAsync(int linkid); в разработке
+        public Task<Click?> GetLastClickAsync(long linkid);
+        public Task UpdateLastClickAsync(Click currentclick);
     }
 }

@@ -35,9 +35,9 @@ namespace ShortUrl.Infrastructure.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        /* public async Task<List<Click?>> GetClickAsync(int linkid)
+        public async Task<Click?> GetLastClickAsync(long linkid)
         {
-            var click = await _dbContext.clicks. // потом доделаю
+            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).FirstOrDefaultAsync(l => l.LinkId == linkid);
 
             if (click != null)
             {
@@ -48,6 +48,12 @@ namespace ShortUrl.Infrastructure.Repository
                 Console.WriteLine("click не найден");
                 return null;
             }
-        } */
+        }
+
+        public async Task UpdateLastClickAsync(Click currentclick)
+        {
+            _dbContext.clicks.Update(currentclick);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

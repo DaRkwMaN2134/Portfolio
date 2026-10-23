@@ -36,7 +36,7 @@ namespace ShortUrl.Infrastructure.Repository
             }
             else
             {
-                Console.WriteLine("ссылка уже создана");
+                Console.WriteLine("[МЕТОД CreateLinkAsync] ссылка уже создана");
                 return false;
             }
         }
@@ -53,7 +53,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("линка не найдена");
+                Console.WriteLine("[МЕТОД GetLongUrlAsync] линка не найдена");
                 return null;
             }
         }
@@ -70,7 +70,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("линка не найдена");
+                Console.WriteLine("[МЕТОД GetShortCodeAsync] линка не найдена");
                 return null;
             }
         }
@@ -87,7 +87,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("креатор не найден");
+                Console.WriteLine("[МЕТОД GetUserLinkAsync] креатор не найден");
                 return null;
             }
         }
