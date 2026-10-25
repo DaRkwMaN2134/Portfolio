@@ -11,7 +11,7 @@ namespace ShortUrl.Application.Services
         {
             _userRepository = userRepository;
         }
-        public async Task UpdateUserInfoAsync(UserDTO userdto, string? deviceid, string? userid)
+        /* public async Task UpdateUserInfoAsync(User userinfo, string? deviceid, string? userid)
         {
             var user = await _userRepository.GetUserAsync(deviceid, userid);
             if (user == null)
@@ -20,20 +20,20 @@ namespace ShortUrl.Application.Services
             }
             else
             {
-                if (userdto.DeviceId != null) user.DeviceId = userdto.DeviceId;
-                if (userdto.UserId != null) user.UserId = userdto.UserId;
-                if (userdto.Username != null) user.Username = userdto.Username;
-                if (userdto.IpAddress != null) user.IpAddress = userdto.IpAddress;
-                if (userdto.Device != null) user.Device = userdto.Device;
-                if (userdto.OS != null) user.OS = userdto.OS;
-                if (userdto.Resolution != null) user.Resolution = userdto.Resolution;
-                if (userdto.IsRegistered != false) user.IsRegistered = userdto.IsRegistered;
+                if (userinfo.DeviceId != null) user.DeviceId = userinfo.DeviceId;
+                if (userinfo.UserId != null) user.UserId = userinfo.UserId;
+                if (userinfo.Username != null) user.Username = userinfo.Username;
+                if (userinfo.IpAddress != null) user.IpAddress = userinfo.IpAddress;
+                if (userinfo.Device != null) user.Device = userinfo.Device;
+                if (userinfo.OS != null) user.OS = userinfo.OS;
+                if (userinfo.Resolution != null) user.Resolution = userinfo.Resolution;
+                if (userinfo.IsRegistered != false) user.IsRegistered = userinfo.IsRegistered;
 
                 await _userRepository.UpdateUserAsync(user);
-            }
-        }
+            } 
+        }     этот метод скорей всего избыточен    */
 
-        public async Task LoginUserAsync(UserDTO userdto, string deviceId, string? userId)
+        public async Task LoginUserAsync(User userinfo, string deviceId, string? userId)
         {
             var user = await _userRepository.GetUserAsync(deviceId, userId);
             if(user == null)
@@ -43,7 +43,8 @@ namespace ShortUrl.Application.Services
             }
             else
             {
-                await UpdateUserInfoAsync(userdto, deviceId, userId);
+                await _userRepository.UpdateUserAsync(user);
+                //await UpdateUserInfoAsync(userinfo, deviceId, userId);
             }
         }
 
