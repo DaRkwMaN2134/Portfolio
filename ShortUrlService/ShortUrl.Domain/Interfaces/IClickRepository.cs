@@ -10,5 +10,6 @@ namespace ShortUrl.Domain.Interfaces
         public Task CreateClickAsync(long linkid, Click currentclick);
         public Task<Click?> GetLastClickAsync(long linkid);
         public Task UpdateLastClickAsync(Click currentclick);
+        public Task<List<Click?>> GetClickAsync(long linkid);
     }
 }

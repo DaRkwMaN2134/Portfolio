@@ -53,6 +53,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
+app.UseStaticFiles();
 
 app.UseMiddleware<Middleware>();
 
@@ -129,8 +130,8 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
     var shortcode = await linkservice.ShortenLinkAsync(request.LongUrl, user);
     if (!string.IsNullOrEmpty(shortcode))
     {
-        //return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
-        var fullUrl = $"http://localhost:5000/s/{shortcode}";
+        return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
+        /*var fullUrl = $"http://localhost:5000/s/{shortcode}";
         var safeUrl = JsonSerializer.Serialize(fullUrl);
 
         return Results.Content($@"
@@ -179,7 +180,7 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
         }}, 1000);
     </script>
 </body>
-</html>", "text/html");
+</html>", "text/html"); */
     }
     else
     {
@@ -202,6 +203,15 @@ app.MapGet("/b/buffer", async (string deviceid, LinkService linkservice, IUserRe
     });
     return Results.Ok(result);
 });
+
+
+app.MapPost("/shortcode/analytics", async (string shortcode, ClickService clickservice, LinkRepository linkrep) =>
+{
+    var linkid = await linkrep.GetLongUrlAsync(shortcode);
+    var clicks = await clickservice.ClickAnalitycsAsync(linkid.Id);
+    return Results.Ok(clicks);
+});
+
 
 
 app.MapPost("/api/click/update", async (ClickUpdateRequest data, ClickService clickservice, ILinkRepository linkrep, IUserRepository userep) =>

@@ -55,5 +55,15 @@ namespace ShortUrl.Infrastructure.Repository
             _dbContext.clicks.Update(currentclick);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Click?>> GetClickAsync(long linkid)
+        {
+            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).Where(c => c.LinkId == linkid).ToListAsync();
+            if (click != null)
+            {
+                return click;
+            }
+            return null;
+        }
     }
 }

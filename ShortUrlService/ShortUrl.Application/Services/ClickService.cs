@@ -31,5 +31,18 @@ namespace ShortUrl.Application.Services
                 await _clickRepository.UpdateLastClickAsync(click);
             }
         }
+        public async Task<List<Click>> ClickAnalitycsAsync(long linkid)
+        {
+            var clicks = await _clickRepository.GetClickAsync(linkid);
+            if (clicks != null)
+            {
+                return clicks;
+            }
+            else
+            {
+                Console.WriteLine("Клики не обнаружены");
+                return null;
+            }
+        }
     }
 }
