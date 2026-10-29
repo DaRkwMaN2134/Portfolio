@@ -24,6 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<IClickRepository, ClickRepository>();
+
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LinkService>();
 builder.Services.AddScoped<ClickService>();
@@ -131,56 +132,6 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
     if (!string.IsNullOrEmpty(shortcode))
     {
         return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
-        /*var fullUrl = $"http://localhost:5000/s/{shortcode}";
-        var safeUrl = JsonSerializer.Serialize(fullUrl);
-
-        return Results.Content($@"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>Ссылка создана</title>
-    <style>
-        body {{ font-family: sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f5f5f5; }}
-        .loader {{ border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }}
-        @keyframes spin {{ 0% {{ transform: rotate(0deg); }} 100% {{ transform: rotate(360deg); }} }}
-        .result {{ display: none; text-align: center; }}
-        a {{ font-size: 24px; color: #3498db; text-decoration: none; font-weight: bold; }}
-    </style>
-</head>
-<body>
-    <div id='loader' class='loader'></div>
-    
-    <div id='result' class='result'>
-        <h2>Ссылка успешно создана!</h2>
-        <a id='short-link' href='#'></a>
-    </div>
-
-    <script>
-        // Данные о разрешении экрана
-        const data = {{
-            resolution: window.screen.width + 'x' + window.screen.height,
-        }};
-
-        // Отправляем данные на бэкенд, чтобы обновить юзера
-        const blob = new Blob([JSON.stringify(data)], {{ type: 'application/json' }});
-        navigator.sendBeacon('/api/user/update', blob);
-
-        // Ссылка, которую сгенерировал C#
-        const shortUrl = {safeUrl};
-
-        // Через 1 секунду (чтобы sendBeacon успел отправиться) скрываем спиннер и показываем ссылку
-        setTimeout(() => {{
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
-            
-            const linkElement = document.getElementById('short-link');
-            linkElement.href = shortUrl;
-            linkElement.innerText = shortUrl;
-        }}, 1000);
-    </script>
-</body>
-</html>", "text/html"); */
     }
     else
     {
@@ -205,11 +156,15 @@ app.MapGet("/b/buffer", async (string deviceid, LinkService linkservice, IUserRe
 });
 
 
-app.MapPost("/shortcode/analytics", async (string shortcode, ClickService clickservice, LinkRepository linkrep) =>
+app.MapGet("/shortcode/analytics", async (string shortcode, ClickService clickservice, ILinkRepository linkrep) =>
 {
     var linkid = await linkrep.GetLongUrlAsync(shortcode);
+
+    if (linkid == null) return Results.BadRequest();
+
     var clicks = await clickservice.ClickAnalitycsAsync(linkid.Id);
     return Results.Ok(clicks);
+
 });
 
 

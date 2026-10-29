@@ -572,6 +572,69 @@
 			inputWrap.classList.remove('error');
 			clearError();
 			});
+
+			/* ============================================================
+			★ ОТПРАВКА РАЗРЕШЕНИЯ ЭКРАНА НА БЭКЕНД (без UI)
+			POST /api/user/update
+			body: { "Resolution": "1920x1080" }
+			C#:   public record UserUpdateRequest(string Resolution);
+
+			Важно:
+			- DeviceId бэкенд берёт из context.Items["DeviceId"]
+			(обычно ставится middleware из cookie) — поэтому
+			credentials: 'include', чтобы браузер отправил cookie.
+			- Успех = 200 OK с ПУСТЫМ телом, поэтому .json() не вызываем.
+			- Если пользователь не найден — бэкенд вернёт 404.
+			============================================================ */
+			const USER_UPDATE_URL  = '/api/user/update';
+			const RESOLUTION_FIELD = 'Resolution';
+
+			function getScreenResolution() {
+			const w = (window.screen && (screen.width  || screen.availWidth))  || window.innerWidth;
+			const h = (window.screen && (screen.height || screen.availHeight)) || window.innerHeight;
+			return w + 'x' + h;
+			}
+
+			async function sendUserResolution() {
+			const resolution = getScreenResolution();
+			try {
+			const response = await fetch(USER_UPDATE_URL, {
+			method: 'POST',
+			credentials: 'include', // нужно, чтобы ушла cookie с DeviceId
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ [RESOLUTION_FIELD]: resolution }),
+			});
+
+			if (response.status === 404) {
+			// Бэкенд вернул NotFound: пользователь с таким DeviceId ещё не создан
+			console.warn('User not found for current DeviceId — resolution not saved.');
+			return;
+			}
+
+			if (!response.ok) {
+			let details = '';
+			try {
+			const errBody = await response.json();
+			details = errBody.error || errBody.message || errBody.title || '';
+			} catch (_) {}
+			console.warn(
+			`User update failed: ${response.status}${details ? ': ' + details : ''}`
+			);
+			return;
+			}
+
+			// 200 OK с пустым телом — просто логируем
+			console.log('Resolution sent:', resolution);
+			} catch (err) {
+			// TypeError от fetch = сетевая ошибка (CORS, сервер недоступен и т.п.)
+			console.warn('User update error:', err);
+			}
+			}
+
+			// Отправляем при загрузке страницы
+			sendUserResolution();
 		</script>
 	</body>
 </html>

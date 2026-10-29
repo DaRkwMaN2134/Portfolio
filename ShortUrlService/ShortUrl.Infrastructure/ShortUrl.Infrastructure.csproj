@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShortUrl.Application\ShortUrl.Application.csproj" />
     <ProjectReference Include="..\ShortUrl.Domain\ShortUrl.Domain.csproj" />
   </ItemGroup>
 

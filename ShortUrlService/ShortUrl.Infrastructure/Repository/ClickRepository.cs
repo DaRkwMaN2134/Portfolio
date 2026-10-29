@@ -56,14 +56,14 @@ namespace ShortUrl.Infrastructure.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Click?>> GetClickAsync(long linkid)
+        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid)
         {
-            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).Where(c => c.LinkId == linkid).ToListAsync();
-            if (click != null)
-            {
-                return click;
-            }
-            return null;
+            var clickCount = await _dbContext.clicks.Where(l => l.LinkId == linkid).CountAsync();
+            var lastClicks = await _dbContext.clicks.Where(l => l.LinkId == linkid).OrderByDescending(l => l.CreatedAt).Take(5).ToListAsync();
+            var uniqueIpCount = await _dbContext.clicks.Where(l => l.LinkId == linkid).Select(i => i.IpAddress).Distinct().CountAsync();
+
+            return (clickCount, lastClicks, uniqueIpCount);
+
         }
     }
 }

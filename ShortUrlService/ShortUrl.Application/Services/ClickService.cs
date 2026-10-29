@@ -31,18 +31,29 @@ namespace ShortUrl.Application.Services
                 await _clickRepository.UpdateLastClickAsync(click);
             }
         }
-        public async Task<List<Click>> ClickAnalitycsAsync(long linkid)
+        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid)
         {
             var clicks = await _clickRepository.GetClickAsync(linkid);
-            if (clicks != null)
+            var analytics = new AnalyticsResponseDTO
             {
-                return clicks;
-            }
-            else
-            {
-                Console.WriteLine("Клики не обнаружены");
-                return null;
-            }
+                TotalClicks = clicks.clickount,
+                LastClicks = clicks.lastclick.Select(c => new ClickDTO
+                {
+                    Id = c.Id,
+                    CreatedAt = c.CreatedAt,
+                    IpAddress = c.IpAddress,
+                    Device = c.Device,
+                    OS = c.OS,
+                    Resolution = c.Resolution,
+                    Referer = c.Referer,
+                    Language = c.Language,
+                    Browser = c.Browser,
+                    TimeZone = c.TimeZone,
+                    DeviceLocalTime = c.DeviceLocalTime,
+                }).ToList(),
+                    UniqueIps = clicks.uniqueip
+            };
+            return analytics;
         }
     }
 }

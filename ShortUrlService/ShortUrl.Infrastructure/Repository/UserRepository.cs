@@ -36,7 +36,14 @@ namespace ShortUrl.Infrastructure.Repository
             {
                 Console.WriteLine("юзер уже создан");
             }
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch(DbUpdateException ex)
+            {
+                Console.WriteLine($"[ОШИБКА МЕТОДА CreateUserAsync] {ex.ToString()}");
+            }
         }
 
         public async Task<User?> GetUserAsync(string? deviceid, string? userid)
