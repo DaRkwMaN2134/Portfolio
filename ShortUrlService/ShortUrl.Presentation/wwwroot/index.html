@@ -1,314 +1,340 @@
 <!DOCTYPE html>
 <html lang="ru">
-	<head>
-		<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Сокращение ссылок</title>
-				<style>
-					* {
-					box-sizing: border-box;
-					margin: 0;
-					padding: 0;
-					}
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+		<title>Сокращение ссылок</title>
+		<style>
 
-					body {
-					min-height: 100vh;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					padding: 24px;
-					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-					background-attachment: fixed;
-					}
+			* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			}
 
-					.card {
-					width: 100%;
-					max-width: 540px;
-					background: #ffffff;
-					border-radius: 24px;
-					padding: 40px 36px 32px;
-					box-shadow: 0 24px 60px rgba(17, 12, 46, 0.25);
-					}
+			body {
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 24px;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background-attachment: fixed;
+			}
 
-					.card h1 {
-					font-size: 26px;
-					font-weight: 700;
-					color: #1a1a2e;
-					text-align: center;
-					letter-spacing: -0.5px;
-					}
+			.card {
+			width: 100%;
+			max-width: 540px;
+			background: #ffffff;
+			border-radius: 24px;
+			padding: 40px 36px 32px;
+			box-shadow: 0 24px 60px rgba(17, 12, 46, 0.25);
+			}
 
-					.subtitle {
-					text-align: center;
-					color: #8a8fa3;
-					font-size: 14px;
-					margin-top: 8px;
-					margin-bottom: 28px;
-					}
+			.card h1 {
+			font-size: 26px;
+			font-weight: 700;
+			color: #1a1a2e;
+			text-align: center;
+			letter-spacing: -0.5px;
+			}
 
-					/* ---------- Поле ввода ---------- */
-					.input-wrap {
-					position: relative;
-					}
+			.subtitle {
+			text-align: center;
+			color: #8a8fa3;
+			font-size: 14px;
+			margin-top: 8px;
+			margin-bottom: 28px;
+			}
 
-					.input-wrap input {
-					width: 100%;
-					padding: 16px 18px;
-					font-size: 15px;
-					color: #1a1a2e;
-					background: #f7f8fc;
-					border: 2px solid #e6e8f0;
-					border-radius: 14px;
-					outline: none;
-					transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-					}
+			/* ---------- Поле ввода ---------- */
+			.input-wrap {
+			position: relative;
+			}
 
-					.input-wrap input::placeholder {
-					color: #a8adc0;
-					}
+			.input-wrap input {
+			width: 100%;
+			padding: 16px 18px;
+			font-size: 15px;
+			color: #1a1a2e;
+			background: #f7f8fc;
+			border: 2px solid #e6e8f0;
+			border-radius: 14px;
+			outline: none;
+			transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+			}
 
-					.input-wrap input:focus {
-					background: #ffffff;
-					border-color: #667eea;
-					box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-					}
+			.input-wrap input::placeholder {
+			color: #a8adc0;
+			}
 
-					.input-wrap.error input {
-					border-color: #ef4444;
-					box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
-					animation: shake 0.35s ease;
-					}
+			.input-wrap input:focus {
+			background: #ffffff;
+			border-color: #667eea;
+			box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+			}
 
-					@keyframes shake {
-					0%, 100% { transform: translateX(0); }
-					25%      { transform: translateX(-6px); }
-					75%      { transform: translateX(6px); }
-					}
+			.input-wrap.error input {
+			border-color: #ef4444;
+			box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+			animation: shake 0.35s ease;
+			}
 
-					/* ---------- Чекбокс ---------- */
-					.checkbox {
-					display: flex;
-					align-items: center;
-					gap: 10px;
-					margin: 20px 0 24px;
-					cursor: pointer;
-					user-select: none;
-					font-size: 14px;
-					color: #545a70;
-					}
+			@keyframes shake {
+			0%, 100% { transform: translateX(0); }
+			25%      { transform: translateX(-6px); }
+			75%      { transform: translateX(6px); }
+			}
 
-					.checkbox input {
-					position: absolute;
-					opacity: 0;
-					pointer-events: none;
-					}
+			/* ---------- Чекбокс ---------- */
+			.checkbox {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin: 20px 0 24px;
+			cursor: pointer;
+			user-select: none;
+			font-size: 14px;
+			color: #545a70;
+			}
 
-					.checkbox .box {
-					flex: 0 0 auto;
-					width: 20px;
-					height: 20px;
-					border: 2px solid #d3d7e3;
-					border-radius: 6px;
-					background: #ffffff;
-					position: relative;
-					transition: background 0.2s, border-color 0.2s;
-					}
+			.checkbox input {
+			position: absolute;
+			opacity: 0;
+			pointer-events: none;
+			}
 
-					.checkbox .box::after {
-					content: "";
-					position: absolute;
-					left: 6px;
-					top: 2px;
-					width: 5px;
-					height: 10px;
-					border: solid #ffffff;
-					border-width: 0 2.5px 2.5px 0;
-					transform: rotate(45deg) scale(0);
-					transition: transform 0.15s ease;
-					}
+			.checkbox .box {
+			flex: 0 0 auto;
+			width: 20px;
+			height: 20px;
+			border: 2px solid #d3d7e3;
+			border-radius: 6px;
+			background: #ffffff;
+			position: relative;
+			transition: background 0.2s, border-color 0.2s;
+			}
 
-					.checkbox input:checked + .box {
-					background: #667eea;
-					border-color: #667eea;
-					}
+			.checkbox .box::after {
+			content: "";
+			position: absolute;
+			left: 6px;
+			top: 2px;
+			width: 5px;
+			height: 10px;
+			border: solid #ffffff;
+			border-width: 0 2.5px 2.5px 0;
+			transform: rotate(45deg) scale(0);
+			transition: transform 0.15s ease;
+			}
 
-					.checkbox input:checked + .box::after {
-					transform: rotate(45deg) scale(1);
-					}
+			.checkbox input:checked + .box {
+			background: #667eea;
+			border-color: #667eea;
+			}
 
-					.checkbox:hover .box {
-					border-color: #667eea;
-					}
+			.checkbox input:checked + .box::after {
+			transform: rotate(45deg) scale(1);
+			}
 
-					/* ---------- Кнопка ---------- */
-					.btn-shorten {
-					width: 100%;
-					padding: 16px;
-					font-size: 16px;
-					font-weight: 600;
-					color: #ffffff;
-					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-					border: none;
-					border-radius: 14px;
-					cursor: pointer;
-					letter-spacing: 0.2px;
-					transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-					box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
-					}
+			.checkbox:hover .box {
+			border-color: #667eea;
+			}
 
-					.btn-shorten:hover:not(:disabled) {
-					transform: translateY(-2px);
-					box-shadow: 0 12px 26px rgba(102, 126, 234, 0.45);
-					}
+			/* ---------- Кнопка ---------- */
+			.btn-shorten {
+			width: 100%;
+			padding: 16px;
+			font-size: 16px;
+			font-weight: 600;
+			color: #ffffff;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none;
+			border-radius: 14px;
+			cursor: pointer;
+			letter-spacing: 0.2px;
+			transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+			box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+			}
 
-					.btn-shorten:active:not(:disabled) {
-					transform: translateY(0);
-					box-shadow: 0 6px 14px rgba(102, 126, 234, 0.35);
-					}
+			.btn-shorten:hover:not(:disabled) {
+			transform: translateY(-2px);
+			box-shadow: 0 12px 26px rgba(102, 126, 234, 0.45);
+			}
 
-					.btn-shorten:disabled {
-					opacity: 0.7;
-					cursor: progress;
-					transform: none;
-					}
+			.btn-shorten:active:not(:disabled) {
+			transform: translateY(0);
+			box-shadow: 0 6px 14px rgba(102, 126, 234, 0.35);
+			}
 
-					/* ---------- Сообщение об ошибке ---------- */
-					.error-msg {
-					margin-top: 14px;
-					font-size: 13px;
-					color: #ef4444;
-					text-align: center;
-					display: none;
-					}
+			.btn-shorten:disabled {
+			opacity: 0.7;
+			cursor: progress;
+			transform: none;
+			}
 
-					.error-msg.visible {
-					display: block;
-					}
+			/* ---------- Сообщение об ошибке ---------- */
+			.error-msg {
+			margin-top: 14px;
+			font-size: 13px;
+			color: #ef4444;
+			text-align: center;
+			display: none;
+			}
 
-					/* ---------- Панель сгенерированных ссылок ---------- */
-					.links-panel {
-					max-height: 0;
-					overflow: hidden;
-					opacity: 0;
-					transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
-					}
+			.error-msg.visible {
+			display: block;
+			}
 
-					.links-panel.open {
-					max-height: 420px;
-					opacity: 1;
-					margin-top: 24px;
-					overflow-y: auto;
-					}
+			/* ---------- Панель сгенерированных ссылок ---------- */
+			.links-panel {
+			max-height: 0;
+			overflow: hidden;
+			opacity: 0;
+			transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+			}
 
-					.links-panel::-webkit-scrollbar {
-					width: 6px;
-					}
+			.links-panel.open {
+			max-height: 420px;
+			opacity: 1;
+			margin-top: 24px;
+			overflow-y: auto;
+			}
 
-					.links-panel::-webkit-scrollbar-thumb {
-					background: #dfe2ee;
-					border-radius: 3px;
-					}
+			.links-panel::-webkit-scrollbar {
+			width: 6px;
+			}
 
-					.links-title {
-					font-size: 12px;
-					font-weight: 700;
-					text-transform: uppercase;
-					letter-spacing: 1px;
-					color: #a8adc0;
-					margin-bottom: 12px;
-					}
+			.links-panel::-webkit-scrollbar-thumb {
+			background: #dfe2ee;
+			border-radius: 3px;
+			}
 
-					.links-list {
-					list-style: none;
-					display: flex;
-					flex-direction: column;
-					gap: 10px;
-					}
+			.links-title {
+			font-size: 12px;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			color: #a8adc0;
+			margin-bottom: 12px;
+			}
 
-					.link-item {
-					background: #f7f8fc;
-					border: 1px solid #eceef6;
-					border-radius: 14px;
-					padding: 12px 14px;
-					animation: fadeIn 0.3s ease;
-					}
+			.links-list {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			}
 
-					@keyframes fadeIn {
-					from { opacity: 0; transform: translateY(-6px); }
-					to   { opacity: 1; transform: translateY(0); }
-					}
+			.link-item {
+			background: #f7f8fc;
+			border: 1px solid #eceef6;
+			border-radius: 14px;
+			padding: 12px 14px;
+			animation: fadeIn 0.3s ease;
+			}
 
-					.link-original {
-					font-size: 12px;
-					color: #9aa0b5;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					margin-bottom: 6px;
-					}
+			@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(-6px); }
+			to   { opacity: 1; transform: translateY(0); }
+			}
 
-					.link-row {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					gap: 10px;
-					}
+			.link-original {
+			font-size: 12px;
+			color: #9aa0b5;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin-bottom: 6px;
+			}
 
-					.link-short {
-					font-size: 15px;
-					font-weight: 600;
-					color: #667eea;
-					text-decoration: none;
-					word-break: break-all;
-					}
+			.link-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			}
 
-					.link-short:hover {
-					text-decoration: underline;
-					}
+			.link-short {
+			font-size: 15px;
+			font-weight: 600;
+			color: #667eea;
+			text-decoration: none;
+			word-break: break-all;
+			}
 
-					.btn-copy {
-					flex: 0 0 auto;
-					padding: 6px 12px;
-					font-size: 12px;
-					font-weight: 600;
-					color: #667eea;
-					background: #ffffff;
-					border: 1.5px solid #dfe3f5;
-					border-radius: 9px;
-					cursor: pointer;
-					transition: background 0.2s, color 0.2s, border-color 0.2s;
-					}
+			.link-short:hover {
+			text-decoration: underline;
+			}
 
-					.btn-copy:hover {
-					background: #667eea;
-					border-color: #667eea;
-					color: #ffffff;
-					}
+			.btn-copy {
+			flex: 0 0 auto;
+			padding: 6px 12px;
+			font-size: 12px;
+			font-weight: 600;
+			color: #667eea;
+			background: #ffffff;
+			border: 1.5px solid #dfe3f5;
+			border-radius: 9px;
+			cursor: pointer;
+			transition: background 0.2s, color 0.2s, border-color 0.2s;
+			}
 
-					.btn-copy.copied {
-					background: #22c55e;
-					border-color: #22c55e;
-					color: #ffffff;
-					}
+			.btn-copy:hover {
+			background: #667eea;
+			border-color: #667eea;
+			color: #ffffff;
+			}
 
-					.empty {
-					text-align: center;
-					font-size: 13px;
-					color: #b3b8c9;
-					padding: 16px 0 4px;
-					}
+			.btn-copy.copied {
+			background: #22c55e;
+			border-color: #22c55e;
+			color: #ffffff;
+			}
 
-					@media (max-width: 480px) {
-					.card {
-					padding: 30px 22px 26px;
-					border-radius: 20px;
-					}
-					.card h1 {
-					font-size: 22px;
-					}
-					}
-				</style>
+			.empty {
+			text-align: center;
+			font-size: 13px;
+			color: #b3b8c9;
+			padding: 16px 0 4px;
+			}
+
+			/* ---------- Блок аналитики ---------- */
+			.analytics-panel {
+			margin-top: 10px;
+			padding: 10px;
+			background: #ffffff;
+			border-radius: 8px;
+			border: 1px solid #e6e8f0;
+			font-size: 13px;
+			display: none; /* Скрыто по умолчанию */
+			}
+			.analytics-panel.open {
+			display: block;
+			}
+			.analytics-title {
+			font-weight: bold;
+			margin-bottom: 5px;
+			color: #1a1a2e;
+			}
+			.analytics-item {
+			color: #545a70;
+			margin-bottom: 3px;
+			}
+
+
+
+			@media (max-width: 480px) {
+			.card {
+			padding: 30px 22px 26px;
+			border-radius: 20px;
+			}
+			.card h1 {
+			font-size: 22px;
+			}
+			}
+		</style>
 			</head>
 	<body>
 
@@ -322,12 +348,11 @@
 				  id="urlInput"
 				  placeholder="https://example.com/очень/длинная/ссылка"
 				  autocomplete="off"
-				  spellcheck="false"
-      >
+				  spellcheck="false"></input>
 				</div>
 
 			<label class="checkbox">
-				<input type="checkbox" id="toggleLinks">
+				<input type="checkbox" id="toggleLinks"></input>
 					<span class="box"></span>
 					<span>Показать сгенерированные ссылки</span>
 				</label>
@@ -344,6 +369,13 @@
 		</div>
 
 		<script>
+			if (!document.cookie.includes('DeviceId=')) {
+			const newDeviceId = crypto.randomUUID();
+			// max-age=31536000 делает куку постоянной (на год)
+			document.cookie = `DeviceId=${newDeviceId}; path=/; max-age=31536000; SameSite=Lax`;
+			console.log('Сгенерирован новый DeviceId:', newDeviceId);
+			}
+
 			/* ============================================================
 			★ НАСТРОЙКИ ПОД СВОЙ БЭКЕНД — правь только эти три места
 			============================================================ */
@@ -450,6 +482,7 @@
 			}
 
 			/* --- Отрисовка одной ссылки --- */
+			/* --- Отрисовка одной ссылки --- */
 			function renderLink(item) {
 			const li = document.createElement('li');
 			li.className = 'link-item';
@@ -466,14 +499,19 @@
 			short.className = 'link-short';
 			short.href = item.short;
 			short.target = '_blank';
-			short.rel = 'noopener noreferrer';
+			short.rel = 'noopener';
 			short.textContent = item.short;
 
+			// Контейнер для кнопок
+			const btnContainer = document.createElement('div');
+			btnContainer.style.display = 'flex';
+			btnContainer.style.gap = '5px';
+
+			// Кнопка "Копировать"
 			const copyBtn = document.createElement('button');
 			copyBtn.className = 'btn-copy';
 			copyBtn.type = 'button';
 			copyBtn.textContent = 'Копировать';
-
 			copyBtn.addEventListener('click', () => {
 			copyToClipboard(item.short);
 			copyBtn.textContent = 'Скопировано';
@@ -484,8 +522,69 @@
 			}, 1400);
 			});
 
-			row.append(short, copyBtn);
-			li.append(original, row);
+			// Кнопка "Статистика"
+			const statsBtn = document.createElement('button');
+			statsBtn.className = 'btn-copy'; // Используем тот же стиль
+			statsBtn.type = 'button';
+			statsBtn.textContent = 'Статистика';
+
+			// Скрытый блок для вывода аналитики
+			const analyticsPanel = document.createElement('div');
+			analyticsPanel.className = 'analytics-panel';
+
+			statsBtn.addEventListener('click', async () => {
+			// Если панель уже открыта - просто скрываем её
+			if (analyticsPanel.classList.contains('open')) {
+			analyticsPanel.classList.remove('open');
+			return;
+			}
+
+			statsBtn.textContent = 'Загрузка...';
+			analyticsPanel.classList.add('open');
+			analyticsPanel.innerHTML = '<div class="analytics-item">Загрузка данных...</div>';
+
+			// Вытаскиваем короткий код из URL (например, из http://localhost/s/abc123 берем abc123)
+			const shortCode = item.short.split('/').pop();
+
+			try {
+			const response = await fetch(`/shortcode/analytics?shortcode=${shortCode}`);
+			if (!response.ok) throw new Error('Ошибка при получении данных');
+
+			const data = await response.json();
+
+			// Отрисовываем данные
+			let html = `
+			<div class="analytics-title">Аналитика: ${shortCode}</div>
+			<div class="analytics-item">
+				Всего кликов: <b>${data.totalClicks}</b>
+			</div>
+			<div class="analytics-item">
+				Уникальных IP: <b>${data.uniqueIps}</b>
+			</div>
+			`;
+
+			if (data.lastClicks && data.lastClicks.length > 0) {
+			html += `<div class="analytics-item" style="margin-top: 5px;">
+				<b>Последние переходы:</b>
+			</div>`;
+			data.lastClicks.forEach(click => {
+			// Форматируем дату красиво
+			const date = new Date(click.createdAt).toLocaleString('ru-RU');
+			html += `<div class="analytics-item" style="font-size: 11px; color: #8a8fa3;">${date} | IP: ${click.ipAddress || 'Неизвестен'}</div>`;
+			});
+			}
+
+			analyticsPanel.innerHTML = html;
+			} catch (error) {
+			analyticsPanel.innerHTML = `<div class="analytics-item" style="color: red;">Не удалось загрузить статистику</div>`;
+			} finally {
+			statsBtn.textContent = 'Статистика';
+			}
+			});
+
+			btnContainer.append(short, copyBtn, statsBtn);
+			row.append(btnContainer);
+			li.append(original, row, analyticsPanel); // Добавляем панель в li
 			return li;
 			}
 
@@ -635,6 +734,55 @@
 
 			// Отправляем при загрузке страницы
 			sendUserResolution();
+
+			/* ============================================================
+			★ ЗАГРУЗКА БУФЕРА ССЫЛОК ПРИ СТАРТЕ
+			============================================================ */
+			async function loadUserBuffer() {
+			try {
+			// Делаем запрос к твоему эндпоинту буфера
+			// Если эндпоинт требует query-параметр (например, ?deviceid=...),
+			// то JS-код нужно будет немного изменить.
+			// Если ты берешь DeviceId из Middleware (куки), то просто '/b/buffer'
+			const response = await fetch('/b/buffer', {
+			method: 'GET',
+			credentials: 'include' // Важно, чтобы улетела кука с DeviceId
+			});
+
+			if (!response.ok) throw new Error('Ошибка загрузки буфера');
+
+			const linksFromDb = await response.json();
+
+			if (linksFromDb && linksFromDb.length > 0) {
+			emptyState.style.display = 'none'; // Скрываем надпись "Пока ничего не сгенерировано"
+
+			// Если у тебя ссылки в БД лежат в порядке "сначала новые",
+			// то используем reverse(), чтобы они добавлялись правильно
+			linksFromDb.reverse().forEach(dbLink => {
+			const item = {
+			original: dbLink.longUrl,
+			short: `http://localhost:5000/s/${dbLink.shortCode}`
+			};
+
+			// Добавляем в наш локальный массив links
+			links.unshift(item);
+
+			// Отрисовываем на странице
+			list.prepend(renderLink(item));
+			});
+
+			// Открываем панель, чтобы пользователь сразу увидел свои ссылки
+			toggle.checked = true;
+			panel.classList.add('open');
+			}
+			} catch (err) {
+			console.error('Ошибка при загрузке буфера:', err);
+			}
+			}
+
+			// Вызываем функцию при загрузке страницы
+			loadUserBuffer();
+
 		</script>
 	</body>
 </html>

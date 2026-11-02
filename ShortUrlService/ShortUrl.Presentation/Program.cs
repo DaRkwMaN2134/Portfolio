@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -83,38 +84,13 @@ app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice,
             DeviceLocalTime = null // JS
         };
         await clickservice.CollectionInfoForClickAsync(currentLink.Id, clickinfo);
-        // ниже html + js нейрокод, решение через отправку чистого html для избежания дублирования в бд из-за повторного запроса
-        var safeShortcode = JsonSerializer.Serialize(shortcode);
-        var safeLongUrl = JsonSerializer.Serialize(currentLink.LongUrl);
-        return Results.Content($@"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>Перенаправление...</title>
-    <style>
-        body {{ font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f5f5f5; }}
-        .loader {{ border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }}
-        @keyframes spin {{ 0% {{ transform: rotate(0deg); }} 100% {{ transform: rotate(360deg); }} }}
-    </style>
-</head>
-<body>
-    <div class='loader'></div>
-    <script>
-        const data = {{
-            shortCode: {safeShortcode},
-            resolution: window.screen.width + 'x' + window.screen.height,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            deviceLocalTime: new Date().toISOString()
-        }};
 
-        const blob = new Blob([JSON.stringify(data)], {{ type: 'application/json' }});
-        navigator.sendBeacon('/api/click/update', blob);
+        string encodedLongUrl = WebUtility.UrlEncode(currentLink.LongUrl);
+        string encodedShortcode = WebUtility.UrlEncode(shortcode);
 
-        window.location.replace({safeLongUrl});
-    </script>
-</body>
-</html>", "text/html");
+        string redirectUrl = $"/redirect.html?url={encodedLongUrl}&code={encodedShortcode}";
+        return Results.Redirect(redirectUrl);
+
     }
 });
 
@@ -140,8 +116,9 @@ app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUse
 });
 
 
-app.MapGet("/b/buffer", async (string deviceid, LinkService linkservice, IUserRepository userrep) =>
+app.MapGet("/b/buffer", async (LinkService linkservice, IUserRepository userrep, HttpContext context) =>
 {
+    var deviceid = context.Items["DeviceId"].ToString();
     var user = await userrep.GetUserAsync(deviceid, null); //сделать проверку на null
     var links = await userrep.GetUserBufferAsync(user);
     var result = links.Select(l => new

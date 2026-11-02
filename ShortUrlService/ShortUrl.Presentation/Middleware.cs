@@ -17,17 +17,9 @@ namespace ShortUrl.Presentation
         public async Task InvokeAsync(HttpContext context, IUserRepository userrep)
         {
             string? cookie = context.Request.Cookies["DeviceId"];
-            if (cookie == null)
+            if (cookie != null)
             {
-                var value = Guid.NewGuid().ToString(); 
-                await userrep.CreateUserAsync(value);
-                context.Response.Cookies.Append("DeviceId", value); 
-                context.Items.Add("DeviceId", value);
-                await _next(context);
-            }
-            else
-            {
-                if (Guid.TryParse(cookie, out var deviceid) == true)
+                if (Guid.TryParse(cookie, out _) == true)
                 {
                     var user = await userrep.GetUserAsync(cookie, null);
                     if (user == null)
@@ -42,6 +34,10 @@ namespace ShortUrl.Presentation
                     context.Response.StatusCode = 400;
                     Console.WriteLine("[DEVICEID БЫЛ ПОДМЕНЕН]");
                 }
+            }
+            else
+            {
+                context.Response.StatusCode = 400;
             }
         }
     }
