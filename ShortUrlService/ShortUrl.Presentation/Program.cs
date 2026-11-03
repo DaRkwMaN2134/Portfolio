@@ -1,3 +1,5 @@
+using DeviceDetectorNET;
+using DeviceDetectorNET;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,9 @@ using ShortUrl.Infrastructure;
 using ShortUrl.Infrastructure.Repository;
 using ShortUrl.Presentation;
 using System.Net;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using UAParser;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,17 +73,28 @@ app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice,
     else
     {
         Console.WriteLine($"[Запрос] TraceId: {context.TraceIdentifier}");
+        var parser = Parser.GetDefault();
+        var headers = context.Request.Headers.ToDictionary(
+            a => a.Key,
+            a => a.Value.ToArray().FirstOrDefault());
 
-        Click clickinfo = new Click //потом следует доработка методов поиска аналитики
+        var clientHints = ClientHints.Factory(headers);
+
+
+        var uainfo = new DeviceDetector(context.Request.Headers.UserAgent.ToString(), clientHints);
+        uainfo.Parse();
+
+
+        Click clickinfo = new Click
         {
             CreatedAt = DateTime.UtcNow,
             IpAddress = context.Connection.RemoteIpAddress?.ToString(),
-            Device = context.Request.Headers.UserAgent.ToString(), // надо распарсить
-            OS = context.Request.Headers.UserAgent.ToString(), // надо распарсить
+            Device = uainfo.GetDeviceName(),
+            OS = uainfo.GetOs().Match.Family.ToString() + " " + uainfo.GetOs().Match.Version,
             Resolution = null, // JS
             Referer = context.Request.Headers.Referer,
             Language = context.Request.Headers.AcceptLanguage.ToString(),
-            Browser = context.Request.Headers.UserAgent.ToString(), // надо распарсить  
+            Browser = uainfo.GetBrowserClient().Match.Family + " " + uainfo.GetBrowserClient().Match.Version,
             TimeZone = null, // JS
             DeviceLocalTime = null // JS
         };
@@ -96,6 +111,7 @@ app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice,
 
 app.MapPost("/shorten", async (UrlRequest request, LinkService linkservice, IUserRepository userrep, HttpContext context) =>
 {
+
     var deviceid = context.Items["DeviceId"].ToString();
     Console.WriteLine($"[ТУТ МЕГА DEVICEID]  {deviceid}");
     var user = await userrep.GetUserAsync(deviceid, null);
@@ -169,10 +185,16 @@ app.MapPost("/api/user/update", async (UserUpdateRequest data, IUserRepository u
     if (currentUser != null)
     {
         Console.WriteLine($"[ТУТ МЕГА ЮЗЕР]  {currentUser.DeviceId}");
+        var headers = context.Request.Headers.ToDictionary(
+            a => a.Key,
+            a => a.Value.ToArray().FirstOrDefault());
+        var clientHints = ClientHints.Factory(headers);
+        var uainfo = new DeviceDetector(context.Request.Headers.UserAgent.ToString(), clientHints);
+        uainfo.Parse();
 
         currentUser.Resolution = data.Resolution;
-        currentUser.OS = context.Request.Headers.UserAgent.ToString();
-        currentUser.Device = context.Request.Headers.UserAgent.ToString();
+        currentUser.OS = uainfo.GetOs().Match.Family.ToString() + " " + uainfo.GetOs().Match.Version; ;
+        currentUser.Device = uainfo.GetDeviceName();
         currentUser.IpAddress = context.Connection.RemoteIpAddress?.ToString();
         await userep.UpdateUserAsync(currentUser);
         return Results.Ok();

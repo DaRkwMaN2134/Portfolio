@@ -16,6 +16,9 @@ namespace ShortUrl.Presentation
 
         public async Task InvokeAsync(HttpContext context, IUserRepository userrep)
         {
+            context.Response.Headers["Accept-CH"] = "Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List";
+            context.Response.Headers["Critical-CH"] = "Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List";
+
             string? cookie = context.Request.Cookies["DeviceId"];
             if (cookie != null)
             {
