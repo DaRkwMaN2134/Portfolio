@@ -1,7 +1,7 @@
 using DeviceDetectorNET;
-using DeviceDetectorNET;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ShortUrl.Application.DTO;
@@ -26,6 +26,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ));
 
 
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<IClickRepository, ClickRepository>();
@@ -63,9 +64,10 @@ app.UseStaticFiles();
 
 app.UseMiddleware<Middleware>();
 
-app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice, UserService userservice, HttpContext context, ILinkRepository linkrep, IUserRepository userep) =>
+app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice, UserService userservice, HttpContext context, 
+    ILinkRepository linkrep, IUserRepository userep, IMemoryCache cache) =>
 {
-    var currentLink = await linkrep.GetLongUrlAsync(shortcode);  // потом создать систему создания deviceid каждому юзеру
+    var currentLink = await linkrep.GetLongUrlAsync(shortcode);
     if (currentLink == null)
     {
         return Results.NotFound();
@@ -73,39 +75,52 @@ app.MapGet("/s/{shortcode}", async (string shortcode, ClickService clickservice,
     else
     {
         Console.WriteLine($"[Запрос] TraceId: {context.TraceIdentifier}");
-        var parser = Parser.GetDefault();
-        var headers = context.Request.Headers.ToDictionary(
-            a => a.Key,
-            a => a.Value.ToArray().FirstOrDefault());
+        var userAgent = context.Request.Headers.UserAgent.ToString();
 
-        var clientHints = ClientHints.Factory(headers);
+        if (cache.TryGetValue(userAgent, out DeviceDetector result) == false)
+        {
+            var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
+            .SetSlidingExpiration(TimeSpan.FromMinutes(2))
+            .SetPriority(CacheItemPriority.High);
+
+            var headers = context.Request.Headers.ToDictionary(
+                a => a.Key,
+                a => a.Value.ToArray().FirstOrDefault());
 
 
-        var uainfo = new DeviceDetector(context.Request.Headers.UserAgent.ToString(), clientHints);
-        uainfo.Parse();
-
+            var clientHints = ClientHints.Factory(headers);
+            var uainfo = new DeviceDetector(userAgent, clientHints);
+            uainfo.Parse();
+            cache.Set(userAgent, uainfo, cacheOptions);
+            result = uainfo;
+        }
+        if(result == null)
+        {
+            return Results.NotFound();
+        }
 
         Click clickinfo = new Click
         {
             CreatedAt = DateTime.UtcNow,
             IpAddress = context.Connection.RemoteIpAddress?.ToString(),
-            Device = uainfo.GetDeviceName(),
-            OS = uainfo.GetOs().Match.Family.ToString() + " " + uainfo.GetOs().Match.Version,
+            Device = result.GetDeviceName(),
+            OS = result.GetOs().Match.Family.ToString() + " " + result.GetOs().Match.Version,
             Resolution = null, // JS
             Referer = context.Request.Headers.Referer,
             Language = context.Request.Headers.AcceptLanguage.ToString(),
-            Browser = uainfo.GetBrowserClient().Match.Family + " " + uainfo.GetBrowserClient().Match.Version,
+            Browser = result.GetBrowserClient().Match.Family + " " + result.GetBrowserClient().Match.Version,
             TimeZone = null, // JS
             DeviceLocalTime = null // JS
         };
-        await clickservice.CollectionInfoForClickAsync(currentLink.Id, clickinfo);
 
+        await clickservice.CollectionInfoForClickAsync(currentLink.Id, clickinfo);
+        
         string encodedLongUrl = WebUtility.UrlEncode(currentLink.LongUrl);
         string encodedShortcode = WebUtility.UrlEncode(shortcode);
-
+        
         string redirectUrl = $"/redirect.html?url={encodedLongUrl}&code={encodedShortcode}";
-        return Results.Redirect(redirectUrl);
-
+        return Results.Redirect(redirectUrl); 
     }
 });
 
