@@ -15,11 +15,11 @@ namespace ShortUrl.Application.Services
         {
             _linkRepository = linkRepository;
         }
-        public async Task<string> ShortenLinkAsync(string longurl, User creator)
+        public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
         {
             string shortcode = string.Empty;
 
-            var existlink = await _linkRepository.GetUserLinkAsync(longurl, creator.DeviceId);
+            var existlink = await _linkRepository.GetUserLinkAsync(longurl, deviceid);
             if (existlink != null)
             {
                 shortcode = existlink.ShortCode;
@@ -103,6 +103,15 @@ namespace ShortUrl.Application.Services
             }
             string reversed = new string(shorturl.Reverse().ToArray());
             return reversed;
+        }
+
+        public async Task GetBufferAsync(string deviceid)
+        {
+            var links = await _linkRepository.GetUserBufferAsync(deviceid);
+            foreach (var link in links)
+            {
+                Console.WriteLine(link.LongUrl); // потом будет подвязка к API или куда-либо еще
+            }
         }
     }
 }

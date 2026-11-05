@@ -47,15 +47,5 @@ namespace ShortUrl.Application.Services
                 //await UpdateUserInfoAsync(userinfo, deviceId, userId);
             }
         }
-
-        public async Task GetBufferAsync(User creator)
-        {
-            var user = await _userRepository.GetUserAsync("123d", null);
-            var links = await _userRepository.GetUserBufferAsync(user);
-            foreach (var link in links)
-            {
-                Console.WriteLine(link.LongUrl); // потом будет подвязка к API или куда-либо еще
-            }
-        }
     }
 }

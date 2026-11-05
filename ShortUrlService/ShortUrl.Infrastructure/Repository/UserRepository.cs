@@ -16,34 +16,12 @@ namespace ShortUrl.Infrastructure.Repository
         {
             if (string.IsNullOrEmpty(deviceid)) return;
 
-            var user = await _dbContext.users.FirstOrDefaultAsync(d => d.DeviceId == deviceid);
-            if (user == null)
-            {
-                user = new User
-                {
-                    Links = new(),
-                    DeviceId = deviceid, 
-                    UserId = null, 
-                    Username = null, 
-                    OS = null, 
-                    Resolution = null, 
-                    CreatedAt = DateTime.UtcNow , 
-                    IsRegistered = false
-                };
-                _dbContext.users.Add(user);
-            }
-            else
-            {
-                Console.WriteLine("юзер уже создан");
-            }
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch(DbUpdateException ex)
-            {
-                Console.WriteLine($"[ОШИБКА МЕТОДА CreateUserAsync] {ex.ToString()}");
-            }
+            await _dbContext.Database
+                    .ExecuteSqlInterpolatedAsync($@"
+                    INSERT INTO ""users"" (""DeviceId"", ""UserId"", ""IpAddress"", ""Device"", ""OS"", ""Resolution"", ""CreatedAt"", ""IsRegistered"")
+                    VALUES ({deviceid}, {null}, {null}, {null}, {null}, {null}, {DateTime.UtcNow}, {false})
+                    ON CONFLICT (""DeviceId"") DO UPDATE
+                    SET ""DeviceId"" = EXCLUDED.""DeviceId""");
         }
 
         public async Task<User?> GetUserAsync(string? deviceid, string? userid)
@@ -67,14 +45,6 @@ namespace ShortUrl.Infrastructure.Repository
         {
             _dbContext.users.Update(currentUser);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<List<Link>> GetUserBufferAsync(User creator)
-        {
-            var linkBuffer = await _dbContext.users.
-                Where(c => c.DeviceId == creator.DeviceId).
-                SelectMany(l => l.Links).OrderByDescending(l => l.Id).Take(3).ToListAsync();
-            return linkBuffer;
         }
     }
 }

@@ -91,5 +91,12 @@ namespace ShortUrl.Infrastructure.Repository
                 return null;
             }
         }
+
+        public async Task<List<Link>> GetUserBufferAsync(string deviceid)
+        {
+            var linkBuffer = await _dbContext.links.
+                Where(c => c.Creator.DeviceId == deviceid).OrderByDescending(l => l.Id).Take(3).ToListAsync();
+            return linkBuffer;
+        }
     }
 }
