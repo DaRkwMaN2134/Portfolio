@@ -15,11 +15,16 @@ namespace ShortUrl.Presentation
 
         private static async Task<IResult> AnalitycsEndpoint(string shortcode, ClickService clickservice, ILinkRepository linkrep)
         {
+            if (shortcode == null) return Results.NotFound(); // добавил проверку на входные данные
+
             var linkid = await linkrep.GetLongUrlAsync(shortcode);
 
             if (linkid == null) return Results.BadRequest();
 
             var clicks = await clickservice.ClickAnalitycsAsync(linkid.Id);
+
+            if(clicks == null) return Results.NotFound(); // добавил проверку
+
             return Results.Ok(clicks);
         }
     }

@@ -17,8 +17,9 @@ namespace ShortUrl.Application.Services
         }
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
         {
-            string shortcode = string.Empty;
+            if (longurl == null || deviceid == null || creator == null) return string.Empty; // добавил проверку на входные данные
 
+            string shortcode = string.Empty;
             var existlink = await _linkRepository.GetUserLinkAsync(longurl, deviceid);
             if (existlink != null)
             {
@@ -39,7 +40,7 @@ namespace ShortUrl.Application.Services
                     {
                         var salt = Guid.NewGuid().ToString();
                         var shortlinksalt = await CreateShortenLinkAsync(longurl, salt);
-                        var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator);
+                        var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator); // надо будет подумать, что с этим делать
                         if (linksalt == false)
                         {
                             continue;
@@ -55,16 +56,10 @@ namespace ShortUrl.Application.Services
             return shortcode;
         }
 
-        public async Task GetLinkByUserAndUrlAsync(string longurl, string deviceid)
-        {
-            var link = await _linkRepository.GetLongUrlAsync(longurl);
-            var creator = await _linkRepository.GetUserLinkAsync(longurl, deviceid);
-        }
-
-
-
         public async Task<string> RedirectLinkAsync(string shortcode)
         {
+            if(shortcode == null) return string.Empty; // добавил проверку на входные данные
+
             var url = await _linkRepository.GetLongUrlAsync(shortcode);
             if (url == null)
             {
@@ -80,6 +75,8 @@ namespace ShortUrl.Application.Services
 
         public async Task<string> CreateShortenLinkAsync(string longurl, string? salt)
         {
+            if (longurl == null) return string.Empty; // добавил проверку на входные данные
+
             if (salt != null)
             {
                 longurl = longurl + "|" + salt;
@@ -103,15 +100,6 @@ namespace ShortUrl.Application.Services
             }
             string reversed = new string(shorturl.Reverse().ToArray());
             return reversed;
-        }
-
-        public async Task GetBufferAsync(string deviceid)
-        {
-            var links = await _linkRepository.GetUserBufferAsync(deviceid);
-            foreach (var link in links)
-            {
-                Console.WriteLine(link.LongUrl); // потом будет подвязка к API или куда-либо еще
-            }
         }
     }
 }

@@ -16,11 +16,14 @@ namespace ShortUrl.Application.Services
         }
         public async Task CollectionInfoForClickAsync(long linkid, Click clickinfo)
         {
+            if (clickinfo == null) return; // также нужна проверка на валидность linkid(хотя в репозитории она вроде есть, будто бы лучше сделать так, чтобы оно вообще до репозитория не дошло)
+
             await _clickRepository.CreateClickAsync(linkid, clickinfo);
         }
 
         public async Task UpdateExternalInfoForClick(long linkid, string resolution, string timezone, DateTime? devicelocaltime)
         {
+            //нужна проверка на валидность linkid и других параметров
             var click = await _clickRepository.GetLastClickAsync(linkid);
             if(click != null)
             {
@@ -31,8 +34,9 @@ namespace ShortUrl.Application.Services
                 await _clickRepository.UpdateLastClickAsync(click);
             }
         }
-        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid)
+        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid) // очень странный код у этого метода
         {
+            // проверка на валидность linkid
             var clicks = await _clickRepository.GetClickAsync(linkid);
             var analytics = new AnalyticsResponseDTO
             {
@@ -53,7 +57,7 @@ namespace ShortUrl.Application.Services
                 }).ToList(),
                     UniqueIps = clicks.uniqueip
             };
-            return analytics;
+            return analytics; 
         }
     }
 }

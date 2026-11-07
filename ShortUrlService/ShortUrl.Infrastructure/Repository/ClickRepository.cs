@@ -17,6 +17,7 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task CreateClickAsync(long linkid, Click clickinfo)
         {
+            if (clickinfo == null) return; // надо понять посылают ли нам валидный linkid
             var click = new Click
             {
                 LinkId = linkid,
@@ -37,7 +38,7 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task<Click?> GetLastClickAsync(long linkid)
         {
-            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).FirstOrDefaultAsync(l => l.LinkId == linkid);
+            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).FirstOrDefaultAsync(l => l.LinkId == linkid); 
 
             if (click != null)
             {
@@ -52,11 +53,12 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task UpdateLastClickAsync(Click currentclick)
         {
+            if (currentclick == null) return;
             _dbContext.clicks.Update(currentclick);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid)
+        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid) // непонятно для чего этот метод, но он явно для аналитики нужен был, пока оставим
         {
             var clickCount = await _dbContext.clicks.Where(l => l.LinkId == linkid).CountAsync();
             var lastClicks = await _dbContext.clicks.Where(l => l.LinkId == linkid).OrderByDescending(l => l.CreatedAt).Take(5).ToListAsync();

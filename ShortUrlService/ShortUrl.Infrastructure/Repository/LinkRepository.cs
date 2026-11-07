@@ -17,13 +17,13 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task<bool> CreateLinkAsync(string longurl, string shortcode, User creator)
         {
-            if (string.IsNullOrEmpty(shortcode)) return false;
+            if (string.IsNullOrEmpty(shortcode) || string.IsNullOrEmpty(longurl) || creator == null) return false; // добавил проверку на входные данные
 
-            var link = await _dbContext.links.FirstOrDefaultAsync(l => l.ShortCode == shortcode);
+            var link = await _dbContext.links.FirstOrDefaultAsync(l => l.ShortCode == shortcode); // этот метод нужно переписать, потому что возвращение true/false небезопасно
 
             if(link == null)
             {
-                link = new Link
+                link = new Link 
                 {
                     Creator = creator,
                     LongUrl = longurl,
@@ -77,8 +77,7 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task<Link?> GetUserLinkAsync(string url, string deviceid)
         {
-            if (string.IsNullOrEmpty(url)) return null;
-            if (string.IsNullOrEmpty(deviceid)) return null;
+            if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(deviceid)) return null;
 
             var link = await _dbContext.links
                 .FirstOrDefaultAsync(c => c.Creator.DeviceId == deviceid && c.LongUrl == url);
@@ -94,6 +93,7 @@ namespace ShortUrl.Infrastructure.Repository
 
         public async Task<List<Link>> GetUserBufferAsync(string deviceid)
         {
+            if (string.IsNullOrEmpty(deviceid)) return null;
             var linkBuffer = await _dbContext.links.
                 Where(c => c.Creator.DeviceId == deviceid).OrderByDescending(l => l.Id).Take(3).ToListAsync();
             return linkBuffer;

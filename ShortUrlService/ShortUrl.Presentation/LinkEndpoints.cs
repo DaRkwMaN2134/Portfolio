@@ -44,7 +44,7 @@ namespace ShortUrl.Presentation
 
             Console.WriteLine($"[ТУТ МЕГА DEVICEID]  {deviceid}");
 
-            var user = await userrep.GetUserAsync(deviceid, null);
+            var user = await userrep.GetByDeviceIdAsync(deviceid);
             if (user == null)
             {
                 return Results.NotFound();

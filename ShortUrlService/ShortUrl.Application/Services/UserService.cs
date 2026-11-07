@@ -11,41 +11,13 @@ namespace ShortUrl.Application.Services
         {
             _userRepository = userRepository;
         }
-        /* public async Task UpdateUserInfoAsync(User userinfo, string? deviceid, string? userid)
-        {
-            var user = await _userRepository.GetUserAsync(deviceid, userid);
-            if (user == null)
-            {
-                Console.WriteLine("Такого пользователя не существует");
-            }
-            else
-            {
-                if (userinfo.DeviceId != null) user.DeviceId = userinfo.DeviceId;
-                if (userinfo.UserId != null) user.UserId = userinfo.UserId;
-                if (userinfo.Username != null) user.Username = userinfo.Username;
-                if (userinfo.IpAddress != null) user.IpAddress = userinfo.IpAddress;
-                if (userinfo.Device != null) user.Device = userinfo.Device;
-                if (userinfo.OS != null) user.OS = userinfo.OS;
-                if (userinfo.Resolution != null) user.Resolution = userinfo.Resolution;
-                if (userinfo.IsRegistered != false) user.IsRegistered = userinfo.IsRegistered;
 
-                await _userRepository.UpdateUserAsync(user);
-            } 
-        }     этот метод скорей всего избыточен    */
-
-        public async Task LoginUserAsync(User userinfo, string deviceId, string? userId)
+        public async Task<User?> AnonymousUserLoginAsync(string deviceId)
         {
-            var user = await _userRepository.GetUserAsync(deviceId, userId);
-            if(user == null)
-            {
-                await _userRepository.CreateUserAsync(deviceId);
-                Console.WriteLine($"Юзер {deviceId} создан");
-            }
-            else
-            {
-                await _userRepository.UpdateUserAsync(user);
-                //await UpdateUserInfoAsync(userinfo, deviceId, userId);
-            }
+            if (string.IsNullOrEmpty(deviceId)) return null;
+            var user = await _userRepository.CreateUserAsync(deviceId);
+            return user;
+
         }
     }
 }

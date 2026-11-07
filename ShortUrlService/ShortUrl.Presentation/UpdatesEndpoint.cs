@@ -33,7 +33,7 @@ namespace ShortUrl.Presentation
             if (context.Items["DeviceId"] == null) return Results.BadRequest();
 
             var deviceid = context.Items["DeviceId"].ToString();
-            var currentUser = await userep.GetUserAsync(deviceid, null);
+            var currentUser = await userep.GetByDeviceIdAsync(deviceid);
             if (currentUser != null)
             {
                 Console.WriteLine($"[ТУТ МЕГА ЮЗЕР]  {currentUser.DeviceId}");
