@@ -13,19 +13,15 @@ namespace ShortUrl.Presentation
             app.MapGet("/shortcode/analytics", AnalitycsEndpoint);
         }
 
-        private static async Task<IResult> AnalitycsEndpoint(string shortcode, ClickService clickservice, ILinkRepository linkrep)
+        private static async Task<IResult> AnalitycsEndpoint(string shortcode, LinkService linkservice)
         {
             if (shortcode == null) return Results.NotFound(); // добавил проверку на входные данные
 
-            var linkid = await linkrep.GetLongUrlAsync(shortcode);
+            var analytics = await linkservice.GetAnalyticsAsync(shortcode);
 
-            if (linkid == null) return Results.BadRequest();
+            if (analytics == null) return Results.NotFound();
 
-            var clicks = await clickservice.ClickAnalitycsAsync(linkid.Id);
-
-            if(clicks == null) return Results.NotFound(); // добавил проверку
-
-            return Results.Ok(clicks);
+            return Results.Ok(analytics);
         }
     }
 }

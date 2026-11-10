@@ -20,12 +20,14 @@ namespace ShortUrl.Presentation
         }
 
 
-        private static async Task<IResult> BufferEndpoint(ILinkRepository linkrep, HttpContext context)
+        private static async Task<IResult> BufferEndpoint(LinkService linkservice, HttpContext context)
         {
             if (context.Items["DeviceId"] == null) return Results.BadRequest();
 
             var deviceid = context.Items["DeviceId"].ToString();
-            var links = await linkrep.GetUserBufferAsync(deviceid);
+
+            var links = await linkservice.GetBufferAsync(deviceid); // вынести в BufferDTO/LinkDTO
+
             var result = links.Select(l => new
             {
                 l.Id,

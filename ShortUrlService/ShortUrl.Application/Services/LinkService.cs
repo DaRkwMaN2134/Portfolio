@@ -5,15 +5,18 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
 using System.Reflection.Metadata;
+using ShortUrl.Application.DTO;
 
 namespace ShortUrl.Application.Services
 {
     public class LinkService
     {
         private readonly ILinkRepository _linkRepository;
-        public LinkService(ILinkRepository linkRepository)
+        private readonly ClickService _clickService;
+        public LinkService(ILinkRepository linkRepository, ClickService clickservice)
         {
             _linkRepository = linkRepository;
+            _clickService = clickservice;
         }
 
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
@@ -107,12 +110,20 @@ namespace ShortUrl.Application.Services
             return reversed;
         }
 
-        public async Task<long?> GetIdFromLinkAsync(string shortcode)
+        public async Task<AnalyticsResponseDTO?> GetAnalyticsAsync(string shortcode)
         {
             if (string.IsNullOrEmpty(shortcode)) return null;
 
             var linkid = await _linkRepository.GetLinkIdByShortCodeAsync(shortcode);
-            return linkid;
+            if (linkid == null) return null;
+            var analytics = await _clickService.ClickAnalitycsAsync(linkid.Value);
+            return analytics;
+        }
+
+        public async Task<List<Link>> GetBufferAsync(string deviceid)
+        {
+            var links = await _linkRepository.GetUserBufferAsync(deviceid); // вынести в BufferDTO/LinkDTO
+            return links;
         }
     }
 }
