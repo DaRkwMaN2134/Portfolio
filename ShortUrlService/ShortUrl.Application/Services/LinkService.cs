@@ -27,21 +27,25 @@ namespace ShortUrl.Application.Services
             }
             else
             {
-                var shortlink = await CreateShortenLinkAsync(longurl, null);
+                var shortlink = CreateShortenLink(longurl, null);
                 var link = await _linkRepository.CreateLinkAsync(longurl, shortlink, creator);
 
-                if (link)
+                if (link != null)
                 {
                     shortcode = shortlink;
                 }
                 else
                 {
-                    while (true)
+                    for(int i = 0; i<5; i++)
                     {
                         var salt = Guid.NewGuid().ToString();
-                        var shortlinksalt = await CreateShortenLinkAsync(longurl, salt);
-                        var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator); // надо будет подумать, что с этим делать
-                        if (linksalt == false)
+                        var shortlinksalt = CreateShortenLink(longurl, salt);
+                        var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator);
+                        if(i == 4)
+                        {
+                            throw new InvalidOperationException("Не удалось сгенерировать уникальный код за 5 попыток");
+                        }
+                        if (linksalt == null)
                         {
                             continue;
                         }
@@ -60,20 +64,20 @@ namespace ShortUrl.Application.Services
         {
             if(shortcode == null) return string.Empty; // добавил проверку на входные данные
 
-            var url = await _linkRepository.GetLongUrlAsync(shortcode);
-            if (url == null)
+            var longurl = await _linkRepository.GetLongUrlAsync(shortcode);
+            if (string.IsNullOrEmpty(longurl))
             {
                 Console.WriteLine("Ссылка не найдена");
-                return null;
+                return string.Empty;
             }
             else
             {
-                return url.LongUrl;
+                return longurl;
             }
         }
 
 
-        public async Task<string> CreateShortenLinkAsync(string longurl, string? salt)
+        public string CreateShortenLink(string longurl, string? salt)
         {
             if (longurl == null) return string.Empty; // добавил проверку на входные данные
 
@@ -83,7 +87,7 @@ namespace ShortUrl.Application.Services
             }
             string base62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             byte[] utf8Url = Encoding.UTF8.GetBytes(longurl);
-            utf8Url = SHA256.Create().ComputeHash(utf8Url);
+            utf8Url = SHA256.HashData(utf8Url);
             ReadOnlySpan<byte> bytes = utf8Url.AsSpan(0, 7);
 
             BigInteger number = new BigInteger(bytes, isUnsigned: true);
