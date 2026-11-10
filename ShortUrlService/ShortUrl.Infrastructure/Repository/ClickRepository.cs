@@ -58,7 +58,7 @@ namespace ShortUrl.Infrastructure.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long? linkid)
+        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid) // непонятно для чего этот метод, но он явно для аналитики нужен был, пока оставим
         {
             var clickCount = await _dbContext.clicks.Where(l => l.LinkId == linkid).CountAsync();
             var lastClicks = await _dbContext.clicks.Where(l => l.LinkId == linkid).OrderByDescending(l => l.CreatedAt).Take(5).ToListAsync();

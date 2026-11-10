@@ -34,7 +34,7 @@ namespace ShortUrl.Application.Services
                 await _clickRepository.UpdateLastClickAsync(click);
             }
         }
-        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long? linkid) // очень странный код у этого метода
+        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid) // очень странный код у этого метода
         {
             // проверка на валидность linkid
             var clicks = await _clickRepository.GetClickAsync(linkid);
