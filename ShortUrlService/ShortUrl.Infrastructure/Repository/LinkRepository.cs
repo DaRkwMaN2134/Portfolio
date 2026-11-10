@@ -38,8 +38,9 @@ namespace ShortUrl.Infrastructure.Repository
                 catch(DbUpdateException ex)
                 {
                     Console.WriteLine($"[МЕТОД CreateLinkAsync] ОШИБКА {ex.Message}");
-                    return link;
+                    return null;
                 }
+                return link;
             }
             else
             {
@@ -108,6 +109,24 @@ namespace ShortUrl.Infrastructure.Repository
                 .AsNoTracking()
                 .Where(c => c.Creator != null && c.Creator.DeviceId == deviceid).OrderByDescending(l => l.Id).Take(3).ToListAsync();
             return linkBuffer;
+        }
+
+        public async Task<long?> GetLinkIdByShortCodeAsync(string shortcode)
+        {
+            if (string.IsNullOrEmpty(shortcode)) return null;
+
+            var linkid = await _dbContext.links
+                .Where(s => s.ShortCode == shortcode)
+                .Select(s => (long?)s.Id)
+                .FirstOrDefaultAsync();
+            if (linkid != null)
+            {
+                return linkid;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

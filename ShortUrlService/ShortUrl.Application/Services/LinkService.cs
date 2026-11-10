@@ -15,6 +15,7 @@ namespace ShortUrl.Application.Services
         {
             _linkRepository = linkRepository;
         }
+
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
         {
             if (longurl == null || deviceid == null || creator == null) return string.Empty; // добавил проверку на входные данные
@@ -36,12 +37,12 @@ namespace ShortUrl.Application.Services
                 }
                 else
                 {
-                    for(int i = 0; i<5; i++)
+                    for(int i = 0; i<=5; i++)
                     {
                         var salt = Guid.NewGuid().ToString();
                         var shortlinksalt = CreateShortenLink(longurl, salt);
                         var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator);
-                        if(i == 4)
+                        if (i == 5)
                         {
                             throw new InvalidOperationException("Не удалось сгенерировать уникальный код за 5 попыток");
                         }
@@ -104,6 +105,14 @@ namespace ShortUrl.Application.Services
             }
             string reversed = new string(shorturl.Reverse().ToArray());
             return reversed;
+        }
+
+        public async Task<long?> GetIdFromLinkAsync(string shortcode)
+        {
+            if (string.IsNullOrEmpty(shortcode)) return null;
+
+            var linkid = await _linkRepository.GetLinkIdByShortCodeAsync(shortcode);
+            return linkid;
         }
     }
 }

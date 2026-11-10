@@ -12,5 +12,6 @@ namespace ShortUrl.Domain.Interfaces
         public Task<string> GetShortCodeAsync(string url);
         public Task<Link?> GetUserLinkAsync(string url, string deviceid);
         public Task<List<Link>> GetUserBufferAsync(string deviceid);
+        public Task<long?> GetLinkIdByShortCodeAsync(string shortcode);
     }
 }
