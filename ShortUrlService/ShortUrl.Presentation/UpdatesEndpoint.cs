@@ -14,11 +14,12 @@ namespace ShortUrl.Presentation
 
         private static async Task<IResult> ClickUpdateEndpoint(ClickUpdateRequest data, ClickService clickservice, ILinkRepository linkrep, IUserRepository userep)
         {
-            var currentLink = await linkrep.GetLongUrlAsync(data.Shortcode);
-            if (currentLink != null)
+            var linkid = await linkrep.GetLinkIdByShortCodeAsync(data.Shortcode);
+
+            if (linkid != null)
             {
-                Console.WriteLine($"[ТУТ МЕГА ССЫЛКА]  {currentLink.Id}");
-                await clickservice.UpdateExternalInfoForClick(currentLink.Id, data.Resolution, data.TimeZone, data.DeviceLocalTime);
+                Console.WriteLine($"[ТУТ МЕГА ССЫЛКА]  {linkid}");
+                await clickservice.UpdateExternalInfoForClick(linkid.Value, data.Resolution, data.TimeZone, data.DeviceLocalTime);
                 return Results.Ok();
             }
             else

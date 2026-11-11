@@ -1,5 +1,8 @@
 ﻿using DeviceDetectorNET;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
+using ShortUrl.Application.DTO;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
@@ -16,112 +19,49 @@ namespace ShortUrl.Presentation
         {
             app.MapGet("/b/buffer", BufferEndpoint);
             app.MapPost("/shorten", ShortenEndpoint);
-            app.MapGet("/s/{shortcode}", ShortcodeEndpoint);
+            app.MapGet("/s/{shortcode}", RedirectEndpoint);
         }
 
 
         private static async Task<IResult> BufferEndpoint(LinkService linkservice, HttpContext context)
         {
             if (context.Items["DeviceId"] == null) return Results.BadRequest();
-
             var deviceid = context.Items["DeviceId"].ToString();
 
-            var links = await linkservice.GetBufferAsync(deviceid); // вынести в BufferDTO/LinkDTO
 
-            var result = links.Select(l => new
-            {
-                l.Id,
-                l.CreatedAt,
-                l.LongUrl,
-                l.ShortCode,
-                l.CreatorId
-            });
-            return Results.Ok(result);
+            var buffer = await linkservice.GetBufferAsync(deviceid); // вынести в BufferDTO/LinkDTO
+
+            return Results.Ok(buffer);
         }
 
-        private static async Task<IResult> ShortenEndpoint(UrlRequest request, LinkService linkservice, IUserRepository userrep, HttpContext context)
+        private static async Task<IResult> ShortenEndpoint(UrlRequest request, LinkService linkservice, HttpContext context)
         {
             if (context.Items["DeviceId"] == null) return Results.BadRequest();
             var deviceid = context.Items["DeviceId"].ToString();
 
-            Console.WriteLine($"[ТУТ МЕГА DEVICEID]  {deviceid}");
-
-            var user = await userrep.GetByDeviceIdAsync(deviceid);
-            if (user == null)
-            {
-                return Results.NotFound();
-            }
-
-            var shortcode = await linkservice.ShortenLinkAsync(request.LongUrl, deviceid, user);
-            if (!string.IsNullOrEmpty(shortcode))
-            {
-                return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
-            }
-            else
-            {
-                return Results.BadRequest();
-            }
+            var shortcode = await linkservice.GetShortenAsync(deviceid, request.LongUrl);
+            if (string.IsNullOrEmpty(shortcode)) return Results.Problem();
+            
+            return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
 
         }
 
-        private static async Task<IResult> ShortcodeEndpoint(string shortcode, ClickService clickservice, UserService userservice, 
-            HttpContext context, ILinkRepository linkrep, IUserRepository userep, IMemoryCache cache)
+        private static async Task<IResult> RedirectEndpoint(string shortcode, LinkService linkservice, HttpContext context)
         {
-            var currentLink = await linkrep.GetLongUrlAsync(shortcode);
-            if (currentLink == null)
-            {
-                return Results.NotFound();
-            }
-            else
-            {
-                Console.WriteLine($"[Запрос] TraceId: {context.TraceIdentifier}");
-                var userAgent = context.Request.Headers.UserAgent.ToString();
+            var userAgent = context.Request.Headers.UserAgent.ToString();
+            var headers = context.Request.Headers.ToDictionary(
+                a => a.Key,
+                a => a.Value.ToArray().FirstOrDefault());
 
-                if (cache.TryGetValue(userAgent, out DeviceDetector result) == false)
-                {
-                    var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(2))
-                    .SetPriority(CacheItemPriority.High);
+            var clientContext = new ClientContext(
+                context.Connection?.RemoteIpAddress?.ToString() ?? "Unknown",
+                context.Request.Headers.Referer.ToString(),
+                context.Request.Headers.AcceptLanguage.ToString()
+            );
 
-                    var headers = context.Request.Headers.ToDictionary(
-                        a => a.Key,
-                        a => a.Value.ToArray().FirstOrDefault());
-
-
-                    var clientHints = ClientHints.Factory(headers);
-                    var uainfo = new DeviceDetector(userAgent, clientHints);
-                    uainfo.Parse();
-                    cache.Set(userAgent, uainfo, cacheOptions);
-                    result = uainfo;
-                }
-                if (result == null)
-                {
-                    return Results.NotFound();
-                }
-
-                Click clickinfo = new Click
-                {
-                    CreatedAt = DateTime.UtcNow,
-                    IpAddress = context.Connection.RemoteIpAddress?.ToString(),
-                    Device = result.GetDeviceName(),
-                    OS = result.GetOs().Match.Family.ToString() + " " + result.GetOs().Match.Version,
-                    Resolution = null, // JS
-                    Referer = context.Request.Headers.Referer,
-                    Language = context.Request.Headers.AcceptLanguage.ToString(),
-                    Browser = result.GetBrowserClient().Match.Family + " " + result.GetBrowserClient().Match.Version,
-                    TimeZone = null, // JS
-                    DeviceLocalTime = null // JS
-                };
-
-                await clickservice.CollectionInfoForClickAsync(currentLink.Id, clickinfo);
-
-                string encodedLongUrl = WebUtility.UrlEncode(currentLink.LongUrl);
-                string encodedShortcode = WebUtility.UrlEncode(shortcode);
-
-                string redirectUrl = $"/redirect.html?url={encodedLongUrl}&code={encodedShortcode}";
-                return Results.Redirect(redirectUrl);
-            }
+            var redirectUrl = await linkservice.MakeRedirectAsync(shortcode, userAgent, headers, clientContext);
+            if (string.IsNullOrEmpty(redirectUrl)) return Results.NotFound();
+            return Results.Redirect(redirectUrl);
         }
     }
 }

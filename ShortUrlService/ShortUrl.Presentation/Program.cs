@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using ShortUrl.Application.DTO;
+using ShortUrl.Application.Interfaces;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 using ShortUrl.Infrastructure;
 using ShortUrl.Infrastructure.Repository;
+using ShortUrl.Infrastructure.Services;
 using ShortUrl.Presentation;
 using System.Net;
 using System.Reflection.PortableExecutable;
@@ -27,6 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IClientInfoParser, ClientInfoParser>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<IClickRepository, ClickRepository>();

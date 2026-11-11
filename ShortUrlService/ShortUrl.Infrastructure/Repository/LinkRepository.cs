@@ -128,5 +128,20 @@ namespace ShortUrl.Infrastructure.Repository
                 return null;
             }
         }
+
+        public async Task<Link?> GetLinkByShortCodeAsync(string shortcode)
+        {
+            if (string.IsNullOrEmpty(shortcode)) return null;
+
+            var link = await _dbContext.links.FirstOrDefaultAsync(s => s.ShortCode == shortcode);
+            if (link != null)
+            {
+                return link;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

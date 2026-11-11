@@ -14,4 +14,8 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DeviceDetector.NET" Version="6.5.2" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,12 @@
-﻿using ShortUrl.Domain.Interfaces;
+﻿using ShortUrl.Application.DTO;
+using ShortUrl.Application.Interfaces;
+using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
+using System.Linq;
+using System.Net;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
-using System.Reflection.Metadata;
-using ShortUrl.Application.DTO;
 
 namespace ShortUrl.Application.Services
 {
@@ -13,10 +14,14 @@ namespace ShortUrl.Application.Services
     {
         private readonly ILinkRepository _linkRepository;
         private readonly ClickService _clickService;
-        public LinkService(ILinkRepository linkRepository, ClickService clickservice)
+        private readonly IUserRepository _userRepository;
+        private readonly IClientInfoParser _infoParser;
+        public LinkService(ILinkRepository linkRepository, ClickService clickservice, IUserRepository userRepository, IClientInfoParser infoparser)
         {
             _linkRepository = linkRepository;
             _clickService = clickservice;
+            _userRepository = userRepository;
+            _infoParser = infoparser;
         }
 
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
@@ -64,22 +69,6 @@ namespace ShortUrl.Application.Services
             return shortcode;
         }
 
-        public async Task<string> RedirectLinkAsync(string shortcode)
-        {
-            if(shortcode == null) return string.Empty; // добавил проверку на входные данные
-
-            var longurl = await _linkRepository.GetLongUrlAsync(shortcode);
-            if (string.IsNullOrEmpty(longurl))
-            {
-                Console.WriteLine("Ссылка не найдена");
-                return string.Empty;
-            }
-            else
-            {
-                return longurl;
-            }
-        }
-
 
         public string CreateShortenLink(string longurl, string? salt)
         {
@@ -120,10 +109,69 @@ namespace ShortUrl.Application.Services
             return analytics;
         }
 
-        public async Task<List<Link>> GetBufferAsync(string deviceid)
+        public async Task<List<BufferDTO>> GetBufferAsync(string deviceid)
         {
             var links = await _linkRepository.GetUserBufferAsync(deviceid); // вынести в BufferDTO/LinkDTO
-            return links;
+
+
+            var buffer = links.Select(l => new BufferDTO
+            {
+                Id = l.Id,
+                CreatedAt = l.CreatedAt,
+                LongUrl = l.LongUrl,
+                ShortCode = l.ShortCode,
+                CreatorId = l.CreatorId
+            }).ToList();
+
+            return buffer;
+        }
+
+        public async Task<string> GetShortenAsync(string deviceid, string longurl)
+        {
+            var user = await _userRepository.GetByDeviceIdAsync(deviceid);
+
+            if (user == null)
+            {
+                return string.Empty;
+            }
+
+            var shortcode = await ShortenLinkAsync(longurl, deviceid, user); // TODO: убрать дублирование deviceid, брать из user.DeviceId
+
+            if (string.IsNullOrEmpty(shortcode)) return string.Empty;
+
+            return shortcode;
+        }
+
+        public async Task<string> MakeRedirectAsync(string shortcode, string useragent, Dictionary<string, string?> headers, ClientContext clientContext)
+        {
+            if (string.IsNullOrEmpty(shortcode)) return string.Empty;
+
+            var link = await _linkRepository.GetLinkByShortCodeAsync(shortcode);
+            if (link == null) return string.Empty;
+
+            var info = _infoParser.GetInfo(useragent, headers);
+            if(info == null) return string.Empty;
+
+            Click clickinfo = new Click
+            {
+                CreatedAt = DateTime.UtcNow,
+                IpAddress = clientContext.IpAddress,
+                Device = info.Device,
+                OS = info.OS,
+                Resolution = null, // JS
+                Referer = clientContext.Referer,
+                Language = clientContext.Language,
+                Browser = info.Browser,
+                TimeZone = null, // JS
+                DeviceLocalTime = null // JS
+            };
+            await _clickService.CollectionInfoForClickAsync(link.Id, clickinfo);
+            
+            string encodedLongUrl = WebUtility.UrlEncode(link.LongUrl);
+            string encodedShortcode = WebUtility.UrlEncode(shortcode);
+            
+            string redirectUrl = $"/redirect.html?url={encodedLongUrl}&code={encodedShortcode}";
+            return redirectUrl;
         }
     }
 }
