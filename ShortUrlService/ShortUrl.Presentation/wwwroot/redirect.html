@@ -14,15 +14,17 @@
     <script>
 		// 1. Читаем параметры из URL (url и code)
 		const params = new URLSearchParams(window.location.search);
-		const longUrl = decodeURIComponent(params.get('url'));
-		const shortCode = decodeURIComponent(params.get('code'));
+		const longUrl = decodeURIComponent(params.get('longurl'));
+		const shortCode = decodeURIComponent(params.get('shortcode'));
+		const clickid = decodeURIComponent(params.get('clickid'));
 
 		// 2. Собираем данные для аналитики
 		const data = {
 		shortCode: shortCode,
 		resolution: window.screen.width + 'x' + window.screen.height,
 		timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-		deviceLocalTime: new Date().toISOString()
+		deviceLocalTime: new Date().toISOString(),
+		clickid : clickid
 		};
 
 		// 3. Отправляем данные на сервер

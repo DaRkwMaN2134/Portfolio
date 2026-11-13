@@ -75,5 +75,3 @@ app.MapUpdateEndpoints();
 app.Run();
 
 public record UrlRequest(string LongUrl);
-public record ClickUpdateRequest(string Shortcode, string Resolution, string TimeZone, DateTime? DeviceLocalTime);
-public record UserUpdateRequest(string Resolution);

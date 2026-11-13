@@ -149,28 +149,16 @@ namespace ShortUrl.Application.Services
             var link = await _linkRepository.GetLinkByShortCodeAsync(shortcode);
             if (link == null) return string.Empty;
 
-            var info = _infoParser.GetInfo(useragent, headers);
-            if(info == null) return string.Empty;
+            var dtoinfo = _infoParser.GetInfo(useragent, headers);
+            if(dtoinfo == null) return string.Empty;
 
-            Click clickinfo = new Click
-            {
-                CreatedAt = DateTime.UtcNow,
-                IpAddress = clientContext.IpAddress,
-                Device = info.Device,
-                OS = info.OS,
-                Resolution = null, // JS
-                Referer = clientContext.Referer,
-                Language = clientContext.Language,
-                Browser = info.Browser,
-                TimeZone = null, // JS
-                DeviceLocalTime = null // JS
-            };
-            await _clickService.CollectionInfoForClickAsync(link.Id, clickinfo);
+            var clickid = await _clickService.CollectionInfoForClickAsync(link.Id, dtoinfo, clientContext);
             
             string encodedLongUrl = WebUtility.UrlEncode(link.LongUrl);
             string encodedShortcode = WebUtility.UrlEncode(shortcode);
             
-            string redirectUrl = $"/redirect.html?url={encodedLongUrl}&code={encodedShortcode}";
+            string redirectUrl = $"/redirect.html?longurl={encodedLongUrl}&shortcode={encodedShortcode}&clickid={clickid}";
+            Console.WriteLine($"ЭТО ССЫЛКА КОТОРАЯ НУЖНА {clickid}");
             return redirectUrl;
         }
     }

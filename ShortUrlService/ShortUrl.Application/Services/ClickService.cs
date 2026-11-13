@@ -4,35 +4,53 @@ using ShortUrl.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShortUrl.Application.Services
 {
     public class ClickService
     {
         private readonly IClickRepository _clickRepository;
-        public ClickService(IClickRepository clickRepository)
+        private readonly ILinkRepository _linkRepository;
+        public ClickService(IClickRepository clickRepository, ILinkRepository linkRepository)
         {
             _clickRepository = clickRepository;
+            _linkRepository = linkRepository;
         }
-        public async Task CollectionInfoForClickAsync(long linkid, Click clickinfo)
+        public async Task<long?> CollectionInfoForClickAsync(long linkid, ParserDTO dtoinfo, ClientContext clientContext)
         {
-            if (clickinfo == null) return; // также нужна проверка на валидность linkid(хотя в репозитории она вроде есть, будто бы лучше сделать так, чтобы оно вообще до репозитория не дошло)
+            if (dtoinfo == null) return null;
 
-            await _clickRepository.CreateClickAsync(linkid, clickinfo);
+            Click click = new Click
+            {
+                LinkId = linkid,
+                CreatedAt = DateTime.UtcNow,
+                IpAddress = clientContext.IpAddress,
+                Device = dtoinfo.Device,
+                OS = dtoinfo.OS,
+                Resolution = null,
+                Referer = clientContext.Referer,
+                Language = clientContext.Language,
+                Browser = dtoinfo.Browser,
+                TimeZone = null,
+                DeviceLocalTime = null
+            };
+            var clickid = await _clickRepository.CreateClickAsync(click);
+            return clickid;
         }
 
-        public async Task UpdateExternalInfoForClick(long linkid, string resolution, string timezone, DateTime? devicelocaltime)
+        public async Task UpdateExternalInfoForClick(long clickid, string resolution, string timezone, DateTime? devicelocaltime)
         {
-            //нужна проверка на валидность linkid и других параметров
-            var click = await _clickRepository.GetLastClickAsync(linkid);
-            if(click != null)
+            var click = await _clickRepository.GetByIdAsync(clickid);
+            if (click != null)
             {
                 Console.WriteLine($"[ID ЭТОЙ ССЫЛКИ] = {click.LinkId}");
                 click.Resolution = resolution;
                 click.TimeZone = timezone;
                 click.DeviceLocalTime = devicelocaltime;
-                await _clickRepository.UpdateLastClickAsync(click);
+                await _clickRepository.UpdateClickAsync(click);
             }
+            
         }
         public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid) // очень странный код у этого метода
         {
@@ -55,9 +73,26 @@ namespace ShortUrl.Application.Services
                     TimeZone = c.TimeZone,
                     DeviceLocalTime = c.DeviceLocalTime,
                 }).ToList(),
-                    UniqueIps = clicks.uniqueip
+                UniqueIps = clicks.uniqueip
             };
-            return analytics; 
+            return analytics;
+        }
+
+        public async Task<bool> ClickUpdateAsync(ClickUpdateRequest data)
+        {
+            var linkid = await _linkRepository.GetLinkIdByShortCodeAsync(data.Shortcode);
+
+            if (linkid != null)
+            {
+                Console.WriteLine($"[ТУТ МЕГА ССЫЛКА]  {linkid}");
+                await UpdateExternalInfoForClick(data.clickid, data.Resolution, data.TimeZone, data.DeviceLocalTime);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"[МЕГА ССЫЛКА НЕ НАЙДЕНА]");
+                return false;
+            }
         }
     }
 }

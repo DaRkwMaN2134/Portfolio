@@ -1,6 +1,7 @@
 ﻿using DeviceDetectorNET;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
+using ShortUrl.Application.DTO;
 
 namespace ShortUrl.Presentation
 {
@@ -12,51 +13,32 @@ namespace ShortUrl.Presentation
             app.MapPost("/api/user/update", UserUpdateEndpoint);
         }
 
-        private static async Task<IResult> ClickUpdateEndpoint(ClickUpdateRequest data, ClickService clickservice, ILinkRepository linkrep, IUserRepository userep)
-        {
-            var linkid = await linkrep.GetLinkIdByShortCodeAsync(data.Shortcode);
+        private static async Task<IResult> ClickUpdateEndpoint(ClickUpdateRequest data, ClickService clickservice)
+        {   
+            var update = await clickservice.ClickUpdateAsync(data);
 
-            if (linkid != null)
-            {
-                Console.WriteLine($"[ТУТ МЕГА ССЫЛКА]  {linkid}");
-                await clickservice.UpdateExternalInfoForClick(linkid.Value, data.Resolution, data.TimeZone, data.DeviceLocalTime);
-                return Results.Ok();
-            }
-            else
-            {
-                Console.WriteLine($"[МЕГА ССЫЛКА НЕ НАЙДЕНА]");
-                return Results.NotFound();
-            }
+            if(!update) return Results.NotFound();
+
+            return Results.Ok();
         }
 
-        private static async Task<IResult> UserUpdateEndpoint(UserUpdateRequest data, IUserRepository userep, HttpContext context)
+        private static async Task<IResult> UserUpdateEndpoint(UserService userservice, UserUpdateRequest data,  HttpContext context)
         {
             if (context.Items["DeviceId"] == null) return Results.BadRequest();
-
             var deviceid = context.Items["DeviceId"].ToString();
-            var currentUser = await userep.GetByDeviceIdAsync(deviceid);
-            if (currentUser != null)
-            {
-                Console.WriteLine($"[ТУТ МЕГА ЮЗЕР]  {currentUser.DeviceId}");
-                var headers = context.Request.Headers.ToDictionary(
-                    a => a.Key,
-                    a => a.Value.ToArray().FirstOrDefault());
-                var clientHints = ClientHints.Factory(headers);
-                var uainfo = new DeviceDetector(context.Request.Headers.UserAgent.ToString(), clientHints);
-                uainfo.Parse();
+            
+            var headers = context.Request.Headers.ToDictionary(
+                a => a.Key,
+                a => a.Value.ToArray().FirstOrDefault());
+            
 
-                currentUser.Resolution = data.Resolution;
-                currentUser.OS = uainfo.GetOs().Match.Family.ToString() + " " + uainfo.GetOs().Match.Version; ;
-                currentUser.Device = uainfo.GetDeviceName();
-                currentUser.IpAddress = context.Connection.RemoteIpAddress?.ToString();
-                await userep.UpdateUserAsync(currentUser);
-                return Results.Ok();
-            }
-            else
-            {
-                Console.WriteLine($"[МЕГА ЮЗЕР НЕ НАЙДЕН]");
-                return Results.NotFound();
-            }
+            var useragent = context.Request.Headers.UserAgent.ToString();
+            var IpAddress = context.Connection.RemoteIpAddress?.ToString();
+            var update = await userservice.UserUpdateAsync(deviceid, useragent, headers, data, IpAddress);
+
+            if(!update) return Results.NotFound();
+
+            return Results.Ok();
         }
     }
 }

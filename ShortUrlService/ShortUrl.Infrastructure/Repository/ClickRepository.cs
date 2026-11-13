@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShortUrl.Application.DTO;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 using System;
@@ -15,30 +16,16 @@ namespace ShortUrl.Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public async Task CreateClickAsync(long linkid, Click clickinfo)
+        public async Task<long> CreateClickAsync(Click click)
         {
-            if (clickinfo == null) return; // надо понять посылают ли нам валидный linkid
-            var click = new Click
-            {
-                LinkId = linkid,
-                CreatedAt = DateTime.UtcNow,
-                IpAddress = clickinfo.IpAddress,
-                Device = clickinfo.Device,
-                OS = clickinfo.OS,
-                Resolution = clickinfo.Resolution,
-                Referer = clickinfo.Referer,
-                Language = clickinfo.Language,
-                Browser = clickinfo.Browser,
-                TimeZone = clickinfo.TimeZone,
-                DeviceLocalTime = clickinfo.DeviceLocalTime
-            };
             _dbContext.clicks.Add(click);
             await _dbContext.SaveChangesAsync();
+            return click.Id;
         }
 
-        public async Task<Click?> GetLastClickAsync(long linkid)
+        public async Task<Click?> GetByIdAsync(long clickid)
         {
-            var click = await _dbContext.clicks.OrderByDescending(c => c.CreatedAt).FirstOrDefaultAsync(l => l.LinkId == linkid); 
+            var click = await _dbContext.clicks.FirstOrDefaultAsync(l => l.Id == clickid); 
 
             if (click != null)
             {
@@ -51,14 +38,14 @@ namespace ShortUrl.Infrastructure.Repository
             }
         }
 
-        public async Task UpdateLastClickAsync(Click currentclick)
+        public async Task UpdateClickAsync(Click currentclick)
         {
             if (currentclick == null) return;
             _dbContext.clicks.Update(currentclick);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid) // непонятно для чего этот метод, но он явно для аналитики нужен был, пока оставим
+        public async Task<(int clickount, List<Click> lastclick, int uniqueip)> GetClickAsync(long linkid)
         {
             var clickCount = await _dbContext.clicks.Where(l => l.LinkId == linkid).CountAsync();
             var lastClicks = await _dbContext.clicks.Where(l => l.LinkId == linkid).OrderByDescending(l => l.CreatedAt).Take(5).ToListAsync();
