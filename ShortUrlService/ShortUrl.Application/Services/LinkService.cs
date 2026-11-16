@@ -7,6 +7,8 @@ using System.Net;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
+
 
 namespace ShortUrl.Application.Services
 {
@@ -153,10 +155,23 @@ namespace ShortUrl.Application.Services
             if(dtoinfo == null) return string.Empty;
 
             var clickid = await _clickService.CollectionInfoForClickAsync(link.Id, dtoinfo, clientContext);
+
+            var uriBuilder = new UriBuilder(link.LongUrl);
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+
+            if(clientContext.UtmSource != null) query["utm_source"] = clientContext.UtmSource;
             
-            string encodedLongUrl = WebUtility.UrlEncode(link.LongUrl);
+            if(clientContext.UtmMedium != null) query["utm_medium"] = clientContext.UtmMedium;
+
+            if(clientContext.UtmCampaign != null) query["utm_campaign"] = clientContext.UtmCampaign;
+
+            uriBuilder.Query = query.ToString();
+            var longurl = uriBuilder.ToString();
+
+            string encodedLongUrl = WebUtility.UrlEncode(longurl);
             string encodedShortcode = WebUtility.UrlEncode(shortcode);
-            
+
+
             string redirectUrl = $"/redirect.html?longurl={encodedLongUrl}&shortcode={encodedShortcode}&clickid={clickid}";
             Console.WriteLine($"ЭТО ССЫЛКА КОТОРАЯ НУЖНА {clickid}");
             return redirectUrl;

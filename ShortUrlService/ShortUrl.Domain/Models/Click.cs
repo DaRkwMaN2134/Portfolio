@@ -11,6 +11,9 @@
         public string? OS { get; set; }
         public string? Resolution { get; set; }
         public string? Referer { get; set; }
+        public string? UtmSource { get; set; }
+        public string? UtmMedium { get; set; }
+        public string? UtmCampaign { get; set; }
         public string? Language { get; set; }
         public string? Browser {  get; set; }
         public string? TimeZone { get; set; }

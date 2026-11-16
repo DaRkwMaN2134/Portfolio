@@ -54,9 +54,12 @@ namespace ShortUrl.Presentation
                 a => a.Value.ToArray().FirstOrDefault());
 
             var clientContext = new ClientContext(
-                context.Connection?.RemoteIpAddress?.ToString() ?? "Unknown",
+                context.Connection?.RemoteIpAddress?.ToString(),
                 context.Request.Headers.Referer.ToString(),
-                context.Request.Headers.AcceptLanguage.ToString()
+                context.Request.Headers.AcceptLanguage.ToString(),
+                context.Request?.Query?["utm_source"].FirstOrDefault(),
+                context.Request?.Query?["utm_medium"].FirstOrDefault(),
+                context.Request?.Query?["utm_campaign"].FirstOrDefault()
             );
 
             var redirectUrl = await linkservice.MakeRedirectAsync(shortcode, userAgent, headers, clientContext);

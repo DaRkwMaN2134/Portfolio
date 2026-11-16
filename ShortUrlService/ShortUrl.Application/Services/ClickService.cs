@@ -30,6 +30,9 @@ namespace ShortUrl.Application.Services
                 OS = dtoinfo.OS,
                 Resolution = null,
                 Referer = clientContext.Referer,
+                UtmSource = clientContext.UtmSource,
+                UtmMedium = clientContext.UtmMedium,
+                UtmCampaign = clientContext.UtmCampaign,
                 Language = clientContext.Language,
                 Browser = dtoinfo.Browser,
                 TimeZone = null,
@@ -52,7 +55,7 @@ namespace ShortUrl.Application.Services
             }
             
         }
-        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid) // очень странный код у этого метода
+        public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid)
         {
             // проверка на валидность linkid
             var clicks = await _clickRepository.GetClickAsync(linkid);

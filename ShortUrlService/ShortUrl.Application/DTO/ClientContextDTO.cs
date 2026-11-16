@@ -4,5 +4,5 @@ using System.Text;
 
 namespace ShortUrl.Application.DTO
 {
-    public record ClientContext(string IpAddress, string Referer, string Language);
+    public record ClientContext(string IpAddress, string Referer, string Language, string UtmSource, string UtmMedium, string UtmCampaign);
 }

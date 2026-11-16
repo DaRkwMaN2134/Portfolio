@@ -12,8 +12,8 @@ using ShortUrl.Infrastructure;
 namespace ShortUrl.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261013112529_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261116072723_urlservice")]
+    partial class urlservice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ShortUrl.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ShortUrl.Domain.Click", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.Click", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,6 +66,15 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.Property<string>("TimeZone")
                         .HasColumnType("text");
 
+                    b.Property<string>("UtmCampaign")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UtmMedium")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UtmSource")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LinkId");
@@ -73,7 +82,7 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.ToTable("clicks");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.Link", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.Link", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +114,7 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.ToTable("links");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.User", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,9 +161,9 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.Click", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.Click", b =>
                 {
-                    b.HasOne("ShortUrl.Domain.Link", "Link")
+                    b.HasOne("ShortUrl.Domain.Models.Link", "Link")
                         .WithMany("Clicks")
                         .HasForeignKey("LinkId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -163,9 +172,9 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.Navigation("Link");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.Link", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.Link", b =>
                 {
-                    b.HasOne("ShortUrl.Domain.User", "Creator")
+                    b.HasOne("ShortUrl.Domain.Models.User", "Creator")
                         .WithMany("Links")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -173,12 +182,12 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.Link", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.Link", b =>
                 {
                     b.Navigation("Clicks");
                 });
 
-            modelBuilder.Entity("ShortUrl.Domain.User", b =>
+            modelBuilder.Entity("ShortUrl.Domain.Models.User", b =>
                 {
                     b.Navigation("Links");
                 });

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ShortUrl.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class urlservice : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,6 +68,9 @@ namespace ShortUrl.Infrastructure.Migrations
                     OS = table.Column<string>(type: "text", nullable: true),
                     Resolution = table.Column<string>(type: "text", nullable: true),
                     Referer = table.Column<string>(type: "text", nullable: true),
+                    UtmSource = table.Column<string>(type: "text", nullable: true),
+                    UtmMedium = table.Column<string>(type: "text", nullable: true),
+                    UtmCampaign = table.Column<string>(type: "text", nullable: true),
                     Language = table.Column<string>(type: "text", nullable: true),
                     Browser = table.Column<string>(type: "text", nullable: true),
                     TimeZone = table.Column<string>(type: "text", nullable: true),
