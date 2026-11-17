@@ -5,6 +5,7 @@
         public long Id {  get; set; }
         public List<Link> Links { get; set; } = new();
         public string DeviceId { get; set; }
+        public DateTime LastSeenAt { get; set; }
         public string? UserId { get; set; }
         public string? Username { get; set; }
         public string? IpAddress { get; set; }

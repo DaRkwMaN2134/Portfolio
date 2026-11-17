@@ -12,7 +12,7 @@ using ShortUrl.Infrastructure;
 namespace ShortUrl.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261116072723_urlservice")]
+    [Migration("20261117080328_urlservice")]
     partial class urlservice
     {
         /// <inheritdoc />
@@ -137,6 +137,9 @@ namespace ShortUrl.Infrastructure.Migrations
 
                     b.Property<bool>("IsRegistered")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastSeenAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OS")
                         .HasColumnType("text");

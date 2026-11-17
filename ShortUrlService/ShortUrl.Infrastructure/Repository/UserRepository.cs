@@ -12,15 +12,15 @@ namespace ShortUrl.Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<User?> CreateUserAsync(string deviceid)
+        public async Task<User?> GetOrCreateUserAsync(string deviceid)
         {
             if (string.IsNullOrEmpty(deviceid)) return null;
 
             var createUser = await _dbContext.users.FromSqlInterpolated($@"
-                    INSERT INTO ""users"" (""DeviceId"", ""UserId"", ""IpAddress"", ""Device"", ""OS"", ""Resolution"", ""CreatedAt"", ""IsRegistered"")
-                    VALUES ({deviceid}, {null}, {null}, {null}, {null}, {null}, {DateTime.UtcNow}, {false})
+                    INSERT INTO ""users"" (""DeviceId"", ""LastSeenAt"", ""UserId"", ""IpAddress"", ""Device"", ""OS"", ""Resolution"", ""CreatedAt"", ""IsRegistered"")
+                    VALUES ({deviceid}, {DateTime.UtcNow}, {null}, {null}, {null}, {null}, {null}, {DateTime.UtcNow}, {false})
                     ON CONFLICT (""DeviceId"") DO UPDATE
-                    SET ""DeviceId"" = EXCLUDED.""DeviceId""
+                    SET ""LastSeenAt"" = EXCLUDED.""LastSeenAt""
                     RETURNING *").ToListAsync();
 
             var user = createUser.First();
@@ -72,6 +72,11 @@ namespace ShortUrl.Infrastructure.Repository
 
             _dbContext.users.Update(currentUser);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task CleanupAnonymousUsersAsync()
+        {
+            await _dbContext.users.Where(r => r.IsRegistered == false && r.LastSeenAt < DateTime.UtcNow.AddDays(-30)).ExecuteDeleteAsync();
         }
     }
 }

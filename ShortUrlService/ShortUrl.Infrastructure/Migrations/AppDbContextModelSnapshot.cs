@@ -135,6 +135,9 @@ namespace ShortUrl.Infrastructure.Migrations
                     b.Property<bool>("IsRegistered")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime>("LastSeenAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("OS")
                         .HasColumnType("text");
 

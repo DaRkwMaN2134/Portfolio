@@ -21,7 +21,7 @@ namespace ShortUrl.Application.Services
         public async Task<User?> AnonymousUserLoginAsync(string deviceId)
         {
             if (string.IsNullOrEmpty(deviceId)) return null;
-            var user = await _userRepository.CreateUserAsync(deviceId);
+            var user = await _userRepository.GetOrCreateUserAsync(deviceId);
             return user;
 
         }
