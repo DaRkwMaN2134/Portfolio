@@ -40,9 +40,10 @@ namespace ShortUrl.Presentation
             var deviceid = context.Items["DeviceId"].ToString();
 
             var shortcode = await linkservice.GetShortenAsync(deviceid, request.LongUrl);
+            var baseUrl = $"{context.Request.Scheme}://{context.Request.Host}";
             if (string.IsNullOrEmpty(shortcode)) return Results.Problem();
-            
-            return Results.Ok(new { ShortUrl = $"http://localhost:5000/s/{shortcode}" });
+
+            return Results.Ok(new { ShortUrl = $"{baseUrl}/s/{shortcode}" });
 
         }
 

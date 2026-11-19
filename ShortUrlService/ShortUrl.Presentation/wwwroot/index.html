@@ -761,7 +761,7 @@
 			linksFromDb.reverse().forEach(dbLink => {
 			const item = {
 			original: dbLink.longUrl,
-			short: `http://localhost:5000/s/${dbLink.shortCode}`
+			short: `${window.location.origin}/s/${dbLink.shortCode}`
 			};
 
 			// Добавляем в наш локальный массив links
