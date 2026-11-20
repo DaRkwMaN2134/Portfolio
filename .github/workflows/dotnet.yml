@@ -43,4 +43,4 @@ jobs:
         context: ./ShortUrlService
         file: ./ShortUrlService/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/shorturlservice-app:latest
+        tags: ghcr.io/darkwman2134/shorturlservice-app:latest
