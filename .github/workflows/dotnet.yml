@@ -29,3 +29,18 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push App Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: ./ShortUrlService
+        file: ./ShortUrlService/Dockerfile
+        push: true
+        tags: ghcr.io/${{ github.repository_owner }}/shorturlservice-app:latest
