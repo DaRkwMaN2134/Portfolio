@@ -3,4 +3,5 @@
   <Project Path="ShortUrl.Domain/ShortUrl.Domain.csproj" />
   <Project Path="ShortUrl.Infrastructure/ShortUrl.Infrastructure.csproj" />
   <Project Path="ShortUrl.Presentation/ShortUrl.Presentation.csproj" />
+  <Project Path="ShortUrl.Tests/ShortUrl.Tests.csproj" Id="2019f7d1-5b24-482d-a314-f77b017e2f7d" />
 </Solution>
