@@ -1,371 +1,474 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-	<meta charset="UTF-8"></meta>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-		<title>Сокращение ссылок</title>
-		<style>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Сокращение ссылок</title>
+				<style>
 
-			* {
-			box-sizing: border-box;
-			margin: 0;
-			padding: 0;
-			}
+					* {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+					}
 
-			body {
-			min-height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 24px;
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			background-attachment: fixed;
-			}
+					body {
+					min-height: 100vh;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 24px;
+					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+					background-attachment: fixed;
+					}
 
-			.card {
-			width: 100%;
-			max-width: 540px;
-			background: #ffffff;
-			border-radius: 24px;
-			padding: 40px 36px 32px;
-			box-shadow: 0 24px 60px rgba(17, 12, 46, 0.25);
-			}
+					/* --- НОВЫЙ БЛОК: Контейнер для двух колонок --- */
+					.layout {
+					display: flex;
+					gap: 24px;
+					align-items: flex-start;
+					justify-content: center;
+					width: 100%;
+					max-width: 1140px;
+					}
 
-			.card h1 {
-			font-size: 26px;
-			font-weight: 700;
-			color: #1a1a2e;
-			text-align: center;
-			letter-spacing: -0.5px;
-			}
+					.card {
+					width: 100%;
+					max-width: 540px;
+					background: #ffffff;
+					border-radius: 24px;
+					padding: 40px 36px 32px;
+					box-shadow: 0 24px 60px rgba(17, 12, 46, 0.25);
+					flex: 1; /* Чтобы карточки занимали равное пространство */
+					}
 
-			.subtitle {
-			text-align: center;
-			color: #8a8fa3;
-			font-size: 14px;
-			margin-top: 8px;
-			margin-bottom: 28px;
-			}
+					.card h1 {
+					font-size: 26px;
+					font-weight: 700;
+					color: #1a1a2e;
+					text-align: center;
+					letter-spacing: -0.5px;
+					}
 
-			/* ---------- Поле ввода ---------- */
-			.input-wrap {
-			position: relative;
-			}
+					/* --- НОВЫЙ БЛОК: Стили для UTM-карточки --- */
+					.utm-card h2 {
+					font-size: 26px;
+					font-weight: 700;
+					color: #1a1a2e;
+					text-align: center;
+					letter-spacing: -0.5px;
+					}
 
-			.input-wrap input {
-			width: 100%;
-			padding: 16px 18px;
-			font-size: 15px;
-			color: #1a1a2e;
-			background: #f7f8fc;
-			border: 2px solid #e6e8f0;
-			border-radius: 14px;
-			outline: none;
-			transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-			}
+					.utm-fields {
+					display: flex;
+					flex-direction: column;
+					gap: 16px;
+					margin-bottom: 24px;
+					}
 
-			.input-wrap input::placeholder {
-			color: #a8adc0;
-			}
+					.utm-group {
+					display: flex;
+					flex-direction: column;
+					gap: 6px;
+					}
 
-			.input-wrap input:focus {
-			background: #ffffff;
-			border-color: #667eea;
-			box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-			}
+					.utm-group label {
+					font-size: 13px;
+					color: #8a8fa3;
+					font-weight: 600;
+					margin-left: 4px;
+					}
 
-			.input-wrap.error input {
-			border-color: #ef4444;
-			box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
-			animation: shake 0.35s ease;
-			}
+					.utm-group input {
+					width: 100%;
+					padding: 16px 18px;
+					font-size: 15px;
+					color: #1a1a2e;
+					background: #f7f8fc;
+					border: 2px solid #e6e8f0;
+					border-radius: 14px;
+					outline: none;
+					transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+					}
 
-			@keyframes shake {
-			0%, 100% { transform: translateX(0); }
-			25%      { transform: translateX(-6px); }
-			75%      { transform: translateX(6px); }
-			}
+					.utm-group input::placeholder {
+					color: #a8adc0;
+					}
 
-			/* ---------- Чекбокс ---------- */
-			.checkbox {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			margin: 20px 0 24px;
-			cursor: pointer;
-			user-select: none;
-			font-size: 14px;
-			color: #545a70;
-			}
+					.utm-group input:focus {
+					background: #ffffff;
+					border-color: #667eea;
+					box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+					}
 
-			.checkbox input {
-			position: absolute;
-			opacity: 0;
-			pointer-events: none;
-			}
+					/* --------------------------------------------- */
 
-			.checkbox .box {
-			flex: 0 0 auto;
-			width: 20px;
-			height: 20px;
-			border: 2px solid #d3d7e3;
-			border-radius: 6px;
-			background: #ffffff;
-			position: relative;
-			transition: background 0.2s, border-color 0.2s;
-			}
+					.subtitle {
+					text-align: center;
+					color: #8a8fa3;
+					font-size: 14px;
+					margin-top: 8px;
+					margin-bottom: 28px;
+					}
 
-			.checkbox .box::after {
-			content: "";
-			position: absolute;
-			left: 6px;
-			top: 2px;
-			width: 5px;
-			height: 10px;
-			border: solid #ffffff;
-			border-width: 0 2.5px 2.5px 0;
-			transform: rotate(45deg) scale(0);
-			transition: transform 0.15s ease;
-			}
+					/* ---------- Поле ввода ---------- */
+					.input-wrap {
+					position: relative;
+					}
 
-			.checkbox input:checked + .box {
-			background: #667eea;
-			border-color: #667eea;
-			}
+					.input-wrap input {
+					width: 100%;
+					padding: 16px 18px;
+					font-size: 15px;
+					color: #1a1a2e;
+					background: #f7f8fc;
+					border: 2px solid #e6e8f0;
+					border-radius: 14px;
+					outline: none;
+					transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+					}
 
-			.checkbox input:checked + .box::after {
-			transform: rotate(45deg) scale(1);
-			}
+					.input-wrap input::placeholder {
+					color: #a8adc0;
+					}
 
-			.checkbox:hover .box {
-			border-color: #667eea;
-			}
+					.input-wrap input:focus {
+					background: #ffffff;
+					border-color: #667eea;
+					box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+					}
 
-			/* ---------- Кнопка ---------- */
-			.btn-shorten {
-			width: 100%;
-			padding: 16px;
-			font-size: 16px;
-			font-weight: 600;
-			color: #ffffff;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			border: none;
-			border-radius: 14px;
-			cursor: pointer;
-			letter-spacing: 0.2px;
-			transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-			box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
-			}
+					.input-wrap.error input {
+					border-color: #ef4444;
+					box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+					animation: shake 0.35s ease;
+					}
 
-			.btn-shorten:hover:not(:disabled) {
-			transform: translateY(-2px);
-			box-shadow: 0 12px 26px rgba(102, 126, 234, 0.45);
-			}
+					@keyframes shake {
+					0%, 100% { transform: translateX(0); }
+					25%      { transform: translateX(-6px); }
+					75%      { transform: translateX(6px); }
+					}
 
-			.btn-shorten:active:not(:disabled) {
-			transform: translateY(0);
-			box-shadow: 0 6px 14px rgba(102, 126, 234, 0.35);
-			}
+					/* ---------- Чекбокс ---------- */
+					.checkbox {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					margin: 20px 0 24px;
+					cursor: pointer;
+					user-select: none;
+					font-size: 14px;
+					color: #545a70;
+					}
 
-			.btn-shorten:disabled {
-			opacity: 0.7;
-			cursor: progress;
-			transform: none;
-			}
+					.checkbox input {
+					position: absolute;
+					opacity: 0;
+					pointer-events: none;
+					}
 
-			/* ---------- Сообщение об ошибке ---------- */
-			.error-msg {
-			margin-top: 14px;
-			font-size: 13px;
-			color: #ef4444;
-			text-align: center;
-			display: none;
-			}
+					.checkbox .box {
+					flex: 0 0 auto;
+					width: 20px;
+					height: 20px;
+					border: 2px solid #d3d7e3;
+					border-radius: 6px;
+					background: #ffffff;
+					position: relative;
+					transition: background 0.2s, border-color 0.2s;
+					}
 
-			.error-msg.visible {
-			display: block;
-			}
+					.checkbox .box::after {
+					content: "";
+					position: absolute;
+					left: 6px;
+					top: 2px;
+					width: 5px;
+					height: 10px;
+					border: solid #ffffff;
+					border-width: 0 2.5px 2.5px 0;
+					transform: rotate(45deg) scale(0);
+					transition: transform 0.15s ease;
+					}
 
-			/* ---------- Панель сгенерированных ссылок ---------- */
-			.links-panel {
-			max-height: 0;
-			overflow: hidden;
-			opacity: 0;
-			transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
-			}
+					.checkbox input:checked + .box {
+					background: #667eea;
+					border-color: #667eea;
+					}
 
-			.links-panel.open {
-			max-height: 420px;
-			opacity: 1;
-			margin-top: 24px;
-			overflow-y: auto;
-			}
+					.checkbox input:checked + .box::after {
+					transform: rotate(45deg) scale(1);
+					}
 
-			.links-panel::-webkit-scrollbar {
-			width: 6px;
-			}
+					.checkbox:hover .box {
+					border-color: #667eea;
+					}
 
-			.links-panel::-webkit-scrollbar-thumb {
-			background: #dfe2ee;
-			border-radius: 3px;
-			}
+					/* ---------- Кнопка ---------- */
+					.btn-shorten {
+					width: 100%;
+					padding: 16px;
+					font-size: 16px;
+					font-weight: 600;
+					color: #ffffff;
+					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+					border: none;
+					border-radius: 14px;
+					cursor: pointer;
+					letter-spacing: 0.2px;
+					transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+					box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+					}
 
-			.links-title {
-			font-size: 12px;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-			color: #a8adc0;
-			margin-bottom: 12px;
-			}
+					.btn-shorten:hover:not(:disabled) {
+					transform: translateY(-2px);
+					box-shadow: 0 12px 26px rgba(102, 126, 234, 0.45);
+					}
 
-			.links-list {
-			list-style: none;
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
-			}
+					.btn-shorten:active:not(:disabled) {
+					transform: translateY(0);
+					box-shadow: 0 6px 14px rgba(102, 126, 234, 0.35);
+					}
 
-			.link-item {
-			background: #f7f8fc;
-			border: 1px solid #eceef6;
-			border-radius: 14px;
-			padding: 12px 14px;
-			animation: fadeIn 0.3s ease;
-			}
+					.btn-shorten:disabled {
+					opacity: 0.7;
+					cursor: progress;
+					transform: none;
+					}
 
-			@keyframes fadeIn {
-			from { opacity: 0; transform: translateY(-6px); }
-			to   { opacity: 1; transform: translateY(0); }
-			}
+					/* ---------- Сообщение об ошибке ---------- */
+					.error-msg {
+					margin-top: 14px;
+					font-size: 13px;
+					color: #ef4444;
+					text-align: center;
+					display: none;
+					}
 
-			.link-original {
-			font-size: 12px;
-			color: #9aa0b5;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			margin-bottom: 6px;
-			}
+					.error-msg.visible {
+					display: block;
+					}
 
-			.link-row {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 10px;
-			}
+					/* ---------- Панель сгенерированных ссылок ---------- */
+					.links-panel {
+					max-height: 0;
+					overflow: hidden;
+					opacity: 0;
+					transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+					}
 
-			.link-short {
-			font-size: 15px;
-			font-weight: 600;
-			color: #667eea;
-			text-decoration: none;
-			word-break: break-all;
-			}
+					.links-panel.open {
+					max-height: 420px;
+					opacity: 1;
+					margin-top: 24px;
+					overflow-y: auto;
+					}
 
-			.link-short:hover {
-			text-decoration: underline;
-			}
+					.links-panel::-webkit-scrollbar {
+					width: 6px;
+					}
 
-			.btn-copy {
-			flex: 0 0 auto;
-			padding: 6px 12px;
-			font-size: 12px;
-			font-weight: 600;
-			color: #667eea;
-			background: #ffffff;
-			border: 1.5px solid #dfe3f5;
-			border-radius: 9px;
-			cursor: pointer;
-			transition: background 0.2s, color 0.2s, border-color 0.2s;
-			}
+					.links-panel::-webkit-scrollbar-thumb {
+					background: #dfe2ee;
+					border-radius: 3px;
+					}
 
-			.btn-copy:hover {
-			background: #667eea;
-			border-color: #667eea;
-			color: #ffffff;
-			}
+					.links-title {
+					font-size: 12px;
+					font-weight: 700;
+					text-transform: uppercase;
+					letter-spacing: 1px;
+					color: #a8adc0;
+					margin-bottom: 12px;
+					}
 
-			.btn-copy.copied {
-			background: #22c55e;
-			border-color: #22c55e;
-			color: #ffffff;
-			}
+					.links-list {
+					list-style: none;
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+					}
 
-			.empty {
-			text-align: center;
-			font-size: 13px;
-			color: #b3b8c9;
-			padding: 16px 0 4px;
-			}
+					.link-item {
+					background: #f7f8fc;
+					border: 1px solid #eceef6;
+					border-radius: 14px;
+					padding: 12px 14px;
+					animation: fadeIn 0.3s ease;
+					}
 
-			/* ---------- Блок аналитики ---------- */
-			.analytics-panel {
-			margin-top: 10px;
-			padding: 10px;
-			background: #ffffff;
-			border-radius: 8px;
-			border: 1px solid #e6e8f0;
-			font-size: 13px;
-			display: none; /* Скрыто по умолчанию */
-			}
-			.analytics-panel.open {
-			display: block;
-			}
-			.analytics-title {
-			font-weight: bold;
-			margin-bottom: 5px;
-			color: #1a1a2e;
-			}
-			.analytics-item {
-			color: #545a70;
-			margin-bottom: 3px;
-			}
+					@keyframes fadeIn {
+					from { opacity: 0; transform: translateY(-6px); }
+					to   { opacity: 1; transform: translateY(0); }
+					}
+
+					.link-original {
+					font-size: 12px;
+					color: #9aa0b5;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-bottom: 6px;
+					}
+
+					.link-row {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					}
+
+					.link-short {
+					font-size: 15px;
+					font-weight: 600;
+					color: #667eea;
+					text-decoration: none;
+					word-break: break-all;
+					}
+
+					.link-short:hover {
+					text-decoration: underline;
+					}
+
+					.btn-copy {
+					flex: 0 0 auto;
+					padding: 6px 12px;
+					font-size: 12px;
+					font-weight: 600;
+					color: #667eea;
+					background: #ffffff;
+					border: 1.5px solid #dfe3f5;
+					border-radius: 9px;
+					cursor: pointer;
+					transition: background 0.2s, color 0.2s, border-color 0.2s;
+					}
+
+					.btn-copy:hover {
+					background: #667eea;
+					border-color: #667eea;
+					color: #ffffff;
+					}
+
+					.btn-copy.copied {
+					background: #22c55e;
+					border-color: #22c55e;
+					color: #ffffff;
+					}
+
+					.empty {
+					text-align: center;
+					font-size: 13px;
+					color: #b3b8c9;
+					padding: 16px 0 4px;
+					}
+
+					/* ---------- Блок аналитики ---------- */
+					.analytics-panel {
+					margin-top: 10px;
+					padding: 10px;
+					background: #ffffff;
+					border-radius: 8px;
+					border: 1px solid #e6e8f0;
+					font-size: 13px;
+					display: none; /* Скрыто по умолчанию */
+					}
+					.analytics-panel.open {
+					display: block;
+					}
+					.analytics-title {
+					font-weight: bold;
+					margin-bottom: 5px;
+					color: #1a1a2e;
+					}
+					.analytics-item {
+					color: #545a70;
+					margin-bottom: 3px;
+					}
 
 
+					/* --- Адаптивность --- */
+					@media (max-width: 1140px) {
+					.layout {
+					flex-direction: column;
+					align-items: center;
+					}
+					.card {
+					max-width: 540px;
+					}
+					}
 
-			@media (max-width: 480px) {
-			.card {
-			padding: 30px 22px 26px;
-			border-radius: 20px;
-			}
-			.card h1 {
-			font-size: 22px;
-			}
-			}
-		</style>
+					@media (max-width: 480px) {
+					.card {
+					padding: 30px 22px 26px;
+					border-radius: 20px;
+					}
+					.card h1, .utm-card h2 {
+					font-size: 22px;
+					}
+					}
+				</style>
 			</head>
 	<body>
 
-		<div class="card">
-			<h1>Сократить ссылку</h1>
-			<p class="subtitle">Вставьте длинную ссылку и получите короткую</p>
+		<!-- НОВЫЙ БЛОК: Обертка layout для двух карточек -->
+		<div class="layout">
 
-			<div class="input-wrap" id="inputWrap">
-				<input
-				  type="text"
-				  id="urlInput"
-				  placeholder="https://example.com/очень/длинная/ссылка"
-				  autocomplete="off"
-				  spellcheck="false"></input>
+			<!-- ВАША КАРТОЧКА (Ничего не тронуто) -->
+			<div class="card">
+				<h1>Сократить ссылку</h1>
+				<p class="subtitle">Вставьте длинную ссылку и получите короткую</p>
+
+				<div class="input-wrap" id="inputWrap">
+					<input
+					  type="text"
+					  id="urlInput"
+					  placeholder="https://example.com/очень/длинная/ссылка"
+					  autocomplete="off"
+					  spellcheck="false"></input>
 				</div>
 
-			<label class="checkbox">
-				<input type="checkbox" id="toggleLinks"></input>
+				<label class="checkbox">
+					<input type="checkbox" id="toggleLinks"></input>
 					<span class="box"></span>
 					<span>Показать сгенерированные ссылки</span>
 				</label>
 
-			<button class="btn-shorten" id="shortenBtn">Сократить</button>
+				<button class="btn-shorten" id="shortenBtn">Сократить</button>
 
-			<p class="error-msg" id="errorMsg"></p>
+				<p class="error-msg" id="errorMsg"></p>
 
-			<div class="links-panel" id="linksPanel">
-				<div class="links-title">Ваши ссылки</div>
-				<ul class="links-list" id="linksList"></ul>
-				<p class="empty" id="emptyState">Пока ничего не сгенерировано</p>
+				<div class="links-panel" id="linksPanel">
+					<div class="links-title">Ваши ссылки</div>
+					<ul class="links-list" id="linksList"></ul>
+					<p class="empty" id="emptyState">Пока ничего не сгенерировано</p>
+				</div>
 			</div>
+
+			<!-- НОВЫЙ БЛОК: Карточка UTM-меток -->
+			<div class="card utm-card">
+				<h2>UTM-метки</h2>
+				<p class="subtitle">Добавьте параметры для аналитики</p>
+
+				<div class="utm-fields">
+					<div class="utm-group">
+						<label>UtmSource</label>
+						<input type="text" id="utmSource" placeholder="google, yandex, vk...">
+				</div>
+					<div class="utm-group">
+						<label>UtmMedium</label>
+						<input type="text" id="utmMedium" placeholder="cpc, banner, email...">
+				</div>
+					<div class="utm-group">
+						<label>UtmCampaign</label>
+						<input type="text" id="utmCampaign" placeholder="summer_sale">
+				</div>
+				</div>
+
+				<button class="btn-shorten" id="shortenUtmBtn">Сократить с UTM</button>
+			</div>
+
 		</div>
 
 		<script>
@@ -481,7 +584,6 @@
 			errorMsg.classList.remove('visible');
 			}
 
-			/* --- Отрисовка одной ссылки --- */
 			/* --- Отрисовка одной ссылки --- */
 			function renderLink(item) {
 			const li = document.createElement('li');
@@ -783,6 +885,78 @@
 			// Вызываем функцию при загрузке страницы
 			loadUserBuffer();
 
+			/* ============================================================
+			★ НОВЫЙ БЛОК: Обработка UTM-меток
+			============================================================ */
+			const shortenUtmBtn = document.getElementById('shortenUtmBtn');
+
+			if (shortenUtmBtn) {
+			shortenUtmBtn.addEventListener('click', async () => {
+			if (isBusy) return;
+			clearError();
+
+			// 1. Берем базовую ссылку из левого поля и проверяем её
+			const baseUrl = normalizeUrl(input.value);
+
+			if (!baseUrl) {
+			inputWrap.classList.remove('error');
+			void inputWrap.offsetWidth;
+			inputWrap.classList.add('error');
+			input.focus();
+			return;
+			}
+
+			// 2. Навешиваем UTM-метки
+			const urlObj = new URL(baseUrl);
+			const source = document.getElementById('utmSource').value.trim();
+			const medium = document.getElementById('utmMedium').value.trim();
+			const campaign = document.getElementById('utmCampaign').value.trim();
+
+			if (source) urlObj.searchParams.set('utm_source', source);
+			if (medium) urlObj.searchParams.set('utm_medium', medium);
+			if (campaign) urlObj.searchParams.set('utm_campaign', campaign);
+
+			const finalUrl = urlObj.toString();
+
+			// 3. Отправляем на бэкенд
+			inputWrap.classList.remove('error');
+			setBusy(true);
+
+			shortenUtmBtn.disabled = true;
+			const originalBtnText = shortenUtmBtn.textContent;
+			shortenUtmBtn.textContent = 'Сокращаем...';
+
+			try {
+			const shortUrl = await shortenUrl(finalUrl);
+
+			const item = { original: finalUrl, short: shortUrl };
+			links.unshift(item);
+
+			if (links.length === 1) {
+			emptyState.style.display = 'none';
+			}
+
+			list.prepend(renderLink(item));
+
+			if (!toggle.checked) {
+			toggle.checked = true;
+			panel.classList.add('open');
+			}
+			} catch (err) {
+			console.error('Shorten UTM error:', err);
+			if (err instanceof TypeError) {
+			showError('Не удалось связаться с сервером. Проверьте, что бэкенд запущен и CORS настроен.');
+			} else {
+			showError(err.message || 'Неизвестная ошибка.');
+			}
+			} finally {
+			setBusy(false);
+			shortenUtmBtn.disabled = false;
+			shortenUtmBtn.textContent = originalBtnText;
+			input.focus();
+			}
+			});
+			}
 		</script>
 	</body>
 </html>

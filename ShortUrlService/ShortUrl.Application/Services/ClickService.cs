@@ -46,14 +46,17 @@ namespace ShortUrl.Application.Services
             return clickid;
         }
 
-        public async Task UpdateExternalInfoForClick(long clickid, string resolution, string timezone, DateTime? devicelocaltime)
+        public async Task UpdateExternalInfoForClick(ClickUpdateRequest data)
         {
-            var click = await _clickRepository.GetByIdAsync(clickid);
+            var click = await _clickRepository.GetByIdAsync(data.clickid);
             if (click != null)
             {
-                click.Resolution = resolution;
-                click.TimeZone = timezone;
-                click.DeviceLocalTime = devicelocaltime;
+                click.Resolution = data.Resolution;
+                click.TimeZone = data.TimeZone;
+                click.DeviceLocalTime = data.DeviceLocalTime;
+                click.UtmSource = data.UtmSource;
+                click.UtmMedium = data.UtmMedium;
+                click.UtmCampaign = data.UtmCampaign;
                 await _clickRepository.UpdateClickAsync(click);
             }
             
@@ -90,7 +93,7 @@ namespace ShortUrl.Application.Services
 
             if (linkid != null)
             {
-                await UpdateExternalInfoForClick(data.clickid, data.Resolution, data.TimeZone, data.DeviceLocalTime);
+                await UpdateExternalInfoForClick(data);
                 return true;
             }
             else

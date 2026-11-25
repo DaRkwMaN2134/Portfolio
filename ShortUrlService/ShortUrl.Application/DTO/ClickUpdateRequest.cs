@@ -4,5 +4,6 @@ using System.Text;
 
 namespace ShortUrl.Application.DTO
 {
-    public record ClickUpdateRequest(string Shortcode, string Resolution, string TimeZone, DateTime? DeviceLocalTime, long clickid);
+    public record ClickUpdateRequest(string Shortcode, string Resolution, string TimeZone, DateTime? DeviceLocalTime, long clickid, 
+        string UtmSource, string UtmMedium, string UtmCampaign);
 }

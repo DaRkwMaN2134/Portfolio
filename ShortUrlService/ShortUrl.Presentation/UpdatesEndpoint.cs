@@ -14,7 +14,7 @@ namespace ShortUrl.Presentation
         }
 
         private static async Task<IResult> ClickUpdateEndpoint(ClickUpdateRequest data, ClickService clickservice)
-        {   
+        {
             var update = await clickservice.ClickUpdateAsync(data);
 
             if(!update) return Results.NotFound();

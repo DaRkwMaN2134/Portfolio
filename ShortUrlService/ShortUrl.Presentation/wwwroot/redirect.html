@@ -1,42 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset='utf-8'></meta>
-    <title>Перенаправление...</title>
-    <style>
-        body {{ font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f5f5f5; }}
-        .loader {{ border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }}
-        @keyframes spin {{ 0% {{ transform: rotate(0deg); }} 100% {{ transform: rotate(360deg); }} }}
-    </style>
-</head>
-<body>
-    <div class='loader'></div>
-    <script>
-		// 1. Читаем параметры из URL (url и code)
-		const params = new URLSearchParams(window.location.search);
-		const longUrl = decodeURIComponent(params.get('longurl'));
-		const shortCode = decodeURIComponent(params.get('shortcode'));
-		const clickid = decodeURIComponent(params.get('clickid'));
+	<head>
+		<meta charset='utf-8'></meta>
+		<title>Перенаправление...</title>
+		<style>
+			body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f5f5f5; }
+			.loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+			@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+		</style>
+	</head>
+	<body>
+		<div class='loader'></div>
+		<script>
+			// 1. Читаем параметры из текущего URL (URLSearchParams уже сам декодирует значения)
+			const params = new URLSearchParams(window.location.search);
+			const longUrl = params.get('longurl');
+			const shortCode = params.get('shortcode');
+			const clickid = params.get('clickid');
 
-		// 2. Собираем данные для аналитики
-		const data = {
-		shortCode: shortCode,
-		resolution: window.screen.width + 'x' + window.screen.height,
-		timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-		deviceLocalTime: new Date().toISOString(),
-		clickid : clickid
-		};
+			// 2. Извлекаем UTM-метки из целевой ссылки (longUrl)
+			let utmSource = null;
+			let utmMedium = null;
+			let utmCampaign = null;
 
-		// 3. Отправляем данные на сервер
-		const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-		navigator.sendBeacon('/api/click/update', blob);
+			if (longUrl) {
+			try {
+			const targetUrlObj = new URL(longUrl);
+			// Ищем в целевой ссылке, а если там нет — проверяем текущую короткую ссылку
+			utmSource = targetUrlObj.searchParams.get('utm_source') || params.get('utm_source');
+			utmMedium = targetUrlObj.searchParams.get('utm_medium') || params.get('utm_medium');
+			utmCampaign = targetUrlObj.searchParams.get('utm_campaign') || params.get('utm_campaign');
+			} catch (e) {
+			console.error('Некорректный формат longurl:', e);
+			}
+			}
 
-		// 4. Перенаправляем пользователя на оригинальный сайт
-		if (longUrl) {
-		window.location.replace(longUrl);
-		} else {
-		document.body.innerHTML = "<h1>Ошибка: ссылка не найдена</h1>";
-		}
-	</script>
-</body>
+			// 3. Собираем данные для аналитики (имена полей под C# DTO)
+			const data = {
+			longurl: longUrl,
+			shortCode: shortCode,
+			resolution: window.screen.width + 'x' + window.screen.height,
+			timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			deviceLocalTime: new Date().toISOString(),
+			clickid: clickid,
+			UtmSource: utmSource,
+			UtmMedium: utmMedium,
+			UtmCampaign: utmCampaign
+			};
+
+			// 4. Отправляем данные на сервер и делаем редирект
+			if (longUrl) {
+			const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+			navigator.sendBeacon('/api/click/update', blob);
+			window.location.replace(longUrl);
+			} else {
+			document.body.innerHTML = "<h1>Ошибка: ссылка не найдена</h1>";
+			}
+		</script>
+	</body>
 </html>
