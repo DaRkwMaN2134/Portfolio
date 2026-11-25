@@ -18,8 +18,20 @@ using System.Net;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using UAParser;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services));
+
+
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -53,9 +65,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddMemoryCache();
-
 var app = builder.Build();
 
 
@@ -70,6 +80,7 @@ app.UseMiddleware<Middleware>();
 app.MapLinkEndpoints();
 app.MapAnalyticsEndpoints();
 app.MapUpdateEndpoints();
+app.UseSerilogRequestLogging();
 
 
 app.Run();

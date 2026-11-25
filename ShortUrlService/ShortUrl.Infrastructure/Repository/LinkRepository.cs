@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DeviceDetectorNET.Parser.Device;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 using System;
@@ -10,9 +12,11 @@ namespace ShortUrl.Infrastructure.Repository
     public class LinkRepository : ILinkRepository
     {
         private readonly AppDbContext _dbContext;
-        public LinkRepository(AppDbContext dbContext)
+        private readonly ILogger<LinkRepository> _logger;
+        public LinkRepository(AppDbContext dbContext, ILogger<LinkRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<Link?> CreateLinkAsync(string longurl, string shortcode, User creator)
@@ -37,14 +41,14 @@ namespace ShortUrl.Infrastructure.Repository
                 }
                 catch(DbUpdateException ex)
                 {
-                    Console.WriteLine($"[МЕТОД CreateLinkAsync] ОШИБКА {ex.Message}");
+                    _logger.LogError(ex, "[МЕТОД CreateLinkAsync] ОШИБКА ПРИ СОЗДАНИИ ССЫЛКИ У ПОЛЬЗОВАТЕЛЯ {DeviceId}", creator.DeviceId);
                     return null;
                 }
                 return link;
             }
             else
             {
-                Console.WriteLine("[МЕТОД CreateLinkAsync] ссылка уже создана");
+                _logger.LogInformation("[МЕТОД CreateLinkAsync] КОРОТКИЙ КОД {ShortCode} УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ", shortcode);
                 return null;
             }
         }
@@ -62,7 +66,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("[МЕТОД GetLongUrlAsync] линка не найдена");
+                _logger.LogInformation("[МЕТОД GetLongUrlAsync] ОСНОВНАЯ ССЫЛКА ПО КОРОТКОМУ КОДУ {ShortCode} НЕ БЫЛА НАЙДЕНА", shortcode);
                 return string.Empty;
             }
         }
@@ -80,7 +84,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("[МЕТОД GetShortCodeAsync] линка не найдена");
+                _logger.LogInformation("[МЕТОД GetShortCodeAsync] КОРОТКИЙ КОД ПО ОСНОВНОЙ ССЫЛКЕ {LongUrl} НЕ БЫЛ НАЙДЕН", url);
                 return string.Empty;
             }
         }
@@ -97,7 +101,7 @@ namespace ShortUrl.Infrastructure.Repository
 
             else
             {
-                Console.WriteLine("[МЕТОД GetUserLinkAsync] креатор не найден");
+                _logger.LogInformation("[МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ {LongUrl} У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID {DeviceId} НЕ БЫЛ НАЙДЕН", url, deviceid);
                 return null;
             }
         }

@@ -9,10 +9,12 @@ namespace ShortUrl.Presentation
     public class Middleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<Middleware> _logger;
 
-        public Middleware(RequestDelegate next)
+        public Middleware(RequestDelegate next, ILogger<Middleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context, UserService userservice)
@@ -39,7 +41,7 @@ namespace ShortUrl.Presentation
                 else
                 {
                     context.Response.StatusCode = 400;
-                    Console.WriteLine("[DEVICEID БЫЛ ПОДМЕНЕН]");
+                    _logger.LogWarning("[DEVICE ID: {DeviceId} БЫЛ ПОДМЕНЕН]", deviceid);
                 }
             }
             else

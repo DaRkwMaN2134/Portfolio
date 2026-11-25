@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShortUrl.Application.DTO;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
@@ -11,9 +12,11 @@ namespace ShortUrl.Infrastructure.Repository
     public class ClickRepository : IClickRepository
     {
         private readonly AppDbContext _dbContext;
-        public ClickRepository(AppDbContext dbContext)
+        private readonly ILogger<ClickRepository> _logger;
+        public ClickRepository(AppDbContext dbContext, ILogger<ClickRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<long> CreateClickAsync(Click click)
@@ -33,7 +36,7 @@ namespace ShortUrl.Infrastructure.Repository
             }
             else
             {
-                Console.WriteLine("click не найден");
+                _logger.LogInformation("[МЕТОД GetByIdAsync] КЛИК ПО CLICK ID {ClickId} НЕ БЫЛ НАЙДЕН", clickid);
                 return null;
             }
         }

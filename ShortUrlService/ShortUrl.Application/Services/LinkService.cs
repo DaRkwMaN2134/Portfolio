@@ -1,4 +1,5 @@
-﻿using ShortUrl.Application.DTO;
+﻿using Microsoft.Extensions.Logging;
+using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
@@ -18,12 +19,14 @@ namespace ShortUrl.Application.Services
         private readonly ClickService _clickService;
         private readonly IUserRepository _userRepository;
         private readonly IClientInfoParser _infoParser;
-        public LinkService(ILinkRepository linkRepository, ClickService clickservice, IUserRepository userRepository, IClientInfoParser infoparser)
+        private readonly ILogger<LinkService> _logger;
+        public LinkService(ILinkRepository linkRepository, ClickService clickservice, IUserRepository userRepository, IClientInfoParser infoparser, ILogger<LinkService> logger)
         {
             _linkRepository = linkRepository;
             _clickService = clickservice;
             _userRepository = userRepository;
             _infoParser = infoparser;
+            _logger = logger;
         }
 
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
@@ -38,22 +41,26 @@ namespace ShortUrl.Application.Services
             }
             else
             {
+                _logger.LogInformation("[МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА");
                 var shortlink = CreateShortenLink(longurl, null);
                 var link = await _linkRepository.CreateLinkAsync(longurl, shortlink, creator);
 
                 if (link != null)
                 {
                     shortcode = shortlink;
+                    _logger.LogInformation("[МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД {ShortCode} УСПЕШНО СОЗДАН", shortcode);
                 }
                 else
                 {
-                    for(int i = 0; i<=5; i++)
+                    for (int i = 0; i<=5; i++)
                     {
+                        _logger.LogInformation("[МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА {Attempt}", i+1);
                         var salt = Guid.NewGuid().ToString();
                         var shortlinksalt = CreateShortenLink(longurl, salt);
                         var linksalt = await _linkRepository.CreateLinkAsync(longurl, shortlinksalt, creator);
                         if (i == 5)
                         {
+                            _logger.LogError("[МЕТОД ShortenLinkAsync] НЕ УДАЛОСЬ СОЗДАТЬ КОРОТКИЙ КОД ДЛЯ ССЫЛКИ {LongUrl} ЗА 5 ПОПЫТОК", longurl);
                             throw new InvalidOperationException("Не удалось сгенерировать уникальный код за 5 попыток");
                         }
                         if (linksalt == null)
@@ -62,6 +69,7 @@ namespace ShortUrl.Application.Services
                         }
                         else
                         {
+                            _logger.LogInformation("[МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН");
                             shortcode = shortlinksalt;
                             break;
                         }
@@ -173,7 +181,6 @@ namespace ShortUrl.Application.Services
 
 
             string redirectUrl = $"/redirect.html?longurl={encodedLongUrl}&shortcode={encodedShortcode}&clickid={clickid}";
-            Console.WriteLine($"ЭТО ССЫЛКА КОТОРАЯ НУЖНА {clickid}");
             return redirectUrl;
         }
     }

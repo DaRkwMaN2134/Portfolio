@@ -1,0 +1,100 @@
+2026-11-25 12:21:10.018 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:21:10.051 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:21:10.053 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:21:10.054 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:21:20.219 +06:00 [INF] HTTP GET /b/buffer responded 200 in 188.3059 ms
+2026-11-25 12:21:23.180 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.google.com/search?q=Serilog.Sinks.File&sca_esv=7d416cdbec24a30a&sxsrf=AKL5yDiYaXdx12ayBDlqYv-QLGhPlLLzQQ%3A1795582542240&source=chrome.ob&fbs=ACAhTvwcUBRQ0lUT38c2WoI0c58XOtaud4FBaonYqtOWHfbzUKMgmRlr5CvEoICIiNGbqmE83GyEJq73YgBYTocK-9L4we0B3A7qQ31wP-_JxztECDGTkENsv0NALM9jgxWICBa80Y8eq4HtRkhBo3IfgwQ0HDMczive8nMUMeuo5HuJln8mCQBALBAb8b3LuvtipOu3imC-zm0K8MoLLDcpNs-WJjrx4Z_rtuwQKofn4BsYv2vbPKnKe2gV2F80pgv5SNtVXwDc83gi9eeHMoPtnUgk-m8bXg&vsint=&aep=1&ntc=1&cs=1&sa=X&ved=2ahUKEwi53OCcqqKYAxULhv0HHZ9ULwQQ2J8OegQIEhAD&biw=1600&bih=812&dpr=0.9&mstk=AUtExfBqLAErQoRQan5X19exKKrh1XmlmOFazBHpqjUI0k6sJRLOrboUGwHHBlf77RfZI8fd1At1LvjmYrLfpWQqMnd_hAZVtqIGYEb70bAfjXvdU5C2uIyahZ7gdPuOohjG_h8IgXdAor5uWlWTiW4KhsMOTRylMMm1l2LLBppIMVmgAGy-XCF2ARRcYopvtsZGUCJQo8aXcTKOKCSRjFPoNTvUw7cSJ0QNqXOizfLv4B6IFV-4-BkW_FNPa1BcPH5ga5yyk8t7RltUYY95LN-AfnlCGy1kxLyhpsc&csuir=1&mtid=c2oGa426ILaH9u8P5vaqKQ&udm=50 У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID fa44b4bc-8f1a-4b8d-b222-4c8cdb3f31ba НЕ БЫЛ НАЙДЕН
+2026-11-25 12:21:23.182 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:21:23.374 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД vFmxYh7y4 УСПЕШНО СОЗДАН
+2026-11-25 12:21:23.379 +06:00 [INF] HTTP POST /shorten responded 200 in 217.1333 ms
+2026-11-25 12:21:23.813 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3783.1579 ms
+2026-11-25 12:27:55.575 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:27:55.608 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:27:55.610 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:27:55.611 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:28:09.143 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID fa44b4bc-8f1a-4b8d-b222-4c8cdb3f31ba НЕ БЫЛ НАЙДЕН
+2026-11-25 12:28:09.146 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:28:09.286 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД 1SxtWE5bmQ УСПЕШНО СОЗДАН
+2026-11-25 12:28:09.306 +06:00 [INF] HTTP POST /shorten responded 200 in 321.8935 ms
+2026-11-25 12:28:13.206 +06:00 [INF] HTTP GET /.well-known/appspecific/com.chrome.devtools.json responded 404 in 0.1505 ms
+2026-11-25 12:28:17.472 +06:00 [INF] HTTP GET /b/buffer responded 200 in 31.4362 ms
+2026-11-25 12:28:18.992 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 5fba35de-bc8b-45b8-af81-0a705290df78 НЕ БЫЛ НАЙДЕН
+2026-11-25 12:28:18.993 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:28:18.995 +06:00 [INF] [МЕТОД CreateLinkAsync] ТАКАЯ ССЫЛКА У ПОЛЬЗОВАТЕЛЯ 5fba35de-bc8b-45b8-af81-0a705290df78 УЖЕ СУЩЕСТВУЕТ
+2026-11-25 12:28:18.996 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:28:19.001 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:28:19.002 +06:00 [INF] HTTP POST /shorten responded 200 in 18.1290 ms
+2026-11-25 12:28:21.142 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3725.0656 ms
+2026-11-25 12:31:30.863 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:31:30.897 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:31:30.898 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:31:30.899 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:31:39.344 +06:00 [INF] HTTP GET /b/buffer responded 200 in 174.8631 ms
+2026-11-25 12:31:41.091 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID d330946a-8592-4fb6-be8f-6b4385fcedb1 НЕ БЫЛ НАЙДЕН
+2026-11-25 12:31:41.093 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:31:41.116 +06:00 [INF] [МЕТОД CreateLinkAsync] ССЫЛКА d330946a-8592-4fb6-be8f-6b4385fcedb1 УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:31:41.117 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:31:41.285 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:31:41.291 +06:00 [INF] HTTP POST /shorten responded 200 in 217.3364 ms
+2026-11-25 12:31:43.030 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3862.9941 ms
+2026-11-25 12:32:34.537 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:32:34.568 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:32:34.570 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:32:34.570 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:32:43.811 +06:00 [INF] HTTP GET /b/buffer responded 200 in 171.8345 ms
+2026-11-25 12:32:44.011 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 7f9b0b1d-ba29-488c-8680-0357c334ccbf НЕ БЫЛ НАЙДЕН
+2026-11-25 12:32:44.012 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:32:44.032 +06:00 [INF] [МЕТОД CreateLinkAsync] ССЫЛКА https://www.deepseek.com/en/ УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:32:44.033 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:32:44.200 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:32:44.205 +06:00 [INF] HTTP POST /shorten responded 200 in 213.6075 ms
+2026-11-25 12:32:47.329 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3692.1278 ms
+2026-11-25 12:34:18.236 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://vk.ru/music/catalog/PUldVA8FR0RzSVNUWE00BzMPABlGaxgOKRkdVBkWUkR8WkVUAQRJXGtaRVQNFlFTclxfRAEMUlNqSVxAFw5JASMFDARUWElKZF9YVA8GFg У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 7f9b0b1d-ba29-488c-8680-0357c334ccbf НЕ БЫЛ НАЙДЕН
+2026-11-25 12:34:18.237 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:34:18.238 +06:00 [INF] [МЕТОД CreateLinkAsync] ССЫЛКА https://vk.ru/music/catalog/PUldVA8FR0RzSVNUWE00BzMPABlGaxgOKRkdVBkWUkR8WkVUAQRJXGtaRVQNFlFTclxfRAEMUlNqSVxAFw5JASMFDARUWElKZF9YVA8GFg УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:34:18.239 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:34:18.242 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:34:18.243 +06:00 [INF] HTTP POST /shorten responded 200 in 11.3016 ms
+2026-11-25 12:34:33.865 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://web.telegram.org/k/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 7f9b0b1d-ba29-488c-8680-0357c334ccbf НЕ БЫЛ НАЙДЕН
+2026-11-25 12:34:33.866 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:34:33.868 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД FmtUSFu0A УСПЕШНО СОЗДАН
+2026-11-25 12:34:33.869 +06:00 [INF] HTTP POST /shorten responded 200 in 5.3805 ms
+2026-11-25 12:36:05.930 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:36:05.963 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:36:05.965 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:36:05.966 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:36:11.653 +06:00 [INF] HTTP GET /b/buffer responded 200 in 172.2326 ms
+2026-11-25 12:36:13.906 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 3803825c-1caf-4744-9734-f3461ec9fd48 НЕ БЫЛ НАЙДЕН
+2026-11-25 12:36:13.908 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:36:13.933 +06:00 [INF] [МЕТОД CreateLinkAsync] КОРОТКИЙ КОД 1SxtWE5bmQ УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:36:13.934 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:36:14.102 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:36:14.108 +06:00 [INF] HTTP POST /shorten responded 200 in 220.9359 ms
+2026-11-25 12:36:15.340 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3860.9099 ms
+2026-11-25 12:36:20.369 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:36:20.406 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:36:20.408 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:36:20.409 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:36:25.361 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 07f14b13-56c3-4a3e-83ec-b156a956a4c8 НЕ БЫЛ НАЙДЕН
+2026-11-25 12:36:25.365 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:36:25.387 +06:00 [INF] HTTP GET /b/buffer responded 200 in 165.1498 ms
+2026-11-25 12:36:25.394 +06:00 [INF] [МЕТОД CreateLinkAsync] КОРОТКИЙ КОД 1SxtWE5bmQ УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:36:25.395 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД ДЛЯ ССЫЛКИ ЗАНЯТ, НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:36:25.551 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:36:25.559 +06:00 [INF] HTTP POST /shorten responded 200 in 339.0318 ms
+2026-11-25 12:36:28.870 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3650.8589 ms
+2026-11-25 12:37:17.727 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 12:37:17.766 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 12:37:17.767 +06:00 [INF] Hosting environment: Production
+2026-11-25 12:37:17.768 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 12:37:27.984 +06:00 [INF] HTTP GET /b/buffer responded 200 in 174.7578 ms
+2026-11-25 12:37:29.676 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 20436670-6428-4b8c-bb8b-66b7d00be22a НЕ БЫЛ НАЙДЕН
+2026-11-25 12:37:29.677 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 12:37:29.699 +06:00 [INF] [МЕТОД CreateLinkAsync] КОРОТКИЙ КОД 1SxtWE5bmQ УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 12:37:29.700 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 12:37:29.866 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 12:37:29.873 +06:00 [INF] HTTP POST /shorten responded 200 in 213.4635 ms
+2026-11-25 12:37:31.581 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3774.2006 ms
+2026-11-25 12:37:50.021 +06:00 [INF] HTTP GET /s/38CzlnH6zG responded 302 in 53.2841 ms
+2026-11-25 12:37:50.165 +06:00 [INF] HTTP POST /api/click/update responded 200 in 38.5766 ms
+2026-11-25 12:37:53.967 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 53.4006 ms

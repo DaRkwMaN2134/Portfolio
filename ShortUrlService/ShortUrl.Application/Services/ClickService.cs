@@ -1,4 +1,5 @@
-﻿using ShortUrl.Application.DTO;
+﻿using Microsoft.Extensions.Logging;
+using ShortUrl.Application.DTO;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 using System;
@@ -12,10 +13,13 @@ namespace ShortUrl.Application.Services
     {
         private readonly IClickRepository _clickRepository;
         private readonly ILinkRepository _linkRepository;
-        public ClickService(IClickRepository clickRepository, ILinkRepository linkRepository)
+        private readonly ILogger<ClickService> _logger;
+
+        public ClickService(IClickRepository clickRepository, ILinkRepository linkRepository, ILogger<ClickService> logger)
         {
             _clickRepository = clickRepository;
             _linkRepository = linkRepository;
+            _logger = logger;
         }
         public async Task<long?> CollectionInfoForClickAsync(long linkid, ParserDTO dtoinfo, ClientContext clientContext)
         {
@@ -47,7 +51,6 @@ namespace ShortUrl.Application.Services
             var click = await _clickRepository.GetByIdAsync(clickid);
             if (click != null)
             {
-                Console.WriteLine($"[ID ЭТОЙ ССЫЛКИ] = {click.LinkId}");
                 click.Resolution = resolution;
                 click.TimeZone = timezone;
                 click.DeviceLocalTime = devicelocaltime;
@@ -87,13 +90,12 @@ namespace ShortUrl.Application.Services
 
             if (linkid != null)
             {
-                Console.WriteLine($"[ТУТ МЕГА ССЫЛКА]  {linkid}");
                 await UpdateExternalInfoForClick(data.clickid, data.Resolution, data.TimeZone, data.DeviceLocalTime);
                 return true;
             }
             else
             {
-                Console.WriteLine($"[МЕГА ССЫЛКА НЕ НАЙДЕНА]");
+                _logger.LogInformation("[МЕТОД ClickUpdateAsync] ССЫЛКА ПО КОРОТКОМУ КОДУ {ShortCode} НЕ БЫЛА НАЙДЕНА", data.Shortcode);
                 return false;
             }
         }

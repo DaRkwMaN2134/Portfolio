@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DeviceDetectorNET.Parser.Device;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 
@@ -7,9 +9,11 @@ namespace ShortUrl.Infrastructure.Repository
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _dbContext;
-        public UserRepository(AppDbContext dbContext)
+        private readonly ILogger<UserRepository> _logger;
+        public UserRepository(AppDbContext dbContext, ILogger<UserRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<User?> GetOrCreateUserAsync(string deviceid)
@@ -40,7 +44,7 @@ namespace ShortUrl.Infrastructure.Repository
             var user = await _dbContext.users.FirstOrDefaultAsync(d => d.DeviceId == deviceid);
             if (user == null)
             {
-                Console.WriteLine("анонимный юзер не найден");
+                _logger.LogInformation("[Юзер по DEVICE ID {DeviceId} не найден]", deviceid);
                 return null;
             }
             else
@@ -55,7 +59,7 @@ namespace ShortUrl.Infrastructure.Repository
             var user = await _dbContext.users.FirstOrDefaultAsync(d => d.UserId == userid);
             if (user == null)
             {
-                Console.WriteLine("залогиненный юзер не найден");
+                _logger.LogInformation("[Юзер по USER ID {UserId} не найден]", userid);
                 return null;
             }
             else
