@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Castle.Core.Logging;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging;
 using Moq;
 using ShortUrl.Application.Interfaces;
 using ShortUrl.Application.Services;
@@ -17,13 +19,17 @@ namespace ShortUrl.Tests
         private readonly Mock<IUserRepository> _userRepoMock;
         private readonly Mock<IClientInfoParser> _clientParserMock;
         private readonly LinkService _linkService;
+        private readonly Mock<ILogger<LinkService>> _loggerLinkMock;
+        private readonly Mock<ILogger<ClickService>> _loggerClickMock;
         public LinkService_Test(ITestOutputHelper output)
         {
             _output = output;
 
             _linkRepoMock = new Mock<ILinkRepository>();
             _clickRepoMock = new Mock<IClickRepository>();
-            _clickServiceMock = new Mock<ClickService>(_clickRepoMock.Object, _linkRepoMock.Object);
+            _loggerLinkMock = new Mock<ILogger<LinkService>>();
+            _loggerClickMock = new Mock<ILogger<ClickService>>();
+            _clickServiceMock = new Mock<ClickService>(_clickRepoMock.Object, _linkRepoMock.Object, _loggerClickMock.Object);
             _userRepoMock = new Mock<IUserRepository>();
             _clientParserMock = new Mock<IClientInfoParser>();
 
@@ -31,7 +37,8 @@ namespace ShortUrl.Tests
                 _linkRepoMock.Object,
                 _clickServiceMock.Object,
                 _userRepoMock.Object,
-                _clientParserMock.Object);
+                _clientParserMock.Object,
+                _loggerLinkMock.Object);
         }
 
 

@@ -98,3 +98,7 @@
 2026-11-25 12:37:50.021 +06:00 [INF] HTTP GET /s/38CzlnH6zG responded 302 in 53.2841 ms
 2026-11-25 12:37:50.165 +06:00 [INF] HTTP POST /api/click/update responded 200 in 38.5766 ms
 2026-11-25 12:37:53.967 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 53.4006 ms
+2026-11-25 13:07:32.986 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 13:07:33.024 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 13:07:33.026 +06:00 [INF] Hosting environment: Production
+2026-11-25 13:07:33.026 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
