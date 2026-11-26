@@ -35,15 +35,7 @@ namespace ShortUrl.Infrastructure.Repository
                     CreatedAt = DateTime.UtcNow
                 };
                 _dbContext.links.Add(link);
-                try
-                {
-                    await _dbContext.SaveChangesAsync();
-                }
-                catch(DbUpdateException ex)
-                {
-                    _logger.LogError(ex, "[МЕТОД CreateLinkAsync] ОШИБКА ПРИ СОЗДАНИИ ССЫЛКИ У ПОЛЬЗОВАТЕЛЯ {DeviceId}", creator.DeviceId);
-                    return null;
-                }
+                await _dbContext.SaveChangesAsync();
                 return link;
             }
             else

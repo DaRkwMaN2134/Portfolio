@@ -16,6 +16,7 @@ using ShortUrl.Infrastructure.BackgroundServices;
 using ShortUrl.Infrastructure.Repository;
 using ShortUrl.Infrastructure.Services;
 using ShortUrl.Presentation;
+using ShortUrl.Presentation.ExceptionHandlers;
 using System.Net;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
@@ -46,8 +47,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         b => b.MigrationsAssembly("ShortUrl.Infrastructure")
     ));
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
-builder.Services.AddMemoryCache();
+
 builder.Services.AddScoped<IClientInfoParser, ClientInfoParser>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
@@ -81,6 +84,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowAll");
 app.UseAuthorization();
+app.UseExceptionHandler();
+app.UseSerilogRequestLogging();
 app.MapControllers();
 app.UseStaticFiles();
 
@@ -88,7 +93,6 @@ app.UseMiddleware<Middleware>();
 app.MapLinkEndpoints();
 app.MapAnalyticsEndpoints();
 app.MapUpdateEndpoints();
-app.UseSerilogRequestLogging();
 
 
 app.Run();

@@ -3,6 +3,7 @@ using DeviceDetectorNET.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
@@ -22,10 +23,12 @@ namespace ShortUrl.Infrastructure.Services
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
             SlidingExpiration = TimeSpan.FromMinutes(2)
         };
+        private readonly ILogger<ClientInfoParser> _logger;
 
-        public ClientInfoParser(IDistributedCache cache)
+        public ClientInfoParser(IDistributedCache cache, ILogger<ClientInfoParser> logger)
         {
             _distributedCache = cache;
+            _logger = logger;
         }
         public async Task<ParserDTO?> GetInfoAsync(string useragent, Dictionary<string, string?> headers)
         {
@@ -35,11 +38,19 @@ namespace ShortUrl.Infrastructure.Services
 
             var key = useragent + "|" + platform;
 
-            string? cachedJson = await _distributedCache.GetStringAsync(key);
-            if (!string.IsNullOrEmpty(cachedJson))
+            try
             {
-                return JsonSerializer.Deserialize<ParserDTO?>(cachedJson)!;
+                string? cachedJson = await _distributedCache.GetStringAsync(key);
+                if (!string.IsNullOrEmpty(cachedJson))
+                {
+                    return JsonSerializer.Deserialize<ParserDTO?>(cachedJson)!;
+                }
             }
+            catch(Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis недоступен при чтении кэша User-Agent. Парсим напрямую.");
+            }
+
             var clientHints = ClientHints.Factory(headers);
             var uainfo = new DeviceDetector(useragent, clientHints);
             uainfo.SetCache(_detectorCache);
@@ -52,7 +63,14 @@ namespace ShortUrl.Infrastructure.Services
                 Browser = uainfo?.GetBrowserClient()?.Match != null ? uainfo.GetBrowserClient().Match.Family.ToString() + " " + uainfo.GetBrowserClient().Match.Version : "Unknown"
             };
 
-            await _distributedCache.SetStringAsync(key, JsonSerializer.Serialize(info), _cacheOptions);
+            try
+            {
+                await _distributedCache.SetStringAsync(key, JsonSerializer.Serialize(info), _cacheOptions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Не удалось записать User-Agent в Redis.");
+            }
 
             return info;
         }

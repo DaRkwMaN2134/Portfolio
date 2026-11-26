@@ -6,6 +6,8 @@ log.txt
 # Временные файлы сборки (для проектов Visual Studio)
 bin/
 obj/
+Logs/
+logs/
 TestResults/
 Properties/
 .vs/
