@@ -1,49 +1,66 @@
 ﻿using DeviceDetectorNET;
+using DeviceDetectorNET.Cache;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace ShortUrl.Infrastructure.Services
 {
     public class ClientInfoParser : IClientInfoParser
     {
-        private readonly IMemoryCache _memoryCache;
-        public ClientInfoParser(IMemoryCache cache)
+        private readonly IDistributedCache _distributedCache;
+        private static readonly ICache _detectorCache = new DictionaryCache();
+        private static readonly DistributedCacheEntryOptions _cacheOptions = new()
         {
-            _memoryCache = cache;
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            SlidingExpiration = TimeSpan.FromMinutes(2)
+        };
+
+        public ClientInfoParser(IDistributedCache cache)
+        {
+            _distributedCache = cache;
         }
-        public ParserDTO? GetInfo(string useragent, Dictionary<string, string?> headers)
+        public async Task<ParserDTO?> GetInfoAsync(string useragent, Dictionary<string, string?> headers)
         {
             if (string.IsNullOrEmpty(useragent) || headers == null) return null;
 
-            var platform = headers.ContainsKey("sec-ch-ua-platform") ? headers["sec-ch-ua-platform"] : "unknown";
+            var platform = headers.FirstOrDefault(h => h.Key.Equals("sec-ch-ua-platform", StringComparison.OrdinalIgnoreCase)).Value ?? "unknown";
+
             var key = useragent + "|" + platform;
 
-            if (!_memoryCache.TryGetValue(key, out DeviceDetector? result))
+            string? cachedJson = await _distributedCache.GetStringAsync(key);
+            if (!string.IsNullOrEmpty(cachedJson))
             {
-                var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
-                .SetSlidingExpiration(TimeSpan.FromMinutes(2))
-                .SetPriority(CacheItemPriority.High);
-
-                var clientHints = ClientHints.Factory(headers);
-                var uainfo = new DeviceDetector(useragent, clientHints);
-                uainfo.Parse();
-                _memoryCache.Set(key, uainfo, cacheOptions);
-                result = uainfo;
+                return JsonSerializer.Deserialize<ParserDTO?>(cachedJson)!;
             }
+            var clientHints = ClientHints.Factory(headers);
+            var uainfo = new DeviceDetector(useragent, clientHints);
+            uainfo.SetCache(_detectorCache);
+            uainfo.Parse();
+
             var info = new ParserDTO
             {
-                Device = result?.GetDeviceName(),
-                OS = result?.GetOs()?.Match != null ? result.GetOs().Match.Family.ToString() + " " + result.GetOs().Match.Version : "Unknown",
-                Browser = result?.GetBrowserClient()?.Match != null ? result.GetBrowserClient().Match.Family.ToString() + " " + result.GetBrowserClient().Match.Version : "Unknown"
+                Device = uainfo?.GetDeviceName(),
+                OS = uainfo?.GetOs()?.Match != null ? uainfo.GetOs().Match.Family.ToString() + " " + uainfo.GetOs().Match.Version : "Unknown",
+                Browser = uainfo?.GetBrowserClient()?.Match != null ? uainfo.GetBrowserClient().Match.Family.ToString() + " " + uainfo.GetBrowserClient().Match.Version : "Unknown"
             };
 
+            await _distributedCache.SetStringAsync(key, JsonSerializer.Serialize(info), _cacheOptions);
+
             return info;
+        }
+        
+        
+        public void CleanupDetectorCache()
+        {
+            _detectorCache.FlushAll();
         }
     }
 }

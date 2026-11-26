@@ -159,7 +159,7 @@ namespace ShortUrl.Application.Services
             var link = await _linkRepository.GetLinkByShortCodeAsync(shortcode);
             if (link == null) return string.Empty;
 
-            var dtoinfo = _infoParser.GetInfo(useragent, headers);
+            var dtoinfo = await _infoParser.GetInfoAsync(useragent, headers);
             if(dtoinfo == null) return string.Empty;
 
             var clickid = await _clickService.CollectionInfoForClickAsync(link.Id, dtoinfo, clientContext);

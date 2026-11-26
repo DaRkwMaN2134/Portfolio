@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
+using Serilog;
 using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
 using ShortUrl.Infrastructure;
+using ShortUrl.Infrastructure.BackgroundServices;
 using ShortUrl.Infrastructure.Repository;
 using ShortUrl.Infrastructure.Services;
 using ShortUrl.Presentation;
@@ -18,7 +20,6 @@ using System.Net;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using UAParser;
-using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -31,6 +32,11 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Services(services));
 
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "ShortUrl_";
+});
 
 
 
@@ -66,6 +72,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
+builder.Services.AddHostedService<CleanupAnonymousUserService>();
+builder.Services.AddHostedService<CleanupDetectorCacheService>();
 var app = builder.Build();
 
 

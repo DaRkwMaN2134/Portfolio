@@ -31,7 +31,7 @@ namespace ShortUrl.Application.Services
             var currentUser = await _userRepository.GetByDeviceIdAsync(deviceid);
             if (currentUser != null)
             {
-                var info = _infoParser.GetInfo(useragent, headers);
+                var info = await _infoParser.GetInfoAsync(useragent, headers);
 
                 if (info == null) return false;
 

@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:16-alpine
     ports:
-      - "5433:5432"
+      - ${DB_PORTS}
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
@@ -19,14 +19,17 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - ${APP_PORTS}
     environment:
     - ConnectionStrings__Postgres=Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USERNAME};Password=${DB_PASSWORD};GSS Encryption Mode=Disable
+    - ConnectionStrings__Redis=redis:${REDIS_PORT}
     depends_on:
       db:
         condition: service_healthy
       migrator:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
 
   migrator:
     build:
@@ -39,5 +42,20 @@ services:
       db:
         condition: service_healthy
 
+  redis:
+    image: redis:alpine
+    container_name: my-redis
+    ports:
+      - ${REDIS_PORTS}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   postgres_data:
+  redis_data:

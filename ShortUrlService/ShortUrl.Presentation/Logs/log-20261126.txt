@@ -1,0 +1,47 @@
+2026-11-26 14:23:56.660 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-26 14:23:56.698 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-26 14:23:56.699 +06:00 [INF] Hosting environment: Production
+2026-11-26 14:23:56.700 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-26 14:24:02.846 +06:00 [INF] HTTP GET /favicon.ico responded 404 in 0.5860 ms
+2026-11-26 14:24:03.031 +06:00 [INF] HTTP GET /b/buffer responded 200 in 188.4712 ms
+2026-11-26 14:24:07.415 +06:00 [INF] HTTP POST /api/user/update responded 200 in 4572.0504 ms
+2026-11-26 14:24:07.442 +06:00 [INF] HTTP GET /s/2I92P4C8ZQ responded 302 in 2252.3955 ms
+2026-11-26 14:24:07.599 +06:00 [INF] HTTP POST /api/click/update responded 200 in 43.0276 ms
+2026-11-26 14:24:11.668 +06:00 [INF] HTTP GET /s/48U4J2Y0Qh responded 302 in 19.9709 ms
+2026-11-26 14:24:11.786 +06:00 [INF] HTTP POST /api/click/update responded 200 in 5.9620 ms
+2026-11-26 14:24:18.221 +06:00 [INF] HTTP GET /s/8J2FerEmh responded 302 in 4.7687 ms
+2026-11-26 14:24:18.326 +06:00 [INF] HTTP POST /api/click/update responded 200 in 2.6947 ms
+2026-11-26 14:24:27.699 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://github.com/DaRkwMaN2134/Portfolio/blob/main/ShortUrlService/ShortUrl.Infrastructure/Services/ClientInfoParser.cs У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 77a02acc-797b-4dd6-9f78-65c86d0e56da НЕ БЫЛ НАЙДЕН
+2026-11-26 14:24:27.700 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-26 14:24:27.725 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД VDNdV73SY УСПЕШНО СОЗДАН
+2026-11-26 14:24:27.727 +06:00 [INF] HTTP POST /shorten responded 200 in 45.9749 ms
+2026-11-26 14:24:34.083 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://github.com/DaRkwMaN2134/Portfolio/blob/main/ShortUrlService/ShortUrl.Infrastructure/Services/ClientInfoParser.cs?utm_source=123&utm_medium=1231&utm_campaign=123 У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 77a02acc-797b-4dd6-9f78-65c86d0e56da НЕ БЫЛ НАЙДЕН
+2026-11-26 14:24:34.084 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-26 14:24:34.086 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД 41JzSChC7e УСПЕШНО СОЗДАН
+2026-11-26 14:24:34.086 +06:00 [INF] HTTP POST /shorten responded 200 in 5.3500 ms
+2026-11-26 14:24:35.418 +06:00 [INF] HTTP GET /s/41JzSChC7e responded 302 in 4.6439 ms
+2026-11-26 14:24:35.535 +06:00 [INF] HTTP POST /api/click/update responded 200 in 2.6946 ms
+2026-11-26 14:24:37.995 +06:00 [INF] HTTP GET /s/VDNdV73SY responded 302 in 4.8279 ms
+2026-11-26 14:24:38.114 +06:00 [INF] HTTP POST /api/click/update responded 200 in 2.3308 ms
+2026-11-26 14:24:40.075 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 61.1874 ms
+2026-11-26 14:24:41.709 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 2.5665 ms
+2026-11-26 14:26:52.689 +06:00 [INF] HTTP POST /api/user/update responded 200 in 21.2429 ms
+2026-11-26 14:26:52.716 +06:00 [INF] HTTP GET /b/buffer responded 200 in 1.1312 ms
+2026-11-26 14:26:58.262 +06:00 [INF] HTTP GET /.well-known/appspecific/com.chrome.devtools.json responded 404 in 0.0382 ms
+2026-11-26 14:55:35.847 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-26 14:55:35.884 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-26 14:55:35.885 +06:00 [INF] Hosting environment: Production
+2026-11-26 14:55:35.886 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-26 14:56:50.382 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-26 14:56:50.421 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-26 14:56:50.423 +06:00 [INF] Hosting environment: Production
+2026-11-26 14:56:50.424 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-26 15:06:53.812 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-26 15:06:53.842 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-26 15:06:53.843 +06:00 [INF] Hosting environment: Production
+2026-11-26 15:06:53.844 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-26 15:07:25.519 +06:00 [INF] HTTP GET /favicon.ico responded 404 in 0.5197 ms
+2026-11-26 15:07:25.617 +06:00 [INF] HTTP GET /b/buffer responded 200 in 100.1747 ms
+2026-11-26 15:07:29.266 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3748.9104 ms
+2026-11-26 15:07:32.237 +06:00 [INF] HTTP GET /s/41JzSChC7e responded 302 in 104.1274 ms
+2026-11-26 15:07:32.380 +06:00 [INF] HTTP POST /api/click/update responded 200 in 36.1924 ms

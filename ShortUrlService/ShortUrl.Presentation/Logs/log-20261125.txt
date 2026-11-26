@@ -434,3 +434,36 @@
 2026-11-25 14:39:38.144 +06:00 [INF] HTTP GET /s/8J2FerEmh responded 302 in 2.1701 ms
 2026-11-25 14:39:38.255 +06:00 [INF] HTTP POST /api/click/update responded 200 in 2.4569 ms
 2026-11-25 14:39:42.086 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 2.6712 ms
+2026-11-25 14:43:15.964 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 14:43:15.999 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 14:43:16.001 +06:00 [INF] Hosting environment: Production
+2026-11-25 14:43:16.002 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 14:43:20.259 +06:00 [INF] HTTP GET /b/buffer responded 200 in 187.3251 ms
+2026-11-25 14:43:23.954 +06:00 [INF] HTTP POST /api/user/update responded 200 in 3885.0970 ms
+2026-11-25 14:43:42.413 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://vk.ru/music/catalog/PUldVA8FR0RzSVNUWE00BzMPABlGaxgOKRkdVBkWUkR8WkVUAQRJXGtaRVQNFlFTclxfRAEMUlNqSVxAFw5JASMFDARUWElKZF9YVA8GFg?utm_source=Discord&utm_medium=banner У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 77a02acc-797b-4dd6-9f78-65c86d0e56da НЕ БЫЛ НАЙДЕН
+2026-11-25 14:43:42.414 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 14:43:42.492 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД 48U4J2Y0Qh УСПЕШНО СОЗДАН
+2026-11-25 14:43:42.495 +06:00 [INF] HTTP POST /shorten responded 200 in 96.8327 ms
+2026-11-25 14:43:43.674 +06:00 [INF] HTTP GET /s/48U4J2Y0Qh responded 302 in 54.0087 ms
+2026-11-25 14:43:43.811 +06:00 [INF] HTTP POST /api/click/update responded 200 in 34.6943 ms
+2026-11-25 14:44:02.352 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 51.7961 ms
+2026-11-25 14:44:11.959 +06:00 [INF] Now listening on: http://localhost:5000
+2026-11-25 14:44:11.996 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 14:44:11.997 +06:00 [INF] Hosting environment: Production
+2026-11-25 14:44:11.999 +06:00 [INF] Content root path: C:\Нужное\учеба\программирование\Portfolio\ShortUrlService\ShortUrl.Presentation
+2026-11-25 14:44:19.291 +06:00 [INF] HTTP GET /b/buffer responded 200 in 107.7452 ms
+2026-11-25 14:44:20.105 +06:00 [INF] HTTP POST /api/user/update responded 200 in 993.6734 ms
+2026-11-25 14:44:20.122 +06:00 [INF] HTTP GET /s/48U4J2Y0Qh responded 302 in 4052.3264 ms
+2026-11-25 14:44:20.260 +06:00 [INF] HTTP POST /api/click/update responded 200 in 36.3898 ms
+2026-11-25 14:44:20.354 +06:00 [INF] HTTP GET /s/48U4J2Y0Qh responded 302 in 10.5707 ms
+2026-11-25 14:44:20.457 +06:00 [INF] HTTP POST /api/click/update responded 200 in 3.0518 ms
+2026-11-25 14:44:32.172 +06:00 [INF] [МЕТОД GetUserLinkAsync] КОРОТКИЙ КОД ССЫЛКИ https://www.deepseek.com/en/ У ПОЛЬЗОВАТЕЛЯ ПО DEVICE ID 77a02acc-797b-4dd6-9f78-65c86d0e56da НЕ БЫЛ НАЙДЕН
+2026-11-25 14:44:32.174 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ КОРОТКОГО КОДА
+2026-11-25 14:44:32.183 +06:00 [INF] [МЕТОД CreateLinkAsync] КОРОТКИЙ КОД 1SxtWE5bmQ УЖЕ СУЩЕСТВУЕТ У ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+2026-11-25 14:44:32.184 +06:00 [INF] [МЕТОД ShortenLinkAsync] НАЧАЛОСЬ СОЗДАНИЕ С СОЛЬЮ. ПОПЫТКА 1
+2026-11-25 14:44:32.195 +06:00 [INF] [МЕТОД ShortenLinkAsync] КОРОТКИЙ КОД С СОЛЬЮ УСПЕШНО СОЗДАН
+2026-11-25 14:44:32.198 +06:00 [INF] HTTP POST /shorten responded 200 in 35.9699 ms
+2026-11-25 14:44:44.802 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 50.1079 ms
+2026-11-25 14:44:45.953 +06:00 [INF] HTTP GET /s/2I92P4C8ZQ responded 302 in 3.6199 ms
+2026-11-25 14:44:46.075 +06:00 [INF] HTTP POST /api/click/update responded 200 in 2.6439 ms
+2026-11-25 14:45:31.142 +06:00 [INF] HTTP GET /shortcode/analytics responded 200 in 6.1498 ms
