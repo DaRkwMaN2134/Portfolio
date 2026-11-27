@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using Moq;
+using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
@@ -21,6 +22,7 @@ namespace ShortUrl.Tests
         private readonly LinkService _linkService;
         private readonly Mock<ILogger<LinkService>> _loggerLinkMock;
         private readonly Mock<ILogger<ClickService>> _loggerClickMock;
+        private readonly Mock<IBackgroundChannelTask<RedirectDTO>> _channelTaskMock;
         public LinkService_Test(ITestOutputHelper output)
         {
             _output = output;
@@ -32,13 +34,17 @@ namespace ShortUrl.Tests
             _clickServiceMock = new Mock<ClickService>(_clickRepoMock.Object, _linkRepoMock.Object, _loggerClickMock.Object);
             _userRepoMock = new Mock<IUserRepository>();
             _clientParserMock = new Mock<IClientInfoParser>();
+            _channelTaskMock = new Mock<IBackgroundChannelTask<RedirectDTO>>();
+
 
             _linkService = new LinkService(
                 _linkRepoMock.Object,
                 _clickServiceMock.Object,
                 _userRepoMock.Object,
                 _clientParserMock.Object,
-                _loggerLinkMock.Object);
+                _loggerLinkMock.Object,
+                _channelTaskMock.Object,
+                _clickRepoMock.Object);
         }
 
 
