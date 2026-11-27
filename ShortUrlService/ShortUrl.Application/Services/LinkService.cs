@@ -6,8 +6,10 @@ using ShortUrl.Domain.Models;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Channels;
 using System.Web;
 
 
@@ -18,15 +20,20 @@ namespace ShortUrl.Application.Services
         private readonly ILinkRepository _linkRepository;
         private readonly ClickService _clickService;
         private readonly IUserRepository _userRepository;
+        private readonly IClickRepository _clickRepository;
         private readonly IClientInfoParser _infoParser;
         private readonly ILogger<LinkService> _logger;
-        public LinkService(ILinkRepository linkRepository, ClickService clickservice, IUserRepository userRepository, IClientInfoParser infoparser, ILogger<LinkService> logger)
+        private readonly IBackgroundChannelTask<RedirectDTO> _channelTask;
+        public LinkService(ILinkRepository linkRepository, ClickService clickservice, IUserRepository userRepository, 
+            IClientInfoParser infoparser, ILogger<LinkService> logger, IBackgroundChannelTask<RedirectDTO> channelTask, IClickRepository clickRepository)
         {
             _linkRepository = linkRepository;
             _clickService = clickservice;
             _userRepository = userRepository;
             _infoParser = infoparser;
             _logger = logger;
+            _channelTask = channelTask;
+            _clickRepository = clickRepository;
         }
 
         public async Task<string> ShortenLinkAsync(string longurl, string deviceid, User creator)
@@ -152,26 +159,30 @@ namespace ShortUrl.Application.Services
             return shortcode;
         }
 
-        public async Task<string> MakeRedirectAsync(string shortcode, string useragent, Dictionary<string, string?> headers, ClientContext clientContext)
+        public async Task<string> MakeRedirectAsync(string shortcode, HeadersDTO headersDTO, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(shortcode)) return string.Empty;
 
             var link = await _linkRepository.GetLinkByShortCodeAsync(shortcode);
             if (link == null) return string.Empty;
 
-            var dtoinfo = await _infoParser.GetInfoAsync(useragent, headers);
-            if(dtoinfo == null) return string.Empty;
+            var click = await _clickRepository.CreateEmptyClickByLinkIdAsync(link.Id);
 
-            var clickid = await _clickService.CollectionInfoForClickAsync(link.Id, dtoinfo, clientContext);
+            var redirectDTO = new RedirectDTO(
+                headersDTO, 
+                click
+            );
+
+            await _channelTask.ChannelWriteAsync(redirectDTO, cancellationToken);
 
             var uriBuilder = new UriBuilder(link.LongUrl);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
 
-            if(clientContext.UtmSource != null) query["utm_source"] = clientContext.UtmSource;
+            if(headersDTO.clientContext.UtmSource != null) query["utm_source"] = headersDTO.clientContext.UtmSource;
             
-            if(clientContext.UtmMedium != null) query["utm_medium"] = clientContext.UtmMedium;
+            if(headersDTO.clientContext.UtmMedium != null) query["utm_medium"] = headersDTO.clientContext.UtmMedium;
 
-            if(clientContext.UtmCampaign != null) query["utm_campaign"] = clientContext.UtmCampaign;
+            if(headersDTO.clientContext.UtmCampaign != null) query["utm_campaign"] = headersDTO.clientContext.UtmCampaign;
 
             uriBuilder.Query = query.ToString();
             var longurl = uriBuilder.ToString();
@@ -180,7 +191,7 @@ namespace ShortUrl.Application.Services
             string encodedShortcode = WebUtility.UrlEncode(shortcode);
 
 
-            string redirectUrl = $"/redirect.html?longurl={encodedLongUrl}&shortcode={encodedShortcode}&clickid={clickid}";
+            string redirectUrl = $"/redirect.html?longurl={encodedLongUrl}&shortcode={encodedShortcode}&clickid={click.Id}";
             return redirectUrl;
         }
     }

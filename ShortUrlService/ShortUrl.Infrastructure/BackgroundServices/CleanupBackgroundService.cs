@@ -28,7 +28,7 @@ namespace ShortUrl.Infrastructure.BackgroundServices
             {
                 try
                 {
-                    using var scope = _scopeFactory.CreateAsyncScope();
+                    await using var scope = _scopeFactory.CreateAsyncScope();
                     var userrep = scope.ServiceProvider.GetRequiredService<IUserRepository>();
                     await userrep.CleanupAnonymousUsersAsync();
                 }

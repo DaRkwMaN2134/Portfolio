@@ -8,7 +8,7 @@ namespace ShortUrl.Application.Interfaces
 {
     public interface IClientInfoParser
     {
-        public Task<ParserDTO?> GetInfoAsync(string useragent, Dictionary<string, string?> headers);
+        public Task<ParserDTO?> GetInfoAsync(HeadersDTO headersDTO);
         public void CleanupDetectorCache();
     }
 }

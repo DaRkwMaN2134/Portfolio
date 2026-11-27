@@ -1,7 +1,8 @@
 ﻿using DeviceDetectorNET;
+using ShortUrl.Application.DTO;
 using ShortUrl.Application.Services;
 using ShortUrl.Domain.Interfaces;
-using ShortUrl.Application.DTO;
+using UAParser;
 
 namespace ShortUrl.Presentation
 {
@@ -34,7 +35,14 @@ namespace ShortUrl.Presentation
 
             var useragent = context.Request.Headers.UserAgent.ToString();
             var IpAddress = context.Connection.RemoteIpAddress?.ToString();
-            var update = await userservice.UserUpdateAsync(deviceid, useragent, headers, data, IpAddress);
+
+            var headersDTO = new HeadersDTO(
+                useragent,
+                headers,
+                null
+                );
+
+            var update = await userservice.UserUpdateAsync(deviceid, headersDTO, data, IpAddress);
 
             if(!update) return Results.NotFound();
 

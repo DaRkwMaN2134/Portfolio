@@ -48,6 +48,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ));
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddSingleton(typeof(IBackgroundChannelTask<>), typeof(ChannelControl<>));
+builder.Services.AddScoped<IChannelHandler<RedirectDTO>, ClickChannelHandler>();
+builder.Services.AddHostedService<ChannelSenderWorker<RedirectDTO>>();
+
 builder.Services.AddProblemDetails();
 
 

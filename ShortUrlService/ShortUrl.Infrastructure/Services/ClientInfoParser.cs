@@ -30,13 +30,13 @@ namespace ShortUrl.Infrastructure.Services
             _distributedCache = cache;
             _logger = logger;
         }
-        public async Task<ParserDTO?> GetInfoAsync(string useragent, Dictionary<string, string?> headers)
+        public async Task<ParserDTO?> GetInfoAsync(HeadersDTO headersDTO)
         {
-            if (string.IsNullOrEmpty(useragent) || headers == null) return null;
+            if (string.IsNullOrEmpty(headersDTO.Useragent) || headersDTO.Headers == null) return null;
 
-            var platform = headers.FirstOrDefault(h => h.Key.Equals("sec-ch-ua-platform", StringComparison.OrdinalIgnoreCase)).Value ?? "unknown";
+            var platform = headersDTO.Headers.FirstOrDefault(h => h.Key.Equals("sec-ch-ua-platform", StringComparison.OrdinalIgnoreCase)).Value ?? "unknown";
 
-            var key = useragent + "|" + platform;
+            var key = headersDTO.Useragent + "|" + platform;
 
             try
             {
@@ -51,8 +51,8 @@ namespace ShortUrl.Infrastructure.Services
                 _logger.LogWarning(ex, "Redis недоступен при чтении кэша User-Agent. Парсим напрямую.");
             }
 
-            var clientHints = ClientHints.Factory(headers);
-            var uainfo = new DeviceDetector(useragent, clientHints);
+            var clientHints = ClientHints.Factory(headersDTO.Headers);
+            var uainfo = new DeviceDetector(headersDTO.Useragent, clientHints);
             uainfo.SetCache(_detectorCache);
             uainfo.Parse();
 

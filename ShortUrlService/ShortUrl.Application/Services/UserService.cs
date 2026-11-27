@@ -4,6 +4,8 @@ using ShortUrl.Application.DTO;
 using ShortUrl.Application.Interfaces;
 using ShortUrl.Domain.Interfaces;
 using ShortUrl.Domain.Models;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShortUrl.Application.Services
@@ -12,10 +14,12 @@ namespace ShortUrl.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IClientInfoParser _infoParser;
-        public UserService(IUserRepository userRepository, IClientInfoParser infoParser)
+        private readonly IBackgroundChannelTask<ParserDTO?> _channelTask;
+        public UserService(IUserRepository userRepository, IClientInfoParser infoParser, IBackgroundChannelTask<ParserDTO?> channelTask)
         {
             _userRepository = userRepository;
             _infoParser = infoParser;
+            _channelTask = channelTask;
         }
 
         public async Task<User?> AnonymousUserLoginAsync(string deviceId)
@@ -26,12 +30,13 @@ namespace ShortUrl.Application.Services
 
         }
 
-        public async Task<bool> UserUpdateAsync(string deviceid, string useragent, Dictionary<string, string?> headers, UserUpdateRequest data, string ipaddres)
+        public async Task<bool> UserUpdateAsync(string deviceid, HeadersDTO headersDTO,
+            UserUpdateRequest data, string ipaddres)
         {
             var currentUser = await _userRepository.GetByDeviceIdAsync(deviceid);
             if (currentUser != null)
             {
-                var info = await _infoParser.GetInfoAsync(useragent, headers);
+                var info = await _infoParser.GetInfoAsync(headersDTO);
 
                 if (info == null) return false;
 

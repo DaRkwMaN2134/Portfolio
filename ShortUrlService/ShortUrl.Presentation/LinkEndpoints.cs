@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using UAParser;
 
 namespace ShortUrl.Presentation
 {
@@ -47,7 +48,8 @@ namespace ShortUrl.Presentation
 
         }
 
-        private static async Task<IResult> RedirectEndpoint(string shortcode, LinkService linkservice, HttpContext context)
+        private static async Task<IResult> RedirectEndpoint(string shortcode, LinkService linkservice, HttpContext context, 
+            CancellationToken cancellationToken)
         {
             var userAgent = context.Request.Headers.UserAgent.ToString();
             var headers = context.Request.Headers.ToDictionary(
@@ -63,7 +65,13 @@ namespace ShortUrl.Presentation
                 context.Request?.Query?["utm_campaign"].FirstOrDefault()
             );
 
-            var redirectUrl = await linkservice.MakeRedirectAsync(shortcode, userAgent, headers, clientContext);
+            var headersDTO = new HeadersDTO(
+                userAgent,
+                headers,
+                clientContext
+            );
+
+            var redirectUrl = await linkservice.MakeRedirectAsync(shortcode, headersDTO, cancellationToken);
             if (string.IsNullOrEmpty(redirectUrl)) return Results.NotFound();
             return Results.Redirect(redirectUrl);
         }

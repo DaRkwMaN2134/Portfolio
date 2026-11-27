@@ -21,29 +21,25 @@ namespace ShortUrl.Application.Services
             _linkRepository = linkRepository;
             _logger = logger;
         }
-        public async Task<long?> CollectionInfoForClickAsync(long linkid, ParserDTO dtoinfo, ClientContext clientContext)
+        public async Task CollectionInfoForClickAsync(Click click, ParserDTO dtoinfo, ClientContext clientContext)
         {
-            if (dtoinfo == null) return null;
+            if (dtoinfo == null || click == null) return;
 
-            Click click = new Click
-            {
-                LinkId = linkid,
-                CreatedAt = DateTime.UtcNow,
-                IpAddress = clientContext.IpAddress,
-                Device = dtoinfo.Device,
-                OS = dtoinfo.OS,
-                Resolution = null,
-                Referer = clientContext.Referer,
-                UtmSource = clientContext.UtmSource,
-                UtmMedium = clientContext.UtmMedium,
-                UtmCampaign = clientContext.UtmCampaign,
-                Language = clientContext.Language,
-                Browser = dtoinfo.Browser,
-                TimeZone = null,
-                DeviceLocalTime = null
-            };
-            var clickid = await _clickRepository.CreateClickAsync(click);
-            return clickid;
+            click.CreatedAt = DateTime.UtcNow;
+            click.IpAddress = clientContext.IpAddress;
+            click.Device = dtoinfo.Device;
+            click.OS = dtoinfo.OS;
+            click.Resolution = null;
+            click.Referer = clientContext.Referer;
+            click.UtmSource = clientContext.UtmSource;
+            click.UtmMedium = clientContext.UtmMedium;
+            click.UtmCampaign = clientContext.UtmCampaign;
+            click.Language = clientContext.Language;
+            click.Browser = dtoinfo.Browser;
+            click.TimeZone = null;
+            click.DeviceLocalTime = null;
+
+            await _clickRepository.UpdateClickAsync(click);
         }
 
         public async Task UpdateExternalInfoForClick(ClickUpdateRequest data)

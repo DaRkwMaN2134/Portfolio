@@ -19,12 +19,12 @@ namespace ShortUrl.Infrastructure.Repository
             _logger = logger;
         }
 
-        public async Task<long> CreateClickAsync(Click click)
+        /*public async Task<long> CreateClickAsync(Click click)
         {
             _dbContext.clicks.Add(click);
             await _dbContext.SaveChangesAsync();
             return click.Id;
-        }
+        }*/
 
         public async Task<Click?> GetByIdAsync(long clickid)
         {
@@ -56,6 +56,18 @@ namespace ShortUrl.Infrastructure.Repository
 
             return (clickCount, lastClicks, uniqueIpCount);
 
+        }
+
+        public async Task<Click> CreateEmptyClickByLinkIdAsync(long linkid)
+        {
+            Click click = new Click
+            {
+                LinkId = linkid
+            };
+
+            _dbContext.clicks.Add(click);
+            await _dbContext.SaveChangesAsync();
+            return click;
         }
     }
 }
