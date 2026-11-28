@@ -23,23 +23,25 @@ namespace ShortUrl.Application.Services
         }
         public async Task CollectionInfoForClickAsync(Click click, ParserDTO dtoinfo, ClientContext clientContext)
         {
-            if (dtoinfo == null || click == null) return;
+            if (dtoinfo == null || click == null)
+            {
+                _logger.LogWarning("[МЕТОД CollectionInfoForClickAsync] ВХОДНЫЕ ДАННЫЕ ОКАЗАЛИСЬ ПУСТЫЕ {DtoInfo} : {Click}", dtoinfo, click);
+                return;
+            }
 
             click.CreatedAt = DateTime.UtcNow;
             click.IpAddress = clientContext.IpAddress;
             click.Device = dtoinfo.Device;
             click.OS = dtoinfo.OS;
-            click.Resolution = null;
             click.Referer = clientContext.Referer;
             click.UtmSource = clientContext.UtmSource;
             click.UtmMedium = clientContext.UtmMedium;
             click.UtmCampaign = clientContext.UtmCampaign;
             click.Language = clientContext.Language;
             click.Browser = dtoinfo.Browser;
-            click.TimeZone = null;
-            click.DeviceLocalTime = null;
 
             await _clickRepository.UpdateClickAsync(click);
+            _logger.LogInformation("[МЕТОД CollectionInfoForClickAsync] ИНФОРМАЦИЯ О КЛИКЕ УСПЕШНО ОБНОВЛЕНА. Id КЛИКА: {ClickId}", click.Id);
         }
 
         public async Task UpdateExternalInfoForClick(ClickUpdateRequest data)
@@ -54,13 +56,16 @@ namespace ShortUrl.Application.Services
                 click.UtmMedium = data.UtmMedium;
                 click.UtmCampaign = data.UtmCampaign;
                 await _clickRepository.UpdateClickAsync(click);
+                _logger.LogInformation("[МЕТОД UpdateExternalInfoForClick] ИНФОРМАЦИЯ О КЛИКЕ УСПЕШНО ОБНОВЛЕНА. Id КЛИКА: {ClickId}", click.Id);
             }
-            
+            else
+            {
+                _logger.LogWarning("[МЕТОД UpdateExternalInfoForClick] КЛИК НЕ БЫЛ НАЙДЕН");
+            }
         }
         public async Task<AnalyticsResponseDTO> ClickAnalitycsAsync(long linkid)
         {
-            // проверка на валидность linkid
-            var clicks = await _clickRepository.GetClickAsync(linkid);
+            var clicks = await _clickRepository.GetClickAsync(linkid);   
             var analytics = new AnalyticsResponseDTO
             {
                 TotalClicks = clicks.clickount,
@@ -80,6 +85,7 @@ namespace ShortUrl.Application.Services
                 }).ToList(),
                 UniqueIps = clicks.uniqueip
             };
+            _logger.LogInformation("[МЕТОД ClickAnalitycsAsync] АНАЛИТИКА О КЛИКЕ УСПЕШНО НАЙДЕНА");
             return analytics;
         }
 
@@ -90,6 +96,7 @@ namespace ShortUrl.Application.Services
             if (linkid != null)
             {
                 await UpdateExternalInfoForClick(data);
+                _logger.LogInformation("[МЕТОД ClickUpdateAsync] ССЫЛКА ПО КОРОТКОМУ КОДУ {ShortCode} БЫЛА НАЙДЕНА", data.Shortcode);
                 return true;
             }
             else
